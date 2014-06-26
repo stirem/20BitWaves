@@ -6,33 +6,30 @@ void ofApp::setup(){
     ofBackground(0, 0, 0);
 	ofSetOrientation(OF_ORIENTATION_90_RIGHT);
 	
+    
+    ///< L O A D  S O U N D S ///
+    
     //---------------------------------- frosk:
-	frosk.loadSound("sounds/corrente1.caf"); // uncompressed caf format.
+	frosk.loadSound("sounds/frosk.caf");
     frosk.setVolume(0.75);
     
     
     //---------------------------------- hest:
-	hest.loadSound("sounds/corrente2.caf"); // uncompressed caf format.
+	hest.loadSound("sounds/hest.caf");
     hest.setVolume(0.75);
 
 
-    //---------------------------------- pus:
-    pus.loadSound("sounds/corrente3.caf"); // uncompressed caf format.
-    pus.setVolume(0.75);
+    //---------------------------------- kattepus:
+    kattepus.loadSound("sounds/kattepus.caf");
+    kattepus.setVolume(0.75);
     
     
-    // in iOS, openFrameworks uses ofxiOSSoundPlayer to play sound.
-    // ofxiOSSoundPlayer is a wrapper for AVSoundPlayer which uses AVFoundation to play sound.
-    // you can use AVSoundPlayer directly using objective-c in the same way you use ofxiOSSoundPlayer,
-    // and many of the function names are the same or similar.
-    // the below code demonstrates how the AVSoundPlayer can be used inside your app.
+    //---------------------------------- flodhest:
+    flodhest.loadSound("sounds/flodhest.caf");
+    flodhest.setVolume(0.75);
     
-    /*
-    vocals = [[AVSoundPlayer alloc] init];
-    [vocals loadWithFile:@"sounds/Violet.wav"]; // uncompressed wav format.
-    [vocals volume:0.5];
-    */
-    
+
+    ///< L O A D  F O N T ///
      
     font.loadFont("fonts/DIN.otf", 18);
 }
@@ -47,115 +44,152 @@ void ofApp::draw(){
     
 	char tempStr[255];
 	
-	float sectionWidth = ofGetWidth() / 3.0f;
+	float sectionWidth = ofGetWidth() / 4.0f;
 
-    // The rectangles
+    ///< B U T T O N S  L O O K ///
     
-    ofSetColor(255, 255, 255);
+
     ofSetLineWidth(5);
     
     
     
     //---------------------------------- frosk:
     
+    // Change color of fill when sound is playing
+
     if(frosk.getIsPlaying()) {
-        ofFill();
+        ofSetColor(200, 200, 200);
     } else {
-        ofNoFill();
+        ofSetColor(0, 0, 0);
     }
+    ofFill();
+    ofRect(0, 0, sectionWidth, ofGetHeight());
+    
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
     ofRect(0, 0, sectionWidth, ofGetHeight());
 	
-    
-    
-    //---------------------------------- hest:
-    if(hest.getIsPlaying()) {
-        ofFill();
-    } else {
-        ofNoFill();
-    }
-    ofRect(sectionWidth, 0, sectionWidth, ofGetHeight());
-    
-    
-    
-    //---------------------------------- pus:
-    if(pus.getIsPlaying()) {
-        ofFill();
-    } else {
-        ofNoFill();
-    }
-    ofRect(sectionWidth * 2, 0, sectionWidth, ofGetHeight());
-    
-    
-    
-    
-    
-    
-    
-	//---------------------------------- frosk:
-	if(frosk.getIsPlaying()) {
+    // Change color of name of button when sound is playing
+    if(frosk.getIsPlaying()) {
         ofSetColor(0, 0, 0);
     } else {
         ofSetColor(50, 50, 50);
     }
 	font.drawString("Frosk", 10,50);
-	
-	ofSetColor(50, 50, 50);
+    
+    // Show info text about sound
+    ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", frosk.getPosition(),  frosk.getSpeed(), frosk.getPan());
 	ofDrawBitmapString(tempStr, 10, ofGetHeight() - 50);
     
     
+    //---------------------------------- hest:
     
-	//---------------------------------- hest:
-	if (hest.getIsPlaying()) {
+    // Change color of fill when sound is playing
+    
+    if(hest.getIsPlaying()) {
+        ofSetColor(200, 200, 200);
+    } else {
+        ofSetColor(0, 0, 0);
+    }
+    ofFill();
+    ofRect(sectionWidth, 0, sectionWidth, ofGetHeight());
+    
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
+    ofRect(sectionWidth, 0, sectionWidth, ofGetHeight());
+    
+    // Change color of name of button when sound is playing
+    if (hest.getIsPlaying()) {
         ofSetColor(0, 0, 0);
     } else {
         ofSetColor(50, 50, 50);
     }
 	font.drawString("Hest", sectionWidth + 10, 50);
     
-	ofSetColor(50, 50, 50);
+    // Show info text about sound
+    ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", hest.getPosition(),  hest.getSpeed(), hest.getPan());
 	ofDrawBitmapString(tempStr, sectionWidth + 10, ofGetHeight() - 50);
     
     
+    //---------------------------------- kattepus:
     
-	//---------------------------------- pus:
-    if (pus.getIsPlaying()) {
+    // Change color of fill when sound is playing
+    
+    if(kattepus.getIsPlaying()) {
+        ofSetColor(200, 200, 200);
+    } else {
+        ofSetColor(0, 0, 0);
+    }
+    ofFill();
+    ofRect(sectionWidth * 2, 0, sectionWidth, ofGetHeight());
+    
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
+    ofRect(sectionWidth * 2, 0, sectionWidth, ofGetHeight());
+    
+    // Change color of name of button when sound is playing
+    if (kattepus.getIsPlaying()) {
         ofSetColor(0, 0, 0);
     } else {
         ofSetColor(50, 50, 50);
     }
-	font.drawString("Pus", sectionWidth * 2 + 10, 50);
+	font.drawString("kattepus", sectionWidth * 2 + 10, 50);
     
+    // Show info text about sound
 	ofSetColor(50, 50, 50);
-	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", pus.getPosition(),  pus.getSpeed(), pus.getPan());
+	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", kattepus.getPosition(),  kattepus.getSpeed(), kattepus.getPan());
 	ofDrawBitmapString(tempStr, sectionWidth * 2 + 10, ofGetHeight() - 50);
     
     
     
+    //---------------------------------- flodhest:
     
+    // Change color of fill when sound is playing
     
-    
-    /* AV Sound Player Example
-    if ([vocals isPlaying]) {
-        ofSetHexColor(0xFF0000);
+    if(flodhest.getIsPlaying()) {
+        ofSetColor(200, 200, 200);
     } else {
-        ofSetHexColor(0x000000);
+        ofSetColor(0, 0, 0);
     }
-	font.drawString("Pus", sectionWidth * 2 + 10, 50);
+    ofFill();
+    ofRect(sectionWidth * 3, 0, sectionWidth, ofGetHeight());
     
-	ofSetHexColor(0x000000);
-	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", [vocals position],  [vocals speed], [vocals pan]);
-	ofDrawBitmapString(tempStr, sectionWidth * 2 + 10, ofGetHeight() - 50);
-    */
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
+    ofRect(sectionWidth * 3, 0, sectionWidth, ofGetHeight());
+    
+    // Change color of name of button when sound is playing
+    if (flodhest.getIsPlaying()) {
+        ofSetColor(0, 0, 0);
+    } else {
+        ofSetColor(50, 50, 50);
+    }
+	font.drawString("flodhest", sectionWidth * 3 + 10, 50);
+    
+    // Show info text about sound
+	ofSetColor(50, 50, 50);
+	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", flodhest.getPosition(),  flodhest.getSpeed(), flodhest.getPan());
+	ofDrawBitmapString(tempStr, sectionWidth * 3 + 10, ofGetHeight() - 50);
+    
+
+
+	
+
+    
+    
+    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-    /* AV Sound Player Example
-    [vocals release];
-    vocals = nil;
-    */
+    
 }
 
 //--------------------------------------------------------------
@@ -164,7 +198,10 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
         return;
     }
 		
-    float sectionWidth = ofGetWidth() / 3.0f;
+    
+    ///< B U T T O N S  T O U C H ///
+    
+    float sectionWidth = ofGetWidth() / 4.0f;
     float speed = ofMap(touch.y, ofGetHeight(), 0, 0.5, 2.0, true);
     float pan = 0;
     
@@ -189,22 +226,28 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
         hest.setLoop(true);
         
         
-    //---------------------------------- pus:
+    //---------------------------------- kattepus:
     } else if(touch.x < sectionWidth * 3) {
         pan = ofMap(touch.x, sectionWidth * 2, sectionWidth * 3, -1.0, 1.0, true);
         
-        pus.play();
-        pus.setSpeed(speed);
-        pus.setPan(pan);
-        pus.setLoop(true);
+        kattepus.play();
+        kattepus.setSpeed(speed);
+        kattepus.setPan(pan);
+        kattepus.setLoop(true);
         
         
-        /* AV Sound Player Example
-        [vocals play];
-        [vocals speed:speed];
-        [vocals pan:pan];
-        */
+    //---------------------------------- flodhest:
+    } else if(touch.x < sectionWidth * 4) {
+        pan = ofMap(touch.x, sectionWidth * 3, sectionWidth * 4, -1.0, 1.0, true);
+        
+        flodhest.play();
+        flodhest.setSpeed(speed);
+        flodhest.setPan(pan);
+        flodhest.setLoop(true);
     }
+    
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -213,7 +256,10 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
         return;
     }
     
-    float sectionWidth = ofGetWidth() / 3.0f;
+    
+    ///< B U T T O N S  T O U C H  M O V E D ///
+    
+    float sectionWidth = ofGetWidth() / 4.0f;
     float speed = ofMap(touch.y, ofGetHeight(), 0, 0.5, 2.0, true);
     float pan = 0;
     
@@ -235,19 +281,22 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
         hest.setPan(pan);
         
     
-    //---------------------------------- pus:
+    //---------------------------------- kattepus:
     } else if(touch.x < sectionWidth * 3) {
         pan = ofMap(touch.x, sectionWidth * 2, sectionWidth * 3, -1.0, 1.0, true);
         
-        pus.setSpeed(speed);
-        pus.setPan(pan);
+        kattepus.setSpeed(speed);
+        kattepus.setPan(pan);
+    
+    //---------------------------------- flodhest:
+    } else if(touch.x < sectionWidth * 4) {
+        pan = ofMap(touch.x, sectionWidth * 3, sectionWidth * 4, -1.0, 1.0, true);
         
-        
-        /* AV Sound Player Example
-        [vocals speed:speed];
-        [vocals pan:pan];
-        */
+        flodhest.setSpeed(speed);
+        flodhest.setPan(pan);
     }
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -256,9 +305,13 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
         return;
     }
     
+    
+    ///< T O U C H  L I F T E D  ///
+    
     frosk.setLoop(false);
     hest.setLoop(false);
-    pus.setLoop(false);
+    kattepus.setLoop(false);
+    flodhest.setLoop(false);
 
 
 }

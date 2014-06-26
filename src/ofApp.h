@@ -26,9 +26,15 @@ class ofApp : public ofxiOSApp{
     
         ofSoundPlayer frosk;
         ofSoundPlayer hest;
-        ofSoundPlayer pus;
+        ofSoundPlayer kattepus;
     
-        //AVSoundPlayer * vocals;
+        ofSoundPlayer flodhest;
+        /*ofSoundPlayer apekatt;
+        ofSoundPlayer mus;
+        ofSoundPlayer sebra;*/
+
+    
+    
     
         ofTrueTypeFont font;
 };

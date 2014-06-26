@@ -3,15 +3,20 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    ofBackground(255);
+    ofBackground(0, 0, 0);
 	ofSetOrientation(OF_ORIENTATION_90_RIGHT);
 	
-	frosk.loadSound("sounds/corrente1.caf"); // compressed mp3 format.
+    //---------------------------------- frosk:
+	frosk.loadSound("sounds/corrente1.caf"); // uncompressed caf format.
     frosk.setVolume(0.75);
     
+    
+    //---------------------------------- hest:
 	hest.loadSound("sounds/corrente2.caf"); // uncompressed caf format.
     hest.setVolume(0.75);
-    
+
+
+    //---------------------------------- pus:
     pus.loadSound("sounds/corrente3.caf"); // uncompressed caf format.
     pus.setVolume(0.75);
     
@@ -44,47 +49,85 @@ void ofApp::draw(){
 	
 	float sectionWidth = ofGetWidth() / 3.0f;
 
-    // draw the background colors:
-	ofSetHexColor(0xeeeeee);
-	ofRect(0, 0, sectionWidth, ofGetHeight());
-	ofSetHexColor(0xffffff);
-	ofRect(sectionWidth, 0, sectionWidth, ofGetHeight());
-	ofSetHexColor(0xdddddd);
-	ofRect(sectionWidth * 2, 0, sectionWidth, ofGetHeight());
+    // The rectangles
+    
+    ofSetColor(255, 255, 255);
+    ofSetLineWidth(5);
+    
+    
+    
+    //---------------------------------- frosk:
+    
+    if(frosk.getIsPlaying()) {
+        ofFill();
+    } else {
+        ofNoFill();
+    }
+    ofRect(0, 0, sectionWidth, ofGetHeight());
+	
+    
+    
+    //---------------------------------- hest:
+    if(hest.getIsPlaying()) {
+        ofFill();
+    } else {
+        ofNoFill();
+    }
+    ofRect(sectionWidth, 0, sectionWidth, ofGetHeight());
+    
+    
+    
+    //---------------------------------- pus:
+    if(pus.getIsPlaying()) {
+        ofFill();
+    } else {
+        ofNoFill();
+    }
+    ofRect(sectionWidth * 2, 0, sectionWidth, ofGetHeight());
+    
+    
+    
+    
+    
+    
     
 	//---------------------------------- frosk:
 	if(frosk.getIsPlaying()) {
-        ofSetHexColor(0xFF0000);
+        ofSetColor(0, 0, 0);
     } else {
-        ofSetHexColor(0x000000);
+        ofSetColor(50, 50, 50);
     }
 	font.drawString("Frosk", 10,50);
 	
-	ofSetColor(0);
+	ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", frosk.getPosition(),  frosk.getSpeed(), frosk.getPan());
 	ofDrawBitmapString(tempStr, 10, ofGetHeight() - 50);
     
+    
+    
 	//---------------------------------- hest:
 	if (hest.getIsPlaying()) {
-        ofSetHexColor(0xFF0000);
+        ofSetColor(0, 0, 0);
     } else {
-        ofSetHexColor(0x000000);
+        ofSetColor(50, 50, 50);
     }
 	font.drawString("Hest", sectionWidth + 10, 50);
     
-	ofSetHexColor(0x000000);
+	ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", hest.getPosition(),  hest.getSpeed(), hest.getPan());
 	ofDrawBitmapString(tempStr, sectionWidth + 10, ofGetHeight() - 50);
     
+    
+    
 	//---------------------------------- pus:
     if (pus.getIsPlaying()) {
-        ofSetHexColor(0xFF0000);
+        ofSetColor(0, 0, 0);
     } else {
-        ofSetHexColor(0x000000);
+        ofSetColor(50, 50, 50);
     }
 	font.drawString("Pus", sectionWidth * 2 + 10, 50);
     
-	ofSetHexColor(0x000000);
+	ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", pus.getPosition(),  pus.getSpeed(), pus.getPan());
 	ofDrawBitmapString(tempStr, sectionWidth * 2 + 10, ofGetHeight() - 50);
     
@@ -125,6 +168,8 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
     float speed = ofMap(touch.y, ofGetHeight(), 0, 0.5, 2.0, true);
     float pan = 0;
     
+    
+    //---------------------------------- frosk:
     if (touch.x < sectionWidth){
         pan = ofMap(touch.x, 0, sectionWidth, -1.0, 1.0, true);
         
@@ -133,6 +178,8 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
         frosk.setPan(pan);
         frosk.setLoop(true);
         
+        
+    //---------------------------------- hest:
     } else if(touch.x < sectionWidth * 2) {
         pan = ofMap(touch.x, sectionWidth, sectionWidth * 2, -1.0, 1.0, true);
         
@@ -141,6 +188,8 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
         hest.setPan(pan);
         hest.setLoop(true);
         
+        
+    //---------------------------------- pus:
     } else if(touch.x < sectionWidth * 3) {
         pan = ofMap(touch.x, sectionWidth * 2, sectionWidth * 3, -1.0, 1.0, true);
         
@@ -167,19 +216,26 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
     float sectionWidth = ofGetWidth() / 3.0f;
     float speed = ofMap(touch.y, ofGetHeight(), 0, 0.5, 2.0, true);
     float pan = 0;
-
+    
+    
+    
+    //---------------------------------- frosk:
     if (touch.x < sectionWidth){
         pan = ofMap(touch.x, 0, sectionWidth, -1.0, 1.0, true);
         
         frosk.setSpeed(speed);
         frosk.setPan(pan);
-
+        
+    
+    //---------------------------------- hest:
     } else if(touch.x < sectionWidth * 2) {
         pan = ofMap(touch.x, sectionWidth, sectionWidth * 2, -1.0, 1.0, true);
         
         hest.setSpeed(speed);
         hest.setPan(pan);
-
+        
+    
+    //---------------------------------- pus:
     } else if(touch.x < sectionWidth * 3) {
         pan = ofMap(touch.x, sectionWidth * 2, sectionWidth * 3, -1.0, 1.0, true);
         

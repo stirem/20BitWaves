@@ -29,9 +29,9 @@ class ofApp : public ofxiOSApp{
         ofSoundPlayer kattepus;
     
         ofSoundPlayer flodhest;
-        /*ofSoundPlayer apekatt;
+        ofSoundPlayer apekatt;
         ofSoundPlayer mus;
-        ofSoundPlayer sebra;*/
+        ofSoundPlayer sebra;
 
     
     

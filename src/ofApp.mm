@@ -3,8 +3,11 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    // Background of app
     ofBackground(0, 0, 0);
-	ofSetOrientation(OF_ORIENTATION_90_RIGHT);
+	
+    // Orientation of app
+    ofSetOrientation(OF_ORIENTATION_90_RIGHT);
 	
     
     ///< L O A D  S O U N D S ///
@@ -28,6 +31,16 @@ void ofApp::setup(){
     flodhest.loadSound("sounds/flodhest.caf");
     flodhest.setVolume(0.75);
     
+    
+    //---------------------------------- apekatt:
+    apekatt.loadSound("sounds/apekatt.caf");
+    apekatt.setVolume(0.75);
+    
+    
+    //---------------------------------- mus:
+    mus.loadSound("sounds/mus.caf");
+    mus.setVolume(0.75);
+    
 
     ///< L O A D  F O N T ///
      
@@ -44,13 +57,19 @@ void ofApp::draw(){
     
 	char tempStr[255];
 	
+    // Divide screen-width in four rectangles
 	float sectionWidth = ofGetWidth() / 4.0f;
+    float sectionHeight = ofGetHeight() / 2.0f;
 
+    
+    
+    
     ///< B U T T O N S  L O O K ///
     
-
     ofSetLineWidth(5);
     
+
+//------------------ T O P  R O W ---------------------//
     
     
     //---------------------------------- frosk:
@@ -63,12 +82,12 @@ void ofApp::draw(){
         ofSetColor(0, 0, 0);
     }
     ofFill();
-    ofRect(0, 0, sectionWidth, ofGetHeight());
+    ofRect(0, 0, sectionWidth, sectionHeight);
     
     // Rectangle stroke color
     ofNoFill();
     ofSetColor(255, 255, 255);
-    ofRect(0, 0, sectionWidth, ofGetHeight());
+    ofRect(0, 0, sectionWidth, sectionHeight);
 	
     // Change color of name of button when sound is playing
     if(frosk.getIsPlaying()) {
@@ -81,7 +100,7 @@ void ofApp::draw(){
     // Show info text about sound
     ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", frosk.getPosition(),  frosk.getSpeed(), frosk.getPan());
-	ofDrawBitmapString(tempStr, 10, ofGetHeight() - 50);
+	ofDrawBitmapString(tempStr, 10, sectionHeight - 50);
     
     
     //---------------------------------- hest:
@@ -94,12 +113,12 @@ void ofApp::draw(){
         ofSetColor(0, 0, 0);
     }
     ofFill();
-    ofRect(sectionWidth, 0, sectionWidth, ofGetHeight());
+    ofRect(sectionWidth, 0, sectionWidth, sectionHeight);
     
     // Rectangle stroke color
     ofNoFill();
     ofSetColor(255, 255, 255);
-    ofRect(sectionWidth, 0, sectionWidth, ofGetHeight());
+    ofRect(sectionWidth, 0, sectionWidth, sectionHeight);
     
     // Change color of name of button when sound is playing
     if (hest.getIsPlaying()) {
@@ -112,7 +131,7 @@ void ofApp::draw(){
     // Show info text about sound
     ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", hest.getPosition(),  hest.getSpeed(), hest.getPan());
-	ofDrawBitmapString(tempStr, sectionWidth + 10, ofGetHeight() - 50);
+	ofDrawBitmapString(tempStr, sectionWidth + 10, sectionHeight - 50);
     
     
     //---------------------------------- kattepus:
@@ -125,12 +144,12 @@ void ofApp::draw(){
         ofSetColor(0, 0, 0);
     }
     ofFill();
-    ofRect(sectionWidth * 2, 0, sectionWidth, ofGetHeight());
+    ofRect(sectionWidth * 2, 0, sectionWidth, sectionHeight);
     
     // Rectangle stroke color
     ofNoFill();
     ofSetColor(255, 255, 255);
-    ofRect(sectionWidth * 2, 0, sectionWidth, ofGetHeight());
+    ofRect(sectionWidth * 2, 0, sectionWidth, sectionHeight);
     
     // Change color of name of button when sound is playing
     if (kattepus.getIsPlaying()) {
@@ -143,7 +162,7 @@ void ofApp::draw(){
     // Show info text about sound
 	ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", kattepus.getPosition(),  kattepus.getSpeed(), kattepus.getPan());
-	ofDrawBitmapString(tempStr, sectionWidth * 2 + 10, ofGetHeight() - 50);
+	ofDrawBitmapString(tempStr, sectionWidth * 2 + 10, sectionHeight - 50);
     
     
     
@@ -157,12 +176,12 @@ void ofApp::draw(){
         ofSetColor(0, 0, 0);
     }
     ofFill();
-    ofRect(sectionWidth * 3, 0, sectionWidth, ofGetHeight());
+    ofRect(sectionWidth * 3, 0, sectionWidth, sectionHeight);
     
     // Rectangle stroke color
     ofNoFill();
     ofSetColor(255, 255, 255);
-    ofRect(sectionWidth * 3, 0, sectionWidth, ofGetHeight());
+    ofRect(sectionWidth * 3, 0, sectionWidth, sectionHeight);
     
     // Change color of name of button when sound is playing
     if (flodhest.getIsPlaying()) {
@@ -170,18 +189,82 @@ void ofApp::draw(){
     } else {
         ofSetColor(50, 50, 50);
     }
-	font.drawString("flodhest", sectionWidth * 3 + 10, 50);
+	font.drawString("Flodhest", sectionWidth * 3 + 10, 50);
     
     // Show info text about sound
 	ofSetColor(50, 50, 50);
 	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", flodhest.getPosition(),  flodhest.getSpeed(), flodhest.getPan());
-	ofDrawBitmapString(tempStr, sectionWidth * 3 + 10, ofGetHeight() - 50);
+	ofDrawBitmapString(tempStr, sectionWidth * 3 + 10, sectionHeight - 50);
     
 
+    
+//---------------- B O T T O M  R O W --------------------//
+    
 
+    
+    //---------------------------------- apekatt:
+    
+    // Change color of fill when sound is playing
+    
+    if(apekatt.getIsPlaying()) {
+        ofSetColor(200, 200, 200);
+    } else {
+        ofSetColor(0, 0, 0);
+    }
+    ofFill();
+    ofRect(0, sectionHeight, sectionWidth, sectionHeight);
+    
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
+    ofRect(0, sectionHeight, sectionWidth, sectionHeight);
 	
-
+    // Change color of name of button when sound is playing
+    if(apekatt.getIsPlaying()) {
+        ofSetColor(0, 0, 0);
+    } else {
+        ofSetColor(50, 50, 50);
+    }
+	font.drawString("Apekatt", 10, sectionHeight + 50);
     
+    // Show info text about sound
+    ofSetColor(50, 50, 50);
+	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", apekatt.getPosition(),  apekatt.getSpeed(), apekatt.getPan());
+	ofDrawBitmapString(tempStr, 10, ofGetHeight() - 50);
+    
+    
+    
+    //---------------------------------- mus:
+    
+    // Change color of fill when sound is playing
+    
+    if(mus.getIsPlaying()) {
+        ofSetColor(200, 200, 200);
+    } else {
+        ofSetColor(0, 0, 0);
+    }
+    ofFill();
+    ofRect(sectionWidth, sectionHeight, sectionWidth, sectionHeight);
+    
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
+    ofRect(sectionWidth, sectionHeight, sectionWidth, sectionHeight);
+	
+    // Change color of name of button when sound is playing
+    if(mus.getIsPlaying()) {
+        ofSetColor(0, 0, 0);
+    } else {
+        ofSetColor(50, 50, 50);
+    }
+	font.drawString("Mus", sectionWidth + 10, sectionHeight + 50);
+    
+    // Show info text about sound
+    ofSetColor(50, 50, 50);
+	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", mus.getPosition(),  mus.getSpeed(), mus.getPan());
+	ofDrawBitmapString(tempStr, sectionWidth + 10, ofGetHeight() - 50);
+
+
     
     
 
@@ -202,48 +285,78 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
     ///< B U T T O N S  T O U C H ///
     
     float sectionWidth = ofGetWidth() / 4.0f;
-    float speed = ofMap(touch.y, ofGetHeight(), 0, 0.5, 2.0, true);
+    float sectionHeight = ofGetHeight() / 2.0f;
+    float speedTop = ofMap(touch.y, sectionHeight, 0, 0.5, 2.0, true);
+    float speedBottom = ofMap(touch.y, sectionHeight, sectionHeight * 2, 2.0, 0.5);
     float pan = 0;
+    
+
+//------------------ T O P  R O W ---------------------//
     
     
     //---------------------------------- frosk:
-    if (touch.x < sectionWidth){
+    if (touch.x < sectionWidth && touch.y < sectionHeight){
         pan = ofMap(touch.x, 0, sectionWidth, -1.0, 1.0, true);
         
         frosk.play();
-        frosk.setSpeed(speed);
+        frosk.setSpeed(speedTop);
         frosk.setPan(pan);
         frosk.setLoop(true);
         
         
     //---------------------------------- hest:
-    } else if(touch.x < sectionWidth * 2) {
+    } else if(touch.x < sectionWidth * 2 && touch.y < sectionHeight) {
         pan = ofMap(touch.x, sectionWidth, sectionWidth * 2, -1.0, 1.0, true);
         
         hest.play();
-        hest.setSpeed(speed);
+        hest.setSpeed(speedTop);
         hest.setPan(pan);
         hest.setLoop(true);
         
         
     //---------------------------------- kattepus:
-    } else if(touch.x < sectionWidth * 3) {
+    } else if(touch.x < sectionWidth * 3 && touch.y < sectionHeight) {
         pan = ofMap(touch.x, sectionWidth * 2, sectionWidth * 3, -1.0, 1.0, true);
         
         kattepus.play();
-        kattepus.setSpeed(speed);
+        kattepus.setSpeed(speedTop);
         kattepus.setPan(pan);
         kattepus.setLoop(true);
         
         
     //---------------------------------- flodhest:
-    } else if(touch.x < sectionWidth * 4) {
+    } else if(touch.x < sectionWidth * 4 && touch.y < sectionHeight) {
         pan = ofMap(touch.x, sectionWidth * 3, sectionWidth * 4, -1.0, 1.0, true);
         
         flodhest.play();
-        flodhest.setSpeed(speed);
+        flodhest.setSpeed(speedTop);
         flodhest.setPan(pan);
         flodhest.setLoop(true);
+    
+
+        
+//---------------- B O T T O M  R O W --------------------//
+        
+        
+        
+    //---------------------------------- apekatt:
+    } else if (touch.x < sectionWidth && touch.y > sectionHeight) {
+        pan = ofMap(touch.x, 0, sectionWidth, -1.0, 1.0, true);
+        
+        apekatt.play();
+        apekatt.setSpeed(speedBottom);
+        apekatt.setPan(pan);
+        apekatt.setLoop(true);
+    
+    
+    //---------------------------------- mus:
+    } else if (touch.x < sectionWidth * 2 && touch.y > sectionHeight) {
+        pan = ofMap(touch.x, 0, sectionWidth * 2, -1.0, 1.0, true);
+        
+        mus.play();
+        mus.setSpeed(speedBottom);
+        mus.setPan(pan);
+        mus.setLoop(true);
     }
     
     
@@ -260,40 +373,63 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
     ///< B U T T O N S  T O U C H  M O V E D ///
     
     float sectionWidth = ofGetWidth() / 4.0f;
-    float speed = ofMap(touch.y, ofGetHeight(), 0, 0.5, 2.0, true);
+    float sectionHeight = ofGetHeight() / 2.0f;
+    float speedTop = ofMap(touch.y, sectionHeight, 0, 0.5, 2.0, true);
+    float speedBottom = ofMap(touch.y, sectionHeight, sectionHeight * 2, 2.0, 0.5);
     float pan = 0;
+
     
-    
+//-------------------T O P  R O W----------------------//
+
     
     //---------------------------------- frosk:
-    if (touch.x < sectionWidth){
+    if (touch.x < sectionWidth && touch.y < sectionHeight){
         pan = ofMap(touch.x, 0, sectionWidth, -1.0, 1.0, true);
         
-        frosk.setSpeed(speed);
+        frosk.setSpeed(speedTop);
         frosk.setPan(pan);
         
     
     //---------------------------------- hest:
-    } else if(touch.x < sectionWidth * 2) {
+    } else if(touch.x < sectionWidth * 2 && touch.y < sectionHeight) {
         pan = ofMap(touch.x, sectionWidth, sectionWidth * 2, -1.0, 1.0, true);
         
-        hest.setSpeed(speed);
+        hest.setSpeed(speedTop);
         hest.setPan(pan);
         
     
     //---------------------------------- kattepus:
-    } else if(touch.x < sectionWidth * 3) {
+    } else if(touch.x < sectionWidth * 3 && touch.y < sectionHeight) {
         pan = ofMap(touch.x, sectionWidth * 2, sectionWidth * 3, -1.0, 1.0, true);
         
-        kattepus.setSpeed(speed);
+        kattepus.setSpeed(speedTop);
         kattepus.setPan(pan);
     
     //---------------------------------- flodhest:
-    } else if(touch.x < sectionWidth * 4) {
+    } else if(touch.x < sectionWidth * 4 && touch.y < sectionHeight) {
         pan = ofMap(touch.x, sectionWidth * 3, sectionWidth * 4, -1.0, 1.0, true);
         
-        flodhest.setSpeed(speed);
+        flodhest.setSpeed(speedTop);
         flodhest.setPan(pan);
+
+        
+//-----------------B O T T O M  R O W---------------------//
+        
+        
+    //---------------------------------- apekatt:
+    } else if(touch.x < sectionWidth && touch.y > sectionHeight) {
+        pan = ofMap(touch.x, 0, sectionWidth, -1.0, 1.0, true);
+        
+        apekatt.setSpeed(speedBottom);
+        apekatt.setPan(pan);
+    
+        
+    //---------------------------------- mus:
+    } else if(touch.x < sectionWidth * 2 && touch.y > sectionHeight) {
+        pan = ofMap(touch.x, sectionWidth, sectionWidth * 2, -1.0, 1.0, true);
+        
+        mus.setSpeed(speedBottom);
+        mus.setPan(pan);
     }
     
     
@@ -312,6 +448,8 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
     hest.setLoop(false);
     kattepus.setLoop(false);
     flodhest.setLoop(false);
+    apekatt.setLoop(false);
+    mus.setLoop(false);
 
 
 }

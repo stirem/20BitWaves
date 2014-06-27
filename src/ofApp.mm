@@ -3,6 +3,10 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     
+    
+///////////////// A P P  S E T T I N G S /////////////////////
+    
+    
     // Background of app
     ofBackground(0, 0, 0);
 	
@@ -10,7 +14,9 @@ void ofApp::setup(){
     ofSetOrientation(OF_ORIENTATION_90_RIGHT);
 	
     
-    ///< L O A D  S O U N D S ///
+    
+    
+///////////////// L O A D  S O U N D S /////////////////////
     
     //---------------------------------- frosk:
 	frosk.loadSound("sounds/frosk.caf");
@@ -41,8 +47,20 @@ void ofApp::setup(){
     mus.loadSound("sounds/mus.caf");
     mus.setVolume(0.75);
     
+    
+    //---------------------------------- mus:
+    hund.loadSound("sounds/hund.caf");
+    hund.setVolume(0.75);
+    
+    
+    //---------------------------------- sebra:
+    sebra.loadSound("sounds/sebra.caf");
+    sebra.setVolume(0.75);
+    
+    
+    
 
-    ///< L O A D  F O N T ///
+///////////////// L O A D  F O N T S /////////////////////
      
     font.loadFont("fonts/DIN.otf", 18);
 }
@@ -64,7 +82,7 @@ void ofApp::draw(){
     
     
     
-    ///< B U T T O N S  L O O K ///
+///////////////// B U T T O N S  L O O K /////////////////////
     
     ofSetLineWidth(5);
     
@@ -77,7 +95,7 @@ void ofApp::draw(){
     // Change color of fill when sound is playing
 
     if(frosk.getIsPlaying()) {
-        ofSetColor(200, 200, 200);
+        ofSetColor(100, 100, 100);
     } else {
         ofSetColor(0, 0, 0);
     }
@@ -108,7 +126,7 @@ void ofApp::draw(){
     // Change color of fill when sound is playing
     
     if(hest.getIsPlaying()) {
-        ofSetColor(200, 200, 200);
+        ofSetColor(100, 100, 100);
     } else {
         ofSetColor(0, 0, 0);
     }
@@ -139,7 +157,7 @@ void ofApp::draw(){
     // Change color of fill when sound is playing
     
     if(kattepus.getIsPlaying()) {
-        ofSetColor(200, 200, 200);
+        ofSetColor(100, 100, 100);
     } else {
         ofSetColor(0, 0, 0);
     }
@@ -157,7 +175,7 @@ void ofApp::draw(){
     } else {
         ofSetColor(50, 50, 50);
     }
-	font.drawString("kattepus", sectionWidth * 2 + 10, 50);
+	font.drawString("Kattepus", sectionWidth * 2 + 10, 50);
     
     // Show info text about sound
 	ofSetColor(50, 50, 50);
@@ -171,7 +189,7 @@ void ofApp::draw(){
     // Change color of fill when sound is playing
     
     if(flodhest.getIsPlaying()) {
-        ofSetColor(200, 200, 200);
+        ofSetColor(100, 100, 100);
     } else {
         ofSetColor(0, 0, 0);
     }
@@ -207,7 +225,7 @@ void ofApp::draw(){
     // Change color of fill when sound is playing
     
     if(apekatt.getIsPlaying()) {
-        ofSetColor(200, 200, 200);
+        ofSetColor(100, 100, 100);
     } else {
         ofSetColor(0, 0, 0);
     }
@@ -239,7 +257,7 @@ void ofApp::draw(){
     // Change color of fill when sound is playing
     
     if(mus.getIsPlaying()) {
-        ofSetColor(200, 200, 200);
+        ofSetColor(100, 100, 100);
     } else {
         ofSetColor(0, 0, 0);
     }
@@ -266,6 +284,67 @@ void ofApp::draw(){
 
 
     
+    //---------------------------------- hund:
+    
+    // Change color of fill when sound is playing
+    
+    if(hund.getIsPlaying()) {
+        ofSetColor(100, 100, 100);
+    } else {
+        ofSetColor(0, 0, 0);
+    }
+    ofFill();
+    ofRect(sectionWidth * 2, sectionHeight, sectionWidth, sectionHeight);
+    
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
+    ofRect(sectionWidth * 2, sectionHeight, sectionWidth, sectionHeight);
+	
+    // Change color of name of button when sound is playing
+    if(hund.getIsPlaying()) {
+        ofSetColor(0, 0, 0);
+    } else {
+        ofSetColor(50, 50, 50);
+    }
+	font.drawString("Hund", (sectionWidth * 2) + 10, sectionHeight + 50);
+    
+    // Show info text about sound
+    ofSetColor(50, 50, 50);
+	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", hund.getPosition(),  hund.getSpeed(), hund.getPan());
+	ofDrawBitmapString(tempStr, (sectionWidth * 2) + 10, ofGetHeight() - 50);
+    
+    
+    
+    //---------------------------------- sebra:
+    
+    // Change color of fill when sound is playing
+    
+    if(sebra.getIsPlaying()) {
+        ofSetColor(100, 100, 100);
+    } else {
+        ofSetColor(0, 0, 0);
+    }
+    ofFill();
+    ofRect(sectionWidth * 3, sectionHeight, sectionWidth, sectionHeight);
+    
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
+    ofRect(sectionWidth * 3, sectionHeight, sectionWidth, sectionHeight);
+	
+    // Change color of name of button when sound is playing
+    if(sebra.getIsPlaying()) {
+        ofSetColor(0, 0, 0);
+    } else {
+        ofSetColor(50, 50, 50);
+    }
+	font.drawString("Sebra", (sectionWidth * 3) + 10, sectionHeight + 50);
+    
+    // Show info text about sound
+    ofSetColor(50, 50, 50);
+	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", sebra.getPosition(),  sebra.getSpeed(), sebra.getPan());
+	ofDrawBitmapString(tempStr, (sectionWidth * 3) + 10, ofGetHeight() - 50);
     
 
 }
@@ -282,7 +361,8 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
     }
 		
     
-    ///< B U T T O N S  T O U C H ///
+///////////////// B U T T O N S  T O U C H /////////////////////
+    
     
     float sectionWidth = ofGetWidth() / 4.0f;
     float sectionHeight = ofGetHeight() / 2.0f;
@@ -357,6 +437,26 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
         mus.setSpeed(speedBottom);
         mus.setPan(pan);
         mus.setLoop(true);
+    
+        
+    //---------------------------------- hund:
+    } else if (touch.x < sectionWidth * 3 && touch.y > sectionHeight) {
+        pan = ofMap(touch.x, 0, sectionWidth * 3, -1.0, 1.0, true);
+        
+        hund.play();
+        hund.setSpeed(speedBottom);
+        hund.setPan(pan);
+        hund.setLoop(true);
+    
+        
+    //---------------------------------- sebra:
+    } else if (touch.x < sectionWidth * 4 && touch.y > sectionHeight) {
+        pan = ofMap(touch.x, 0, sectionWidth * 4, -1.0, 1.0, true);
+        
+        sebra.play();
+        sebra.setSpeed(speedBottom);
+        sebra.setPan(pan);
+        sebra.setLoop(true);
     }
     
     
@@ -370,7 +470,7 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
     }
     
     
-    ///< B U T T O N S  T O U C H  M O V E D ///
+///////////////// B U T T O N S  T O U C H  M O V E D /////////////////////
     
     float sectionWidth = ofGetWidth() / 4.0f;
     float sectionHeight = ofGetHeight() / 2.0f;
@@ -430,6 +530,22 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
         
         mus.setSpeed(speedBottom);
         mus.setPan(pan);
+    
+        
+    //---------------------------------- hund:
+    } else if(touch.x < sectionWidth * 3 && touch.y > sectionHeight) {
+        pan = ofMap(touch.x, sectionWidth * 2, sectionWidth * 3, -1.0, 1.0, true);
+        
+        hund.setSpeed(speedBottom);
+        hund.setPan(pan);
+    
+        
+    //---------------------------------- sebra:
+    } else if(touch.x < sectionWidth * 4 && touch.y > sectionHeight) {
+        pan = ofMap(touch.x, sectionWidth * 3, sectionWidth * 4, -1.0, 1.0, true);
+        
+        sebra.setSpeed(speedBottom);
+        sebra.setPan(pan);
     }
     
     
@@ -442,7 +558,8 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
     }
     
     
-    ///< T O U C H  L I F T E D  ///
+///////////////// T O U C H  L I F T E D /////////////////////
+    
     
     frosk.setLoop(false);
     hest.setLoop(false);
@@ -450,6 +567,8 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
     flodhest.setLoop(false);
     apekatt.setLoop(false);
     mus.setLoop(false);
+    hund.setLoop(false);
+    sebra.setLoop(false);
 
 
 }

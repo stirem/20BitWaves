@@ -27,11 +27,13 @@ class ofApp : public ofxiOSApp{
         ofSoundPlayer frosk;
         ofSoundPlayer hest;
         ofSoundPlayer kattepus;
-    
         ofSoundPlayer flodhest;
+    
         ofSoundPlayer apekatt;
         ofSoundPlayer mus;
+        ofSoundPlayer hund;
         ofSoundPlayer sebra;
+
 
     
     

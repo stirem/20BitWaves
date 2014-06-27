@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C6DAAD2A-EF15-4CDA-9BF6-55F90B128900</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Bit20iPadApp</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>731CA472-BE10-4088-9641-1D7103223BEE</key>
+		<string>ssh://github.com/stirem/Bit20iPadApp.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Bit20iPadApp.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>731CA472-BE10-4088-9641-1D7103223BEE</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/stirem/Bit20iPadApp.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>731CA472-BE10-4088-9641-1D7103223BEE</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>731CA472-BE10-4088-9641-1D7103223BEE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Bit20iPadApp</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -3,7 +3,6 @@
 #include "ofMain.h"
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
-#import "AVSoundPlayer.h"
 
 class ofApp : public ofxiOSApp{
 	
@@ -32,13 +31,23 @@ class ofApp : public ofxiOSApp{
         ofSoundPlayer apekatt;
         ofSoundPlayer mus;
         ofSoundPlayer hund;
-        ofSoundPlayer sebra;
 
 
-    
-    
-    
         ofTrueTypeFont font;
+    
+    
+    
+    
+    //Function for receiving audio
+	void audioReceived( float *input, int bufferSize, int nChannels );
+    
+	//Function for generating audio
+	void audioOut( float *output, int bufferSize, int nChannels );
+    
+	//Object for sound output and input setup
+	ofSoundStream soundStream;
+    
+    
 };
 
 

@@ -1,7 +1,39 @@
 #include "ofApp.h"
 
+
+///////////////// R E C O R D I N G /////////////////////
+
+/**********  WARNING  ***********************
+ To avoid the hazard of damaging your ears,
+ do not listen the project's output sound with headphones.
+ This project uses low-level audio output, so due
+ possible errors in software it can suddenly
+ generate clicks and very loud sounds.
+ ********************************************/
+
+//Constants
+const int sampleRate = 44100;           //Sample rate of sound
+const float duration = 1;            //Duration of the recorded sound in seconds
+const int N = duration * sampleRate;    //Size of the PCM buffer
+
+const float volume = 0.5;	//Output sound volume
+
+//Variables
+vector<float> buffer;		//PCM buffer of sound sample
+int recPos = 0;				//Current recording position in the buffer
+int playPos = 0;			//Current playing position in the buffer
+
+int recordingEnabled = 1;	//Is recording enabled
+int playingEnabled = 0;		//Is playing enabled
+
+
+
+
+
+
 //--------------------------------------------------------------
 void ofApp::setup(){
+    
     
     
 ///////////////// A P P  S E T T I N G S /////////////////////
@@ -52,10 +84,7 @@ void ofApp::setup(){
     hund.loadSound("sounds/hund.caf");
     hund.setVolume(0.75);
     
-    
-    //---------------------------------- sebra:
-    sebra.loadSound("sounds/sebra.caf");
-    sebra.setVolume(0.75);
+
     
     
     
@@ -63,6 +92,23 @@ void ofApp::setup(){
 ///////////////// L O A D  F O N T S /////////////////////
      
     font.loadFont("fonts/DIN.otf", 18);
+    
+    
+    
+    
+///////////////// R E C O R D I N G /////////////////////
+    
+    //Set buffer size and fill it by zeros
+	buffer.resize( N, 0.0 );
+    
+	//Start the sound output in stereo (2 channels)
+	//and sound input in mono (1 channel)
+	soundStream.setup( this, 2, 1, sampleRate, 256, 4 );
+    
+    
+    
+
+    
 }
 
 //--------------------------------------------------------------
@@ -77,6 +123,7 @@ void ofApp::draw(){
 	
     // Divide screen-width in four rectangles
 	float sectionWidth = ofGetWidth() / 4.0f;
+    // Divide screen-height in two rectangles
     float sectionHeight = ofGetHeight() / 2.0f;
 
     
@@ -316,38 +363,88 @@ void ofApp::draw(){
     
     
     
-    //---------------------------------- sebra:
+///////////////// R E C O R D I N G /////////////////////
     
-    // Change color of fill when sound is playing
-    
-    if(sebra.getIsPlaying()) {
-        ofSetColor(100, 100, 100);
-    } else {
-        ofSetColor(0, 0, 0);
-    }
+    //-------------------------------- record button:
+    // Color of record button is red
     ofFill();
-    ofRect(sectionWidth * 3, sectionHeight, sectionWidth, sectionHeight);
+    ofSetColor(100, 0, 0);
+    ofRect(sectionWidth * 3, sectionHeight, sectionWidth, sectionHeight/2);
     
     // Rectangle stroke color
     ofNoFill();
     ofSetColor(255, 255, 255);
-    ofRect(sectionWidth * 3, sectionHeight, sectionWidth, sectionHeight);
+    ofRect(sectionWidth * 3, sectionHeight, sectionWidth, sectionHeight/2);
 	
-    // Change color of name of button when sound is playing
-    if(sebra.getIsPlaying()) {
-        ofSetColor(0, 0, 0);
-    } else {
-        ofSetColor(50, 50, 50);
-    }
-	font.drawString("Sebra", (sectionWidth * 3) + 10, sectionHeight + 50);
+    // Color of text is red
+    ofSetColor(255, 0, 0);
+	font.drawString("Touch to RECORD,\nrelease to PLAY", (sectionWidth * 3) + 10, sectionHeight + 50);
     
-    // Show info text about sound
-    ofSetColor(50, 50, 50);
-	sprintf(tempStr, "click to play\nposition: %f\nspeed: %f\npan: %f", sebra.getPosition(),  sebra.getSpeed(), sebra.getPan());
-	ofDrawBitmapString(tempStr, (sectionWidth * 3) + 10, ofGetHeight() - 50);
+    
+    //-------------------------------- mute record button:
+    // Color of mute record button
+    ofFill();
+    ofSetColor(40, 40, 40);
+    ofRect(sectionWidth * 3, sectionHeight + sectionHeight/2, sectionWidth, sectionHeight/2);
+    
+    // Rectangle stroke color
+    ofNoFill();
+    ofSetColor(255, 255, 255);
+    ofRect(sectionWidth * 3, sectionHeight + sectionHeight/2, sectionWidth, sectionHeight/2);
+	
+    // Color of text
+    ofSetColor(255, 255, 255);
+	font.drawString("Mute/Unmute\nrecording", (sectionWidth * 3) + 10, sectionHeight + sectionHeight/2 + 50);
+    
     
 
 }
+
+
+//--------------------------------------------------------------
+
+///////////////// R E C O R D I N G /////////////////////
+
+//Audio input
+void ofApp::audioReceived(
+                          float *input, int bufferSize, int nChannels )
+{
+	//If recording is enabled by the user,
+	//then store received data
+	if ( recordingEnabled ) {
+		for (int i=0; i<bufferSize; i++) {
+			buffer[ recPos ] = input[i];
+			recPos++;
+			//When the end of buffer is reached, recPos sets
+			//to 0, so we record sound in a loop
+			recPos %= N;
+		}
+	}
+}
+
+//--------------------------------------------------------------
+
+///////////////// R E C O R D I N G /////////////////////
+
+//Audio output
+void ofApp::audioOut(
+                     float *output, int bufferSize, int nChannels)
+{
+	//If playing is enabled by the user, then do output sound
+	if ( playingEnabled ) {
+		for (int i=0; i<bufferSize; i++) {
+			output[ 2*i ] = output[ 2*i+1 ]
+			= buffer[ playPos ] * volume;
+			playPos++;
+			//When the end of buffer is reached, playPos sets
+			//to 0, so we hear looped sound
+			playPos %= N;
+		}
+	}
+    
+}
+
+
 
 //--------------------------------------------------------------
 void ofApp::exit(){
@@ -449,14 +546,24 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
         hund.setLoop(true);
     
         
-    //---------------------------------- sebra:
-    } else if (touch.x < sectionWidth * 4 && touch.y > sectionHeight) {
-        pan = ofMap(touch.x, 0, sectionWidth * 4, -1.0, 1.0, true);
         
-        sebra.play();
-        sebra.setSpeed(speedBottom);
-        sebra.setPan(pan);
-        sebra.setLoop(true);
+///////////////// R E C O R D I N G /////////////////////
+     
+    //---------------------------------- record button:
+    } else if (touch.x < sectionWidth * 4 && touch.y > ofGetHeight()/2 && touch.y < ofGetHeight()/2 + ofGetHeight()/4) {
+
+        recordingEnabled = 1; playingEnabled = 0;
+
+    
+    //---------------------------------- mute record button:
+    } else if (touch.x < sectionWidth * 4 && touch.y > ofGetHeight()/2 + ofGetHeight()/4) {
+        
+        if(playingEnabled == 1) {
+            playingEnabled = 0;
+        } else {
+            playingEnabled = 1;
+        }
+        
     }
     
     
@@ -539,13 +646,6 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
         hund.setSpeed(speedBottom);
         hund.setPan(pan);
     
-        
-    //---------------------------------- sebra:
-    } else if(touch.x < sectionWidth * 4 && touch.y > sectionHeight) {
-        pan = ofMap(touch.x, sectionWidth * 3, sectionWidth * 4, -1.0, 1.0, true);
-        
-        sebra.setSpeed(speedBottom);
-        sebra.setPan(pan);
     }
     
     
@@ -558,6 +658,18 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
     }
     
     
+    
+///////////////// R E C O R D I N G /////////////////////
+    
+    
+    //Enable playing mode
+    if (touch.x > ofGetWidth()/4 * 3 && touch.y > ofGetHeight()/2 && touch.y < ofGetHeight()/2 + ofGetHeight()/4) {
+        
+        recordingEnabled = 0; playingEnabled = 1;
+        
+    }
+
+    
 ///////////////// T O U C H  L I F T E D /////////////////////
     
     
@@ -568,7 +680,7 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
     apekatt.setLoop(false);
     mus.setLoop(false);
     hund.setLoop(false);
-    sebra.setLoop(false);
+
 
 
 }

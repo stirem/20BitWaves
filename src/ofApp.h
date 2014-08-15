@@ -36,7 +36,10 @@ class ofApp : public ofxiOSApp{
         ofTrueTypeFont font;
     
     
+
     
+    
+///////////////// R E C O R D I N G /////////////////////
     
     //Function for receiving audio
 	void audioReceived( float *input, int bufferSize, int nChannels );

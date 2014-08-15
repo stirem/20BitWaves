@@ -378,7 +378,7 @@ void ofApp::draw(){
 	
     // Color of text is red
     ofSetColor(255, 0, 0);
-	font.drawString("Touch to RECORD,\nrelease to PLAY", (sectionWidth * 3) + 10, sectionHeight + 50);
+	font.drawString("Touch to RECORD\nwith mic.\n\nRelease to PLAY", (sectionWidth * 3) + 10, sectionHeight + 50);
     
     
     //-------------------------------- mute record button:

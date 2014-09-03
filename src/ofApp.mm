@@ -1,57 +1,71 @@
 #include "ofApp.h"
 
-float speed0;
+
+float soundSpeed0;
 
 float froskVolume = 0.75;
 float hestVolume = 0.75;
-float kattepusVolume = 0.75;
-float flodhestVolume = 0.75;
-float apekattVolume = 0.75;
+
+float froskPosX;
+float froskPosY;
+float hestPosX;
+float hestPosY;
+
+int froskInside;
+int hestInside;
+
+float froskDistance = 0;
+float hestDistance = 0;
+
+
+int ballRadius = 80;
+
+
+float myTouchX;
+float myTouchY;
+
 
 
 //--------------------------------------------------------------
 void ofApp::setup(){	
 	ofBackground(0, 0, 0);
-	ofSetCircleResolution(80);
-    ofSetLogLevel(OF_LOG_VERBOSE);
+
 	
-	balls.assign(5, Ball());
-	
-	// initialize all of the Ball particles
-	for(int i=0; i<balls.size(); i++){
-		balls[i].init(i);
-	}
+    // Set start position
+    
+    ///< F R O S K - START ///
+    froskPosX = ofRandomWidth();
+    froskPosY = ofRandomHeight();
+    ///< F R O S K - END ///
+    
+    
+    ///< H E S T - START ///
+    hestPosX = ofRandomWidth();
+    hestPosY = ofRandomHeight();
+    ///< H E S T - END ///
+  
     
     
     
-    ///////////////// A U D I O /////////////////////
+    
+
+    
     
     // Load sounds
     
-    //---------------------------------- frosk:
-	frosk.loadSound("sounds/frosk.caf");
+    ///< F R O S K - START ///
+	frosk.loadSound("sounds/frosk.aif");
     frosk.setVolume(froskVolume);
+    ///< F R O S K - END ///
     
     
-    //---------------------------------- hest:
-	hest.loadSound("sounds/hest.caf");
+    ///< H E S T - START ///
+	hest.loadSound("sounds/hest.aif");
     hest.setVolume(hestVolume);
+    ///< H E S T - END ///
     
     
-    //---------------------------------- kattepus:
-    kattepus.loadSound("sounds/kattepus.caf");
-    kattepus.setVolume(kattepusVolume);
-    
-    
-    //---------------------------------- flodhest:
-    flodhest.loadSound("sounds/flodhest.caf");
-    flodhest.setVolume(flodhestVolume);
-    
-    
-    //---------------------------------- apekatt:
-    apekatt.loadSound("sounds/apekatt.caf");
-    apekatt.setVolume(apekattVolume);
-    
+
     
     
     
@@ -60,9 +74,10 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update() {
-	for(int i=0; i < balls.size(); i++){
-		balls[i].update();
-	}
+
+    
+  
+    
   
 }
 
@@ -72,22 +87,49 @@ void ofApp::draw() {
 
     
 	ofEnableAlphaBlending();
-	//ofSetColor(255);
-	ofPushMatrix();
-		ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
-
-	ofPopMatrix();
-
-	ofPushStyle();
+    ofPushMatrix();
+    ofTranslate(ofGetWidth()/2, ofGetHeight()/2, 0);
+    ofPopMatrix();
+    ofPushStyle();
     //ofEnableBlendMode(OF_BLENDMODE_ADD);
-    for(int i = 0; i< balls.size(); i++){
-        balls[i].draw();
-    }
-	ofPopStyle();
-
+    
+    
+    ///< F R O S K - START ///
+        if (froskInside == 1) {
+            ofSetColor(255, 255, 0, 255);
+        } else {
+            ofSetColor(255, 255, 0, 100);
+        }
+        ofCircle(froskPosX, froskPosY, ballRadius);
+    ///< F R O S K - END ///
+    
+    
+    
+    ///< H E S T - START ///
+        if (hestInside == 1) {
+            ofSetColor(255, 0, 255, 255);
+        } else {
+            ofSetColor(255, 0, 255, 100);
+        }
+        ofCircle(hestPosX, hestPosY, ballRadius);
+    ///< H E S T - END ///
+    
+    
+    
+    ofPopStyle();
 
     
-    //ofDrawBitmapString(ofToString(speed0), 10, 10);
+    
+    
+    
+
+    
+    ofDrawBitmapString(ofToString(froskInside) +" froskInside", 10, 10);
+    ofDrawBitmapString(ofToString(myTouchX) +" touch.x", 10, 30);
+    ofDrawBitmapString(ofToString(myTouchY) +" touch.y", 10, 50);
+    ofDrawBitmapString(ofToString(froskDistance) +" my touch inside", 10, 70);
+    ofDrawBitmapString(ofToString(froskPosX) +" froskPosX", 10, 90);
+    ofDrawBitmapString(ofToString(froskPosY) +" froskPosY", 10, 120);
     
     
     
@@ -100,159 +142,162 @@ void ofApp::exit(){
 
 //--------------------------------------------------------------
 void ofApp::touchDown(ofTouchEventArgs & touch){
-    ofLog(OF_LOG_VERBOSE, "touch %d down at (%d,%d)", touch.id, touch.x, touch.y);
-	balls[touch.id].moveTo(touch.x, touch.y);
-	balls[touch.id].bDragged = true;
+   
     
-
+    myTouchX = touch.x;
+    myTouchY = touch.y;
+    //soundSpeed0 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
+    //float pan0 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
+    //frosk.setPan(pan0);
+    //frosk.setSpeed(soundSpeed0);
     
-///// A U D I O /////
     
-    if (touch.id == 0) {
+    
+    ///< F R O S K - START ///
+    froskDistance =  sqrt(    (touch.x - froskPosX) * (touch.x - froskPosX) +  (touch.y - froskPosY) * (touch.y - froskPosY)     ) ;
+        
+    if (ballRadius > froskDistance) {
+        froskInside = 1;
+    } else {
+        froskInside = 0;
+    }
+    
+    // Audio
+    if (froskInside == 1) {
         froskVolume = 0.75;
         frosk.setVolume(froskVolume);
-        speed0 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan0 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
         frosk.play();
         frosk.setLoop(true);
-        frosk.setSpeed(speed0);
-        frosk.setPan(pan0);
     }
-    
-    if (touch.id == 1) {
-        hestVolume = 0.75;
-        hest.setVolume(hestVolume);
-        float speed1 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan1 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        hest.play();
-        hest.setLoop(true);
-        hest.setSpeed(speed1);
-        hest.setPan(pan1);
-    }
-    
-    if (touch.id == 2) {
-        kattepusVolume = 0.75;
-        kattepus.setVolume(kattepusVolume);
-        float speed2 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan2 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        kattepus.play();
-        kattepus.setLoop(true);
-        kattepus.setSpeed(speed2);
-        kattepus.setPan(pan2);
-    }
-    
-    if (touch.id == 3) {
-        flodhestVolume = 0.75;
-        flodhest.setVolume(flodhestVolume);
-        float speed3 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan3 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        flodhest.play();
-        flodhest.setLoop(true);
-        flodhest.setSpeed(speed3);
-        flodhest.setPan(pan3);
-    }
-    
-    if (touch.id == 4) {
-        apekattVolume = 0.75;
-        apekatt.setVolume(apekattVolume);
-        float speed4 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan4 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        apekatt.play();
-        apekatt.setLoop(true);
-        apekatt.setSpeed(speed4);
-        apekatt.setPan(pan4);
-    }
+    ///< F R O S K - START ///
     
 
+    
+    
+    ///< H E S T - START ///
+    hestDistance =  sqrt(    (touch.x - hestPosX) * (touch.x - hestPosX) +  (touch.y - hestPosY) * (touch.y - hestPosY)     ) ;
+    
+    if (ballRadius > hestDistance) {
+        hestInside = 1;
+    } else {
+        hestInside = 0;
+    }
+    
+    // Audio
+    if (hestInside == 1) {
+        hestVolume = 0.75;
+        hest.setVolume(hestVolume);
+        hest.play();
+        hest.setLoop(true);
+    }
+    ///< H E S T - END ///
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
-    ofLog(OF_LOG_VERBOSE, "touch %d moved at (%d,%d)", touch.id, touch.x, touch.y);
-	balls[touch.id].moveTo(touch.x, touch.y);
-	balls[touch.id].bDragged = true;
-    
-    
-    
-    
-///// A U D I O /////
-    if (touch.id == 0) {
-        speed0 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan0 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        frosk.setSpeed(speed0);
-        frosk.setPan(pan0);
-    }
-    
-    if (touch.id == 1) {
-        float speed1 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan1 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        hest.setSpeed(speed1);
-        hest.setPan(pan1);
-    }
-    
-    if (touch.id == 2) {
-        float speed2 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan2 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        kattepus.setSpeed(speed2);
-        kattepus.setPan(pan2);
-    }
-    
-    if (touch.id == 3) {
-        float speed3 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan3 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        flodhest.setSpeed(speed3);
-        flodhest.setPan(pan3);
-    }
-    
-    if (touch.id == 4) {
-        float speed4 = ofMap(touch.y, ofGetHeight(), 0, 0.1, 2.0, true);
-        float pan4 = ofMap(touch.x, 0, ofGetWidth(), -1.0, 1.0, true);
-        apekatt.setSpeed(speed4);
-        apekatt.setPan(pan4);
-    }
-    
 
+    
+    
+    ///< F R O S K - START ///
+    myTouchX = touch.x;
+    myTouchY = touch.y;
+    
+    froskDistance =  sqrt(    (touch.x - froskPosX) * (touch.x - froskPosX) +  (touch.y - froskPosY) * (touch.y - froskPosY)     ) ;
+    
+    if (ballRadius > froskDistance) {
+        froskInside = 1;
+    } else {
+        froskInside = 0;
+    }
+    
+    if (froskInside == 1) {
+        froskPosX = touch.x;
+        froskPosY = touch.y;
+    }
+    
+    
+    // Audio
+    if (froskInside == 1) {
+        froskVolume = 0.75;
+        frosk.setVolume(froskVolume);
+        frosk.setLoop(true);
+    } else {
+        froskVolume = 0;
+        frosk.setVolume(froskVolume);
+        frosk.setLoop(false);
+    }
+    ///< F R O S K - END ///
+    
+    
+    
+    
+    
+    ///< H E S T - START ///
+    hestDistance =  sqrt(    (touch.x - hestPosX) * (touch.x - hestPosX) +  (touch.y - hestPosY) * (touch.y - hestPosY)     ) ;
+    
+    if (ballRadius > hestDistance) {
+        hestInside = 1;
+    } else {
+        hestInside = 0;
+    }
+    
+    
+    if (hestInside == 1) {
+        hestPosX = touch.x;
+        hestPosY = touch.y;
+    }
+    
+    
+    
+    // Audio
+    if (hestInside == 1) {
+        hestVolume = 0.75;
+        hest.setVolume(hestVolume);
+        hest.setLoop(true);
+    } else {
+        hestVolume = 0;
+        hest.setVolume(hestVolume);
+        hest.setLoop(false);
+    }
+    ///< H E S T - END ///
     
 }
 
 //--------------------------------------------------------------
 void ofApp::touchUp(ofTouchEventArgs & touch){
-    ofLog(OF_LOG_VERBOSE, "touch %d up at (%d,%d)", touch.id, touch.x, touch.y);
-	balls[touch.id].bDragged = false;
+
+
     
     
-///// A U D I O /////
-    if (touch.id == 0) {
-        froskVolume = 0;
-        frosk.setVolume(froskVolume);
-        frosk.setLoop(false);
-    }
-    if (touch.id == 1) {
-        hestVolume = 0;
-        hest.setVolume(hestVolume);
-        hest.setLoop(false);
-    }
-    if (touch.id == 2) {
-        kattepusVolume = 0;
-        kattepus.setVolume(kattepusVolume);
-        kattepus.setLoop(false);
-    }
-    if (touch.id == 3) {
-        flodhestVolume = 0;
-        flodhest.setVolume(flodhestVolume);
-        flodhest.setLoop(false);
-    }
-    if (touch.id == 4) {
-        apekattVolume = 0;
-        apekatt.setVolume(apekattVolume);
-        apekatt.setLoop(false);
-    }
+    ///< F R O S K - START ///
+    froskInside = 0;
+
+    // Audio
+    froskVolume = 0;
+    frosk.setVolume(froskVolume);
+    frosk.setLoop(false);
+    ///< F R O S K - END ///
+  
+    
+    
+    
+    ///< H E S T - START ///
+    hestInside = 0;
+    
+    // Audio
+    hestVolume = 0;
+    hest.setVolume(hestVolume);
+    hest.setLoop(false);
+    ///< H E S T - END ///
+
+
 
 }
 
 //--------------------------------------------------------------
 void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
-    ofLog(OF_LOG_VERBOSE, "touch %d double tap at (%d,%d)", touch.id, touch.x, touch.y);
+
 }
 
 //--------------------------------------------------------------

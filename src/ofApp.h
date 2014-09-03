@@ -3,7 +3,6 @@
 #include "ofMain.h"
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
-#include "Ball.h"
 
 class ofApp : public ofxiOSApp{
 	
@@ -26,7 +25,6 @@ class ofApp : public ofxiOSApp{
 	
         void gotMessage(ofMessage msg);
 	
-        vector<Ball> balls;
     
     
     

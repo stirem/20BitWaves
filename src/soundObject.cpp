@@ -1,6 +1,7 @@
 
 #include "soundObject.h"
 
+//----------------VISUAL-------------------
 /*
  SoundObject::SoundObject() {
  
@@ -96,4 +97,14 @@ void SoundObject::SetPosition(float aX, float aY) {
     objectPosY = aY;
 }
 
+void SoundObject::PanTheSound(float x, int w) {
+    float pan;
+    pan = ofMap(x, 0, w, -1.0, 1.0, true);
+    sndPlay.setPan(pan);
+}
+
+void SoundObject::SpeedOfTheSound(float y, int h) {
+    float speed = ofMap(y, h, 0, 0.5, 2.0, true);
+    sndPlay.setSpeed(speed);
+}
 

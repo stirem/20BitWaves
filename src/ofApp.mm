@@ -1,17 +1,44 @@
 #include "ofApp.h"
 
 
-#define OBJECTS 5
+#define kNumOfObjects 5
 
-int textFingerID;
+int red[kNumOfObjects];
+int green[kNumOfObjects];
+int blue[kNumOfObjects];
 
 
 //--------------------------------------------------------------
 void ofApp::setup(){
     
-    ///< Set the background color
-    ofBackground(0, 0, 0);
     
+    red[0] = 100;
+    green[0] = 22;
+    blue[0] = 57;
+    
+    red[1] = 23;
+    green[1] = 44;
+    blue[1] = 79;
+    
+    red[2] = 119;
+    green[2] = 86;
+    blue[2] = 26;
+    
+    red[3] = 74;
+    green[3] = 109;
+    blue[3] = 24;
+    
+    red[4] = 176;
+    green[4] = 144;
+    blue[4] = 158;
+    
+    for (int i = 0; i < kNumOfObjects; i++) {
+        ///< Sending individual color for each object
+        sndObj[i].Color(red[i], green[i], blue[i]);
+        
+        ///< Calling the start values (initialization) of the objects
+        sndObj[i].Init();
+    }
 
 }
 
@@ -24,29 +51,18 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-
-    for (int i = OBJECTS-1; i >= 0; i--) {
-        
-        ///< Draw the cricle
-        ofCircle(sndObj[i].objectPosX, sndObj[i].objectPosY, sndObj[i].radius);
-        
-        ///< Change color of object depending on if finger is inside
-        if (sndObj[i].fingerIsInside) {
-            ofSetColor(sndObj[i].red, sndObj[i].green, sndObj[i].blue, 255);
-        } else {
-            ofSetColor(sndObj[i].red, sndObj[i].green, sndObj[i].blue, 100);
-        }
-        
-        
-       
-
-        ///< Debugging text on screen
-        ofDrawBitmapString(ofToString(sndObj[0].distToObj) +" Distance to object 0", 10, 70);
-        ofDrawBitmapString(ofToString(sndObj[0].fingerIsInside) +" Is finger inside object 0?", 10, 130);
-        ofDrawBitmapString(ofToString(textFingerID) +" Touch ID", 10, 150);
-
+    ///< Draw the objects to screen
+    for (int i = kNumOfObjects-1; i >= 0; i--) {
+        sndObj[i].Draw();
     }
     
+    
+    /*
+    ///< Debugging text on screen
+    ofSetColor(255, 255, 255);
+    ofDrawBitmapString(ofToString(sndObj[0].distToObj) +" Distance to object 0", 10, 70);
+    ofDrawBitmapString(ofToString(sndObj[0].fingerIsInside) +" Is finger inside object 0?", 10, 130);
+     */
 }
 
 //--------------------------------------------------------------
@@ -57,15 +73,13 @@ void ofApp::exit(){
 //--------------------------------------------------------------
 void ofApp::touchDown(ofTouchEventArgs & touch){
     
-    textFingerID = touch.id;
-    
-    
-    for (int i = 0; i < OBJECTS; i++) {
-        ///< Send finger position values to DistanceToObject function.
+    for (int i = 0; i < kNumOfObjects; i++) {
         if (sndObj[i].IsFingerInside(touch.x, touch.y)) {
+            
             sndObj[i].BindToFinger(touch.id);
             sndObj[i].SetPosition(touch.x, touch.y);
-            break;
+            break; // Stops the "for" loop
+        
         }
     }
 }
@@ -73,11 +87,12 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
 //--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
     
-    for (int i = 0; i < OBJECTS; i++) {
-    
+    for (int i = 0; i < kNumOfObjects; i++) {
         if (sndObj[i].IsFingerBoundToObject(touch.id)) {
+            
             sndObj[i].SetPosition(touch.x, touch.y);
-            break;
+            break; // Stops the "for" loop
+        
         }
         
     }
@@ -86,16 +101,15 @@ void ofApp::touchMoved(ofTouchEventArgs & touch){
 //--------------------------------------------------------------
 void ofApp::touchUp(ofTouchEventArgs & touch){
     
-   for (int i = 0; i < OBJECTS; i++) {
+   for (int i = 0; i < kNumOfObjects; i++) {
        if (sndObj[i].IsFingerBoundToObject(touch.id)) {
+           
            sndObj[i].ReleaseFinger();
-           break; // Stop for loop
-       }
+           break; // Stops the "for" loop
        
+       }
    }
-    
-   
-    
+
 }
 
 //--------------------------------------------------------------

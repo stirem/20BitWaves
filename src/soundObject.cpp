@@ -1,5 +1,6 @@
 
 #include "soundObject.h"
+#include "pennerRamp.h"
 
 //----------------VISUAL-------------------
 /*
@@ -28,6 +29,10 @@ void SoundObject::Color(int r, int g, int b) {
     color = ofColor(r, g, b);
 }
 
+
+//--------------------------------------------------------------
+
+
 void SoundObject::Init() {
     ///< Set background color
     ofBackground(0, 0, 0);
@@ -43,6 +48,8 @@ void SoundObject::Init() {
     fingerID = -99;
 }
 
+//--------------------------------------------------------------
+
 
 void SoundObject::Draw() {
     ///< Set brightness on object to low if not touched, and high if touched
@@ -57,8 +64,11 @@ void SoundObject::Draw() {
     ofSetColor(color);
    
     ///< Draw the circle
-    ofCircle(objectPosX, objectPosY, radius);
+    ofCircle(objectPosX, objectPosY, Elastic::easeOut  (time, beginning, change, duration));
 }
+
+
+//--------------------------------------------------------------
 
 
 
@@ -77,9 +87,16 @@ bool SoundObject::IsFingerInside(float x, float y) {
 }
 
 
+//--------------------------------------------------------------
+
+
 void SoundObject::BindToFinger(int anFingerID) {
     fingerID = anFingerID;
 }
+
+
+//--------------------------------------------------------------
+
 
 
 void SoundObject::ReleaseFinger() {
@@ -87,9 +104,17 @@ void SoundObject::ReleaseFinger() {
 }
 
 
+//--------------------------------------------------------------
+
+
+
 bool SoundObject::IsFingerBoundToObject(int anFingerID) {
     return (fingerID == anFingerID);
 }
+
+
+//--------------------------------------------------------------
+
 
 
 void SoundObject::SetPosition(float aX, float aY) {
@@ -97,11 +122,32 @@ void SoundObject::SetPosition(float aX, float aY) {
     objectPosY = aY;
 }
 
+
+//--------------------------------------------------------------
+
+
+
+void SoundObject::rampInit(){
+    time 		= 0;
+    beginning	= 50;
+    change 		= 50;
+    duration 	= 50;
+}
+
+
+
+//------------------ S O U N D ----------------------------------
+
 void SoundObject::PanTheSound(float x, int w) {
     float pan;
     pan = ofMap(x, 0, w, -1.0, 1.0, true);
     sndPlay.setPan(pan);
 }
+
+
+//--------------------------------------------------------------
+
+
 
 void SoundObject::SpeedOfTheSound(float y, int h) {
     float speed = ofMap(y, h, 0, 0.5, 2.0, true);

@@ -7,11 +7,11 @@ int red[kNumOfObjects];
 int green[kNumOfObjects];
 int blue[kNumOfObjects];
 
-
 //--------------------------------------------------------------
 void ofApp::setup(){
     
     ///< Individual properties for objects
+    /*
     red[0] = 100;
     green[0] = 22;
     blue[0] = 57;
@@ -31,6 +31,8 @@ void ofApp::setup(){
     red[4] = 176;
     green[4] = 144;
     blue[4] = 158;
+     */
+    
     
     sndObj[0].sndPlay.loadSound("sounds/apekatt.aif");
     sndObj[1].sndPlay.loadSound("sounds/flodhest.aif");
@@ -39,9 +41,12 @@ void ofApp::setup(){
     sndObj[4].sndPlay.loadSound("sounds/kattepus.aif");
     
     
-    
-    
+
     for (int i = 0; i < kNumOfObjects; i++) {
+        red[i] = 255;
+        green[i] = 255;
+        blue[i] = 255;
+        
         ///< Sending individual color for each object
         sndObj[i].Color(red[i], green[i], blue[i]);
         
@@ -54,13 +59,22 @@ void ofApp::setup(){
 
     
 
+    ///< Initial values for Penner Ramp
+    for (int i = 0; i < kNumOfObjects; i++) {
+        sndObj[i].rampInit();
+    }
     
-    
+
 }
+
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    ///< Timer for Penner Ramp
+    for (int i = 0; i < kNumOfObjects; i++) {
+        if (sndObj[i].time < sndObj[i].duration) sndObj[i].time++;
+    }
     
 }
 
@@ -101,6 +115,7 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
             sndObj[i].sndPlay.setVolume(0.75);
             sndObj[i].PanTheSound(touch.x, ofGetWidth());
             sndObj[i].SpeedOfTheSound(touch.y, ofGetHeight());
+            sndObj[i].rampInit(); // Call Penner Ramp
             break; // Stops the "for" loop
         }
     }

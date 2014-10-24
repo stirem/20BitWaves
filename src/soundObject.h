@@ -21,6 +21,11 @@ public:
     float           objectPosX; // Circle position X
     float           objectPosY; // Circle position Y
     int             fingerID; // What finger is touching the screen
+    float           myBrightness;
+    float           brightTime;
+    float           brightValue;
+    float           brightV;
+    float           time, beginning, change, duration; // Penner Ramp values
     
     
     bool            IsFingerInside(float x, float y); // Calculate distance between finger and circle
@@ -28,16 +33,12 @@ public:
     void            ReleaseFinger(); // Set fingerID to out of range value (-99) when not touching object
     bool            IsFingerBoundToObject(int anFingerID); // Check if finger is already bound to an object
     void            SetPosition(float aX, float aY); // Make the object follow the finger
-    void            Draw(); // Draw the objects on screen
+    void            Draw(int r, int g, int b); // Draw the objects on screen
     void            Init(); // Function to set start values. Must be called in the setup()
                             // function in ofApp.cpp to work. Otherwise the values will be
                             // called at the wrong time.
-    void            Color(int r, int g, int b); // Send individual color values to each object
-    ofColor         color; // Get access to the OF ofColor funciton
-
-    
-    void rampInit(); // Penner Ramp values function
-    float time, beginning, change, duration; // Penner Ramp values
+    void            rampInit(); // Penner Ramp values function
+    ofColor         myColor; // Get access to the OF ofColor funciton
 
     
     ///< SOUND

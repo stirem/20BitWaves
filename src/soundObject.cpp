@@ -24,10 +24,7 @@
  }
  */
 
-void SoundObject::Color(int r, int g, int b) {
-    ///< Set color of objects
-    color = ofColor(r, g, b);
-}
+
 
 
 //--------------------------------------------------------------
@@ -51,19 +48,28 @@ void SoundObject::Init() {
 //--------------------------------------------------------------
 
 
-void SoundObject::Draw() {
+void SoundObject::Draw(int r, int g, int b) {
     ///< Set brightness on object to low if not touched, and high if touched
-    int brightness;
-    if (fingerID != -99)
-        brightness = 255;
-    else
-        brightness = 100;
-    color.setBrightness(brightness);
+    if (fingerID != -99) {
+        ///< Full brightness when object is touched
+        myBrightness = 255;
+    } else {
+        ///< Pulsate object when not touched
+        brightTime = ofGetElapsedTimef();
+        brightValue = sin( (brightTime * M_TWO_PI) /2 );
+        brightV = ofMap(brightValue, -1, 1, 50, 100); // Pulsate brightness between 50 and 100
+        myBrightness = brightV;
+        //brightness = 100;
+    }
+    
+    myColor = ofColor(r, g, b);
+    
+    myColor.setBrightness(myBrightness);
     
     ///< Draw the color
-    ofSetColor(color);
+    ofSetColor(myColor);
    
-    ///< Draw the circle
+    ///< Draw the circle. Radius is bouncing with Elastic ease out function when object is touched.
     ofCircle(objectPosX, objectPosY, Elastic::easeOut  (time, beginning, change, duration));
 }
 

@@ -11,7 +11,7 @@ int blue[kNumOfObjects];
 void ofApp::setup(){
     
     ///< Individual properties for objects
-    /*
+    
     red[0] = 100;
     green[0] = 22;
     blue[0] = 57;
@@ -31,7 +31,7 @@ void ofApp::setup(){
     red[4] = 176;
     green[4] = 144;
     blue[4] = 158;
-     */
+
     
     
     sndObj[0].sndPlay.loadSound("sounds/apekatt.aif");
@@ -43,13 +43,6 @@ void ofApp::setup(){
     
 
     for (int i = 0; i < kNumOfObjects; i++) {
-        red[i] = 255;
-        green[i] = 255;
-        blue[i] = 255;
-        
-        ///< Sending individual color for each object
-        sndObj[i].Color(red[i], green[i], blue[i]);
-        
         ///< Calling the start values (initialization) of the objects
         sndObj[i].Init();
         
@@ -81,18 +74,20 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    ///< Draw the objects to screen
+    ///< Draw the objects to screen in reverse order to make them layered naturally
     for (int i = kNumOfObjects-1; i >= 0; i--) {
-        sndObj[i].Draw();
+        sndObj[i].Draw(red[i], green[i], blue[i]);
     }
     
     
-    /*
+    
     ///< Debugging text on screen
+    /*
     ofSetColor(255, 255, 255);
-    ofDrawBitmapString(ofToString(sndObj[0].distToObj) +" Distance to object 0", 10, 70);
+    ofDrawBitmapString(ofToString(red[1]) +" red[1]", 10, 70);
     ofDrawBitmapString(ofToString(sndObj[0].fingerIsInside) +" Is finger inside object 0?", 10, 130);
-     */
+    */
+    
 }
 
 //--------------------------------------------------------------

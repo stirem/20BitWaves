@@ -1,162 +1,136 @@
 
 #include "soundObject.h"
-#include "pennerRamp.h"
-
-//----------------VISUAL-------------------
-/*
- SoundObject::SoundObject() {
- 
- ///< Set radius of objects
- radius = 100;
- 
- ///< Set color of objects
- color.r = ofRandom(0, 255);
- color.g = ofRandom(0, 255);
- color.b = ofRandom(0, 255);
- 
- ///< Start position for objects
- objectPosX = ofRandomWidth();
- objectPosY = ofRandomHeight();
- 
- ///< Start with a fingerID outside the finger range
- fingerID = -99;
- 
- }
- */
 
 
 
 
-//--------------------------------------------------------------
+// --------------------------------------------------------
+///< Constructor for Soundobject
+Soundobject::Soundobject() {
 
-
-void SoundObject::Init() {
-    ///< Set background color
-    ofBackground(0, 0, 0);
-    
-    ///< Set radius of objects
-    radius = 100;
-    
-    ///< Start position for objects
-    objectPosX = ofRandomWidth();
-    objectPosY = ofRandomHeight();
-    
-    ///< Start with a fingerID outside the finger range
-    fingerID = -99;
 }
+// --------------------------------------------------------
 
-//--------------------------------------------------------------
 
+// --------------------------------------------------------
+void Soundobject::Setup() {
 
-void SoundObject::Draw(int r, int g, int b) {
-    ///< Set brightness on object to low if not touched, and high if touched
-    if (fingerID != -99) {
-        ///< Full brightness when object is touched
-        myBrightness = 255;
-    } else {
-        ///< Pulsate object when not touched
-        brightTime = ofGetElapsedTimef();
-        brightValue = sin( (brightTime * M_TWO_PI) /2 );
-        brightV = ofMap(brightValue, -1, 1, 50, 100); // Pulsate brightness between 50 and 100
-        myBrightness = brightV;
-        //brightness = 100;
+    
+    // Set spectrum values to 0
+    for (int i = 0; i<BANDS; i++) {
+        spectrum[i] = 0.0f;
     }
     
-    myColor = ofColor(r, g, b);
-    
-    myColor.setBrightness(myBrightness);
-    
-    ///< Draw the color
-    ofSetColor(myColor);
-   
-    ///< Draw the circle. Radius is bouncing with Elastic ease out function when object is touched.
-    ofCircle(objectPosX, objectPosY, Elastic::easeOut  (time, beginning, change, duration));
 }
+// --------------------------------------------------------
 
 
-//--------------------------------------------------------------
-
-
-
-bool SoundObject::IsFingerInside(float x, float y) {
-    ///< Calculate distance from finger to object
-    distToObj = sqrt(    (x - objectPosX) * (x - objectPosX) + (y - objectPosY) * (y - objectPosY)     ) ;
+// --------------------------------------------------------
+void Soundobject::Update(float *v) {
     
-    ///< Check if radius is greater than the distance to the object
-    if (radius > distToObj) {
-        fingerIsInside = 1;
-    } else {
-        fingerIsInside = 0;
+
+    
+    for (int i = 0; i<BANDS; i++) {
+        
+        spectrum[i] *= 0.97; // Slow decreasing
+        spectrum[i] = max( spectrum[i], v[i]);
     }
+    // --------------------
+    
+    // --------------------
+    ///< Get average value from sound spectrum
+    float a = 0;
+    float b = 0;
+    
+    for (int i = 0; i<BANDS; i++) {
+        a += (i + 1) * spectrum[i];
+        b += spectrum[i];
+    }
+    
+    // Avoid division by 0 for silence
+    if (a == 0)
+        b = 1;
+    
+    mySoundBrightness = a / b;
+    mySpecVolume = b;
+    // --------------------
 
-    return fingerIsInside;
+
+
 }
+// --------------------------------------------------------
 
 
-//--------------------------------------------------------------
 
 
-void SoundObject::BindToFinger(int anFingerID) {
-    fingerID = anFingerID;
+// --------------------------------------------------------
+float Soundobject::SpectrumVolume() {
+    return mySpecVolume;
+    
 }
+// --------------------------------------------------------
 
 
-//--------------------------------------------------------------
 
 
-
-void SoundObject::ReleaseFinger() {
-    fingerID = -99;
+// --------------------------------------------------------
+float Soundobject::SoundBrightness() {
+   return mySoundBrightness;
+    
 }
+// --------------------------------------------------------
 
 
-//--------------------------------------------------------------
 
 
 
-bool SoundObject::IsFingerBoundToObject(int anFingerID) {
-    return (fingerID == anFingerID);
+// --------------------------------------------------------
+float Soundobject::StartRadius() {
+    
+    ///< Start radius for soundwaves based on the size of the largest soundobject ring.
+    return mySpecVolume;
+    
 }
-
-
-//--------------------------------------------------------------
+// --------------------------------------------------------
 
 
 
-void SoundObject::SetPosition(float aX, float aY) {
-    objectPosX = aX;
-    objectPosY = aY;
+// --------------------------------------------------------
+void Soundobject::Position(float x, float y) {
+    pos.set(x, y);
 }
-
-
-//--------------------------------------------------------------
+// --------------------------------------------------------
 
 
 
-void SoundObject::rampInit(){
-    time 		= 0;
-    beginning	= 50;
-    change 		= 50;
-    duration 	= 50;
+// --------------------------------------------------------
+void Soundobject::Draw() {
+    //ofEnableAlphaBlending();
+    //OF_BLENDMODE_SCREEN;
+
+    color = ofColor(255, 255, 255, 255);
+    color.setBrightness(mySpecVolume / 20);
+    //color.setHue(mySoundBrightness * 20);
+    ofSetColor(color);
+    ofSetCircleResolution(100);
+    ofFill();
+    ofCircle(pos.x, pos.y, mySpecVolume / 40);
+
+    
+    
+    ///< Spectrum
+    ofSetColor(100, 100, 100);
+    for (int i = 0; i < 1024; i++) {
+        ofRect(10 + i * 2, ofGetHeight() - 30, 1, -spectrum[i] * 10);
+    }
+    
+    
+    
+    
 }
+// --------------------------------------------------------
 
 
 
-//------------------ S O U N D ----------------------------------
 
-void SoundObject::PanTheSound(float x, int w) {
-    float pan;
-    pan = ofMap(x, 0, w, -1.0, 1.0, true);
-    sndPlay.setPan(pan);
-}
-
-
-//--------------------------------------------------------------
-
-
-
-void SoundObject::SpeedOfTheSound(float y, int h) {
-    float speed = ofMap(y, h, 0, 0.5, 2.0, true);
-    sndPlay.setSpeed(speed);
-}
 

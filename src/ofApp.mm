@@ -1,161 +1,316 @@
 #include "ofApp.h"
 
 
-#define kNumOfObjects 5
-
-int red[kNumOfObjects];
-int green[kNumOfObjects];
-int blue[kNumOfObjects];
-
-//--------------------------------------------------------------
-void ofApp::setup(){
-    
-    ///< Individual properties for objects
-    
-    red[0] = 100;
-    green[0] = 22;
-    blue[0] = 57;
-    
-    red[1] = 23;
-    green[1] = 44;
-    blue[1] = 79;
-    
-    red[2] = 119;
-    green[2] = 86;
-    blue[2] = 26;
-    
-    red[3] = 74;
-    green[3] = 109;
-    blue[3] = 24;
-    
-    red[4] = 176;
-    green[4] = 144;
-    blue[4] = 158;
-
-    
-    
-    sndObj[0].sndPlay.loadSound("sounds/apekatt.aif");
-    sndObj[1].sndPlay.loadSound("sounds/flodhest.aif");
-    sndObj[2].sndPlay.loadSound("sounds/frosk.aif");
-    sndObj[3].sndPlay.loadSound("sounds/hest.aif");
-    sndObj[4].sndPlay.loadSound("sounds/kattepus.aif");
-    
-    
-
-    for (int i = 0; i < kNumOfObjects; i++) {
-        ///< Calling the start values (initialization) of the objects
-        sndObj[i].Init();
-        
-        ///< Set start volume for all sounds
-        sndObj[i].sndPlay.setVolume(0.75);
-    }
-
-    
-
-    ///< Initial values for Penner Ramp
-    for (int i = 0; i < kNumOfObjects; i++) {
-        sndObj[i].rampInit();
-    }
-    
-
+///< Check if alpha is 0. Return true or false
+bool shouldRemove(Soundwave &p){
+    if(p.alpha <= 0 )return true;
+    else return false;
 }
 
 
 //--------------------------------------------------------------
-void ofApp::update(){
+void ofApp::setup(){	
+    ///< Setup framerate, background color and show mouse
+    ofSetFrameRate(60);
+    ofBackground(0, 0, 0);
+    ofShowCursor();
     
-    ///< Timer for Penner Ramp
-    for (int i = 0; i < kNumOfObjects; i++) {
-        if (sndObj[i].time < sndObj[i].duration) sndObj[i].time++;
+    ///< Reset spectrum to 0
+    soundobject.Setup();
+    
+    ///< 
+    triggerPlay = false;
+    soundSpeed              = 1.0;
+    whatSample              = 1;
+    changeSampleFingerDown  = false;
+    buttonX                 = ofGetWidth() * 0.9;
+    buttonY                 = ofGetHeight() * 0.05;
+    fingerIsLifted          = false;
+    triggerVolume           = false;
+
+    
+    
+    ///< M A X I M I L I A N
+    sampleRate              = 44100;
+    initialBufferSize       = 512;
+    panning                 = 0.5;
+    volume                  = 1.0;
+    
+
+    // Load samples
+    sample1.load(ofToDataPath("frosk.wav"));
+    sample2.load(ofToDataPath("apekatt.wav"));
+    sample3.load(ofToDataPath("flodhest.wav"));
+    sample4.load(ofToDataPath("hest.wav"));
+    sample5.load(ofToDataPath("kattepus.wav"));
+    sample6.load(ofToDataPath("and.wav"));
+
+    
+    ///< openFrameworks sound stream
+    ofSoundStreamSetup(2,0,this, sampleRate, initialBufferSize, 4); // OF Sound Stream
+    
+    
+    // Setup FFT
+    fftSize = BANDS;
+    nAverages = 12;
+    myFFT.setup(fftSize, 1024, 256);
+    myFFTOctAna.setup(sampleRate, fftSize/2, nAverages);
+
+
+
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::update(){
+
+    
+    ///< MAXIMILIAN
+    float *val = myFFT.magnitudesDB;
+    
+    ///< Update sound engine, spectrum and average spectrum
+    soundobject.Update(val);
+    
+    
+    
+    ///< Increase radius of soundwaves, and decrease alpha
+    for(int i = 0; i < soundwaves.size(); i++){
+        soundwaves[i].Update(soundSpeed, volume);
     }
+    
+    
+    ///< Remove soundwave when alpha is 0
+    ofRemove(soundwaves, shouldRemove);
+    
+    
+    
+    ///< Add soundwaves
+    if (volume > 0.0) {
+        if (changeSampleFingerDown == false) {
+            if (ofGetElapsedTimef() > myTimer + 0.01) {
+                soundwaves.push_back( Soundwave(touchPosX, touchPosY, soundobject.SpectrumVolume(), soundobject.StartRadius(), soundobject.SoundBrightness() ) );
+                myTimer = ofGetElapsedTimef();
+            }
+        }
+    }
+    
+    ///< Change sound speed
+    soundSpeed = ofMap(touchPosY, ofGetHeight(), 0, 0.1, 1.0, true);
+    
+    ///< Change sound panning
+    panning = ofMap(touchPosX, 0, ofGetWidth(), 0.0, 1.0, true);
+    
+    
+    ///< Fade out volume when finger is lifted
+    if (fingerIsLifted) {
+        if (volume >= 0.0) {
+            volume = volume - 0.01;
+        }
+    }
+    
+    ///< Stop playback
+    if (volume <= 0.0) {
+        triggerPlay = false;
+        fingerIsLifted = false;
+    }
+    
+    /*
+    if (triggerVolume) {
+        if (volume < 1.0) {
+            volume = volume + 0.1;
+        } else {
+            triggerVolume = false;
+        }
+    }
+     */
+    
+    
     
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    ///< Draw the objects to screen in reverse order to make them layered naturally
-    for (int i = kNumOfObjects-1; i >= 0; i--) {
-        sndObj[i].Draw(red[i], green[i], blue[i]);
+
+    
+    ///< Draw soundobject
+    soundobject.Draw();
+    
+    
+    
+    ///< Draw soundwaves
+    for(int i = 0; i < soundwaves.size(); i++){
+        soundwaves[i].Draw();
     }
     
+    ///< Change sample button
+    ofSetColor(100, 100, 100);
+    ofSetRectMode(OF_RECTMODE_CENTER);
+    ofRect(ofGetWidth() - 30, 30, 30, 30);
+    ofDrawBitmapString(ofToString(whatSample), ofGetWidth() - 35, 34);
     
     
-    ///< Debugging text on screen
-    /*
-    ofSetColor(255, 255, 255);
-    ofDrawBitmapString(ofToString(red[1]) +" red[1]", 10, 70);
-    ofDrawBitmapString(ofToString(sndObj[0].fingerIsInside) +" Is finger inside object 0?", 10, 130);
-    */
     
+    ///< Debug text
+    ofSetColor(100, 100, 100);
+    ofDrawBitmapString("X: " + ofToString(touchPosX), 10, 20);
+    ofDrawBitmapString("Y: " + ofToString(touchPosY), 10, 40);
+    ofDrawBitmapString("What Sample: " + ofToString(whatSample), 10, 60);
+    ofDrawBitmapString("C S Finger Down: " + ofToString(changeSampleFingerDown), 10, 80);
+    ofDrawBitmapString("Button X: " + ofToString(buttonX), 10, 100);
+    ofDrawBitmapString("Button Y: " + ofToString(buttonY), 10, 120);
+    ofDrawBitmapString("Volume: " + ofToString(volume), 10, 140);
+    ofDrawBitmapString("Sound speed: " + ofToString(soundSpeed), 10, 160);
+    ofDrawBitmapString("Sound brightness: " + ofToString(soundobject.SoundBrightness()), 10, 180);
+     
+     
+     
 }
 
 //--------------------------------------------------------------
 void ofApp::exit(){
-    
+
 }
 
 //--------------------------------------------------------------
+
+///< M A X I M I L I A N
+void ofApp::audioRequested(float * output, int bufferSize, int nChannels){
+    
+    
+    if( initialBufferSize != bufferSize ){
+        ofLog(OF_LOG_ERROR, "your buffer size was set to %i - but the stream needs a buffer size of %i", initialBufferSize, bufferSize);
+        return;
+    }
+    
+    
+    
+    
+    if (triggerPlay) {
+        for (int i = 0; i < bufferSize; i++){
+            switch (whatSample) {
+                case 1:
+                    sample = sample1.play(soundSpeed);
+                    break;
+                case 2:
+                    sample = sample2.play(soundSpeed);
+                    break;
+                case 3:
+                    sample = sample3.play(soundSpeed);
+                    break;
+                case 4:
+                    sample = sample4.play(soundSpeed);
+                    break;
+                case 5:
+                    sample = sample5.play(soundSpeed);
+                    break;
+                case 6:
+                    sample = sample6.play(soundSpeed);
+                    break;
+                default:
+                    break;
+            }
+            
+            
+            if (changeSampleFingerDown == false) {
+                channel1.stereo(sample, outputs1, panning);
+            }
+            
+            // Process FFT Spectrum
+            if (myFFT.process(sample)) {
+                myFFT.magsToDB();
+                myFFTOctAna.calculate(myFFT.magnitudes);
+            }
+            
+            output[i*nChannels    ] = outputs1[0] * volume;
+            output[i*nChannels + 1] = outputs1[1] * volume;
+        }
+    }
+
+    
+    
+    
+}
+
+
+
+//--------------------------------------------------------------
 void ofApp::touchDown(ofTouchEventArgs & touch){
+    ///< Update position of soundwaves when mouse is pressed
+    touchPosX = touch.x;
+    touchPosY = touch.y;
+    
+    ///< Set position of samples to 0 when finger is lifted
+    sample1.setPosition(0.);
+    sample2.setPosition(0.);
+    sample3.setPosition(0.);
+    sample4.setPosition(0.);
+    sample5.setPosition(0.);
+    sample6.setPosition(0.);
+
+    
+    ///< Set position of soundobject when mouse is pressed
+    soundobject.Position(touch.x, touch.y);
+    
+    fingerIsLifted = false;
+    
+    //triggerVolume = true;
+    volume = 1.0;
     
 
     
-    for (int i = 0; i < kNumOfObjects; i++) {
-        if (sndObj[i].IsFingerInside(touch.x, touch.y)) {
-            
-            sndObj[i].BindToFinger(touch.id);
-            sndObj[i].SetPosition(touch.x, touch.y);
-            sndObj[i].sndPlay.play();
-            sndObj[i].sndPlay.setLoop(true);
-            sndObj[i].sndPlay.setVolume(0.75);
-            sndObj[i].PanTheSound(touch.x, ofGetWidth());
-            sndObj[i].SpeedOfTheSound(touch.y, ofGetHeight());
-            sndObj[i].rampInit(); // Call Penner Ramp
-            break; // Stops the "for" loop
-        }
+    ///< Detect if finger is inside change-sample-button
+    if (touch.x > buttonX && touch.y < buttonY) {
+        changeSampleFingerDown = true;
+        volume = 0.0;
+    } else {
+        ///< Trigger play when touch is down
+        triggerPlay = true;
     }
-    
     
     
 }
 
 //--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
-    
-    for (int i = 0; i < kNumOfObjects; i++) {
-        if (sndObj[i].IsFingerBoundToObject(touch.id)) {
-            
-            sndObj[i].SetPosition(touch.x, touch.y);
-            sndObj[i].PanTheSound(touch.x, ofGetWidth());
-            sndObj[i].SpeedOfTheSound(touch.y, ofGetHeight());
-            break; // Stops the "for" loop
-        }
-    }
+    ///< Set position of soundobject when mouse is moved
+    soundobject.Position(touch.x, touch.y);
     
     
+    ///< Update position of soundwaves when touch moves
+    touchPosX = touch.x;
+    touchPosY = touch.y;
+    
+    
+ 
 }
 
 //--------------------------------------------------------------
 void ofApp::touchUp(ofTouchEventArgs & touch){
     
-   for (int i = 0; i < kNumOfObjects; i++) {
-       if (sndObj[i].IsFingerBoundToObject(touch.id)) {
-           
-           sndObj[i].ReleaseFinger();
-           sndObj[i].sndPlay.setLoop(false);
-           sndObj[i].sndPlay.setVolume(0.);
-           break; // Stops the "for" loop
-       }
-       
 
-   }
-
+    
+  
+    ///< Change sample
+    if (touch.x > buttonX && touch.y < buttonY && changeSampleFingerDown) {
+        if(whatSample < 6) {
+            whatSample++;
+        } else {
+            whatSample = 1;
+        }
+    }
+    
+    ///< Detect if finger is lifted from change-sample-button
+    changeSampleFingerDown = false;
+    
+    fingerIsLifted = true;
+    
     
 }
 
 //--------------------------------------------------------------
 void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
-    
+
 }
 
 //--------------------------------------------------------------
@@ -165,21 +320,20 @@ void ofApp::touchCancelled(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofApp::lostFocus(){
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::gotFocus(){
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::gotMemoryWarning(){
-    
+
 }
 
 //--------------------------------------------------------------
 void ofApp::deviceOrientationChanged(int newOrientation){
-    
-}
 
+}

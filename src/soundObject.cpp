@@ -88,7 +88,8 @@ float Soundobject::SoundBrightness() {
 float Soundobject::StartRadius() {
     
     ///< Start radius for soundwaves based on the size of the largest soundobject ring.
-    return mySpecVolume;
+    startRadius = mySpecVolume / 30;
+    return startRadius;
     
 }
 // --------------------------------------------------------
@@ -114,16 +115,16 @@ void Soundobject::Draw() {
     ofSetColor(color);
     ofSetCircleResolution(100);
     ofFill();
-    ofCircle(pos.x, pos.y, mySpecVolume / 40);
+    ofCircle(pos.x, pos.y, startRadius);
 
     
-    
+    /*
     ///< Spectrum
     ofSetColor(100, 100, 100);
     for (int i = 0; i < 1024; i++) {
         ofRect(10 + i * 2, ofGetHeight() - 30, 1, -spectrum[i] * 10);
     }
-    
+    */
     
     
     

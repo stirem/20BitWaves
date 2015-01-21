@@ -24,6 +24,7 @@
 		807CA1251A5D9C0B004DF79A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807CA1241A5D9C0B004DF79A /* Accelerate.framework */; };
 		80845BF21A5D8E200034AC8F /* soundWave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BEE1A5D8E200034AC8F /* soundWave.cpp */; };
 		80845BF31A5D8E200034AC8F /* soundObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BF01A5D8E200034AC8F /* soundObject.cpp */; };
+		80A880FE1A70010E00A7AD6D /* menuButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A880FC1A70010E00A7AD6D /* menuButton.cpp */; };
 		9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */; };
 		96084990AF216648B8B98E00 /* maxiFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A4EE0E35ED739A31CD0153E /* maxiFFT.cpp */; };
 		AF0580829426DC6BCA135A5C /* maxiGrains.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D2FB19B70632A6F86622D94 /* maxiGrains.cpp */; };
@@ -82,6 +83,8 @@
 		80845BEF1A5D8E200034AC8F /* soundWave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soundWave.h; sourceTree = "<group>"; };
 		80845BF01A5D8E200034AC8F /* soundObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = soundObject.cpp; sourceTree = "<group>"; };
 		80845BF11A5D8E200034AC8F /* soundObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = soundObject.h; sourceTree = "<group>"; };
+		80A880FC1A70010E00A7AD6D /* menuButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menuButton.cpp; sourceTree = "<group>"; };
+		80A880FD1A70010E00A7AD6D /* menuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menuButton.h; sourceTree = "<group>"; };
 		80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = stb_vorbis.c; path = ../../../addons/ofxMaxim/libs/stb_vorbis.c; sourceTree = SOURCE_ROOT; };
 		87D3A0051CCB2C0F0ECA139E /* maximilian.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = maximilian.cpp; path = ../../../addons/ofxMaxim/libs/maximilian.cpp; sourceTree = SOURCE_ROOT; };
 		9312F3864ED05FC3E847FF69 /* ofxMaxim.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMaxim.h; path = ../../../addons/ofxMaxim/src/ofxMaxim.h; sourceTree = SOURCE_ROOT; };
@@ -275,6 +278,8 @@
 				E4D8936B11527B74007E1F53 /* main.mm */,
 				E4D8936D11527B74007E1F53 /* ofApp.mm */,
 				E4D8936C11527B74007E1F53 /* ofApp.h */,
+				80A880FC1A70010E00A7AD6D /* menuButton.cpp */,
+				80A880FD1A70010E00A7AD6D /* menuButton.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -382,6 +387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80A880FE1A70010E00A7AD6D /* menuButton.cpp in Sources */,
 				E4D8936E11527B74007E1F53 /* main.mm in Sources */,
 				E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */,
 				0FCED26D40D46CF89A58E54C /* fft.cpp in Sources */,

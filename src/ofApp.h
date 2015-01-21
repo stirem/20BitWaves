@@ -6,6 +6,7 @@
 
 #include "soundWave.h"
 #include "soundObject.h"
+#include "menuButton.h"
 
 
 
@@ -38,15 +39,15 @@ class ofApp : public ofxiOSApp {
     
     Soundobject soundobject; // Soundobject ??
     
+    Button button;
+    
     
     bool triggerPlay;
     float soundSpeed;
     int whatSample;
-    bool changeSampleFingerDown;
-    float buttonX;
-    float buttonY;
+
     bool fingerIsLifted;
-    bool triggerVolume;
+
 
     
     

@@ -18,15 +18,14 @@ void ofApp::setup(){
     ///< Reset spectrum to 0
     soundobject.Setup();
     
+    button.Setup();
+    
     ///< 
     triggerPlay = false;
     soundSpeed              = 1.0;
     whatSample              = 1;
-    changeSampleFingerDown  = false;
-    buttonX                 = ofGetWidth() * 0.9;
-    buttonY                 = ofGetHeight() * 0.05;
+
     fingerIsLifted          = false;
-    triggerVolume           = false;
 
     
     
@@ -86,7 +85,7 @@ void ofApp::update(){
     
     ///< Add soundwaves
     if (volume > 0.0) {
-        if (changeSampleFingerDown == false) {
+        if (button.changeSampleFingerDown == false) {
             if (ofGetElapsedTimef() > myTimer + 0.01) {
                 soundwaves.push_back( Soundwave(touchPosX, touchPosY, soundobject.SpectrumVolume(), soundobject.StartRadius(), soundobject.SoundBrightness() ) );
                 myTimer = ofGetElapsedTimef();
@@ -94,36 +93,7 @@ void ofApp::update(){
         }
     }
     
-    ///< Change sound speed
-    soundSpeed = ofMap(touchPosY, ofGetHeight(), 0, 0.1, 1.0, true);
-    
-    ///< Change sound panning
-    panning = ofMap(touchPosX, 0, ofGetWidth(), 0.0, 1.0, true);
-    
-    
-    ///< Fade out volume when finger is lifted
-    if (fingerIsLifted) {
-        if (volume >= 0.0) {
-            volume = volume - 0.01;
-        }
-    }
-    
-    ///< Stop playback
-    if (volume <= 0.0) {
-        triggerPlay = false;
-        fingerIsLifted = false;
-    }
-    
-    /*
-    if (triggerVolume) {
-        if (volume < 1.0) {
-            volume = volume + 0.1;
-        } else {
-            triggerVolume = false;
-        }
-    }
-     */
-    
+
     
     
 }
@@ -150,19 +120,19 @@ void ofApp::draw(){
     ofDrawBitmapString(ofToString(whatSample), ofGetWidth() - 35, 34);
     
     
-    
+    /*
     ///< Debug text
     ofSetColor(100, 100, 100);
     ofDrawBitmapString("X: " + ofToString(touchPosX), 10, 20);
     ofDrawBitmapString("Y: " + ofToString(touchPosY), 10, 40);
     ofDrawBitmapString("What Sample: " + ofToString(whatSample), 10, 60);
-    ofDrawBitmapString("C S Finger Down: " + ofToString(changeSampleFingerDown), 10, 80);
-    ofDrawBitmapString("Button X: " + ofToString(buttonX), 10, 100);
-    ofDrawBitmapString("Button Y: " + ofToString(buttonY), 10, 120);
+    ofDrawBitmapString("C S Finger Down: " + ofToString(button.changeSampleFingerDown), 10, 80);
+    ofDrawBitmapString("Button X: " + ofToString(button.buttonX), 10, 100);
+    ofDrawBitmapString("Button Y: " + ofToString(button.buttonY), 10, 120);
     ofDrawBitmapString("Volume: " + ofToString(volume), 10, 140);
     ofDrawBitmapString("Sound speed: " + ofToString(soundSpeed), 10, 160);
     ofDrawBitmapString("Sound brightness: " + ofToString(soundobject.SoundBrightness()), 10, 180);
-     
+     */
      
      
 }
@@ -187,6 +157,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels){
     
     
     if (triggerPlay) {
+        // itererover alle samolene og regner ut samplene en etter en
         for (int i = 0; i < bufferSize; i++){
             switch (whatSample) {
                 case 1:
@@ -212,7 +183,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels){
             }
             
             
-            if (changeSampleFingerDown == false) {
+            if (button.changeSampleFingerDown == false) {
                 channel1.stereo(sample, outputs1, panning);
             }
             
@@ -227,6 +198,27 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels){
         }
     }
 
+    
+    ///< Change sound speed
+    soundSpeed = ofMap(touchPosY, ofGetHeight(), 0, 0.1, 1.0, true);
+    
+    ///< Change sound panning
+    panning = ofMap(touchPosX, 0, ofGetWidth(), 0.0, 1.0, true);
+    
+    
+    ///< Fade out volume when finger is lifted
+    if (fingerIsLifted) {
+        if (volume >= 0.0) {
+            volume = volume - 0.01;
+        }
+    }
+    
+    ///< Stop playback
+    if (volume <= 0.0) {
+        triggerPlay = false;
+        fingerIsLifted = false;
+    }
+    
     
     
     
@@ -254,14 +246,14 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
     
     fingerIsLifted = false;
     
-    //triggerVolume = true;
+
     volume = 1.0;
     
 
     
     ///< Detect if finger is inside change-sample-button
-    if (touch.x > buttonX && touch.y < buttonY) {
-        changeSampleFingerDown = true;
+    if (touch.x > button.buttonX && touch.y < button.buttonY) {
+        button.changeSampleFingerDown = true;
         volume = 0.0;
     } else {
         ///< Trigger play when touch is down
@@ -292,7 +284,7 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
     
   
     ///< Change sample
-    if (touch.x > buttonX && touch.y < buttonY && changeSampleFingerDown) {
+    if (touch.x > button.buttonX && touch.y < button.buttonY && button.changeSampleFingerDown) {
         if(whatSample < 6) {
             whatSample++;
         } else {
@@ -301,7 +293,7 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
     }
     
     ///< Detect if finger is lifted from change-sample-button
-    changeSampleFingerDown = false;
+    button.changeSampleFingerDown = false;
     
     fingerIsLifted = true;
     

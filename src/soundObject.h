@@ -24,6 +24,7 @@ public:
     
     float mySoundBrightness;
     float mySpecVolume;
+    float startRadius;
 
 
     

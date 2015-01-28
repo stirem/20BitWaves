@@ -21,19 +21,21 @@ void Soundobject::Setup() {
         spectrum[i] = 0.0f;
     }
     
+    alpha = 255;
+    
 }
 // --------------------------------------------------------
 
 
 // --------------------------------------------------------
-void Soundobject::Update(float *v) {
+void Soundobject::Update(float *val, float volume) {
     
 
     
     for (int i = 0; i<BANDS; i++) {
         
         spectrum[i] *= 0.97; // Slow decreasing
-        spectrum[i] = max( spectrum[i], v[i]);
+        spectrum[i] = max( spectrum[i], val[i]);
     }
     // --------------------
     
@@ -51,21 +53,15 @@ void Soundobject::Update(float *v) {
     if (a == 0)
         b = 1;
     
-    mySoundBrightness = a / b;
-    mySpecVolume = b;
+    soundBrightness = a / b;
+    spectrumVolume = b;
     // --------------------
 
 
-
-}
-// --------------------------------------------------------
+    
 
 
 
-
-// --------------------------------------------------------
-float Soundobject::SpectrumVolume() {
-    return mySpecVolume;
     
 }
 // --------------------------------------------------------
@@ -74,8 +70,24 @@ float Soundobject::SpectrumVolume() {
 
 
 // --------------------------------------------------------
-float Soundobject::SoundBrightness() {
-   return mySoundBrightness;
+float Soundobject::SpectrumVolume() {
+    return spectrumVolume;
+    
+}
+// --------------------------------------------------------
+
+float Soundobject::SoundBrightness()
+{
+    return soundBrightness;
+}
+
+
+// --------------------------------------------------------
+float Soundobject::ColorBrightness() {
+   
+    colorBrightness = ofMap( soundBrightness, 500, 750, 255, 10 );
+    
+    return colorBrightness;
     
 }
 // --------------------------------------------------------
@@ -88,7 +100,8 @@ float Soundobject::SoundBrightness() {
 float Soundobject::StartRadius() {
     
     ///< Start radius for soundwaves based on the size of the largest soundobject ring.
-    startRadius = mySpecVolume / 30;
+    //startRadius = spectrumVolume / 30;
+    startRadius = ofMap( spectrumVolume, 1300, 1600, 10, 50 );
     return startRadius;
     
 }
@@ -97,8 +110,16 @@ float Soundobject::StartRadius() {
 
 
 // --------------------------------------------------------
-void Soundobject::Position(float x, float y) {
-    pos.set(x, y);
+void Soundobject::Position(float touchX, float touchY, float buttonX, float buttonY, float buttonRadius) {
+
+
+    distanceToButton = sqrt( (touchX - buttonX) * (touchX - buttonX) + (touchY - buttonY) * (touchY - buttonY) ) ;
+    
+    if (distanceToButton > buttonRadius) {
+        
+    }
+    
+    pos.set(touchX, touchY);
 }
 // --------------------------------------------------------
 
@@ -109,22 +130,22 @@ void Soundobject::Draw() {
     //ofEnableAlphaBlending();
     //OF_BLENDMODE_SCREEN;
 
-    color = ofColor(255, 255, 255, 255);
-    color.setBrightness(mySpecVolume / 20);
-    //color.setHue(mySoundBrightness * 20);
+    color = ofColor(255, 255, 255, alpha);
+    //color.setBrightness(mySpecVolume / 20);
+    color.setBrightness( colorBrightness );
     ofSetColor(color);
     ofSetCircleResolution(100);
     ofFill();
     ofCircle(pos.x, pos.y, startRadius);
 
+
     
-    /*
     ///< Spectrum
     ofSetColor(100, 100, 100);
     for (int i = 0; i < 1024; i++) {
-        ofRect(10 + i * 2, ofGetHeight() - 30, 1, -spectrum[i] * 10);
+        ofRect(5 + i * 2, ofGetHeight(), 1, -spectrum[i] * 10);
     }
-    */
+    
     
     
     

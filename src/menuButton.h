@@ -11,12 +11,17 @@ public:
     Button(); // Constructor
     
     void Setup();
+    void Draw();
     void ChangeSample();
+    void DistanceToButton(float touchX, float touchY);
     
     
-    bool changeSampleFingerDown;
-    float buttonX;
-    float buttonY;
+    float posX;
+    float posY;
+    float distToObj;
+    float radius;
+    bool fingerIsInside;
+    unsigned int whatSample;
 };
 
 

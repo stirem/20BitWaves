@@ -5,9 +5,9 @@
 class Soundwave{
 public:
     
-    Soundwave(float x, float y, float s, float r, float h);
+    Soundwave(float touchX, float touchY, float specVolume, float startRadius, float colorBrightness);
 
-    void Update(float s, float v);
+    void Update(float soundSpeed, float volume);
     void Draw();
 
     
@@ -15,9 +15,8 @@ public:
     ofColor color; // Color of soundwaves
     
     float radius; // Radius of soundwaves
-    float colorBrightness; // Color brightness of soundwaves
-    float alpha = 255;
-    float myHue;
+    float waveColorBrightness; // Color brightness of soundwaves
+    float alpha;
     float myLineWidth;
     
 

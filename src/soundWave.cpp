@@ -4,12 +4,14 @@
 
 ///< Get the position, color brightness and radius of soundwaves
 // --------------------------------------------------------
-Soundwave::Soundwave(float x, float y, float s, float r, float b) { // x = touchX, y = touchY, s = spectrumVolume, r = startRadius, b = soundBrighness
-    pos.set(x, y);
-    colorBrightness = s;
-    radius = r; // Radius from specVolume
-    myHue = b;
+Soundwave::Soundwave( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness )
+{
+    pos.set(touchX, touchY);
+    //colorBrightness = specVolume;
+    waveColorBrightness = colorBrightness;
+    radius = startRadius; // Radius from specVolume
     myLineWidth = 1;
+    alpha = 255;
 }
 // --------------------------------------------------------
 
@@ -17,12 +19,12 @@ Soundwave::Soundwave(float x, float y, float s, float r, float b) { // x = touch
 
 ///< Increase radius of soundwaves, and decrease alpha
 // --------------------------------------------------------
-void Soundwave::Update(float s, float v) { // s = soundSpeed, v = volume
+void Soundwave::Update(float soundSpeed, float volume) {
     
     //radius = radius + 40 * s;
-    radius = radius + 1 * s;
+    radius = radius + 1.2 * soundSpeed;
     
-    if (v == 1) {
+    if (volume == 1) {
         alpha = alpha - 1;
     } else {
         alpha = alpha - 1.5;
@@ -38,8 +40,8 @@ void Soundwave::Update(float s, float v) { // s = soundSpeed, v = volume
 void Soundwave::Draw() {
     ofNoFill();
     color = ofColor(255, 255, 255, alpha);
-    color.setBrightness(colorBrightness / 25);
-    color.setHue(myHue * 20);
+    //color.setBrightness(colorBrightness / 25);
+    color.setBrightness( waveColorBrightness );
     ofSetColor(color);
     ofEnableAntiAliasing();
     ofSetCircleResolution(100);

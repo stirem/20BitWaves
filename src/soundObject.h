@@ -14,17 +14,22 @@ public:
     Soundobject(); // Constructor
     
     void Setup();
-    void Update(float *v);
+    void Update(float *val, float volume);
     void Draw();
-    float SoundBrightness();
+    float ColorBrightness();
     float SpectrumVolume();
+    float SoundBrightness();
     
-    void Position(float x, float y);
+    void Position(float touchX, float touchY, float buttonX, float buttonY, float buttonRadius);
     float StartRadius();
     
-    float mySoundBrightness;
-    float mySpecVolume;
+    float soundBrightness;
+    float spectrumVolume;
     float startRadius;
+    float distanceToButton;
+    float colorBrightness;
+    float alpha;
+
 
 
     

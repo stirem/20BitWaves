@@ -15,15 +15,13 @@ void ofApp::setup(){
     ofBackground(0, 0, 0);
     ofShowCursor();
     
-    ///< Reset spectrum to 0
     soundobject.Setup();
     
     button.Setup();
+
     
-    ///< 
-    triggerPlay = false;
+    triggerPlay             = false;
     soundSpeed              = 1.0;
-    whatSample              = 1;
 
     fingerIsLifted          = false;
 
@@ -33,16 +31,16 @@ void ofApp::setup(){
     sampleRate              = 44100;
     initialBufferSize       = 512;
     panning                 = 0.5;
-    volume                  = 1.0;
+    volume                  = 0.0;
     
 
     // Load samples
-    sample1.load(ofToDataPath("frosk.wav"));
-    sample2.load(ofToDataPath("apekatt.wav"));
-    sample3.load(ofToDataPath("flodhest.wav"));
-    sample4.load(ofToDataPath("hest.wav"));
-    sample5.load(ofToDataPath("kattepus.wav"));
-    sample6.load(ofToDataPath("and.wav"));
+    fileSample1.load(ofToDataPath("frosk.wav"));
+    fileSample2.load(ofToDataPath("apekatt.wav"));
+    fileSample3.load(ofToDataPath("flodhest.wav"));
+    fileSample4.load(ofToDataPath("hest.wav"));
+    fileSample5.load(ofToDataPath("kattepus.wav"));
+    fileSample6.load(ofToDataPath("and.wav"));
 
     
     ///< openFrameworks sound stream
@@ -68,7 +66,7 @@ void ofApp::update(){
     float *val = myFFT.magnitudesDB;
     
     ///< Update sound engine, spectrum and average spectrum
-    soundobject.Update(val);
+    soundobject.Update(val, volume);
     
     
     
@@ -85,9 +83,9 @@ void ofApp::update(){
     
     ///< Add soundwaves
     if (volume > 0.0) {
-        if (button.changeSampleFingerDown == false) {
+        if (button.fingerIsInside == false) {
             if (ofGetElapsedTimef() > myTimer + 0.01) {
-                soundwaves.push_back( Soundwave(touchPosX, touchPosY, soundobject.SpectrumVolume(), soundobject.StartRadius(), soundobject.SoundBrightness() ) );
+                soundwaves.push_back( Soundwave(touchPosX, touchPosY, soundobject.SpectrumVolume(), soundobject.StartRadius(), soundobject.ColorBrightness() ) );
                 myTimer = ofGetElapsedTimef();
             }
         }
@@ -113,27 +111,24 @@ void ofApp::draw(){
         soundwaves[i].Draw();
     }
     
-    ///< Change sample button
-    ofSetColor(100, 100, 100);
-    ofSetRectMode(OF_RECTMODE_CENTER);
-    ofRect(ofGetWidth() - 30, 30, 30, 30);
-    ofDrawBitmapString(ofToString(whatSample), ofGetWidth() - 35, 34);
+    
+    button.Draw();
     
     
-    /*
+    
     ///< Debug text
     ofSetColor(100, 100, 100);
     ofDrawBitmapString("X: " + ofToString(touchPosX), 10, 20);
     ofDrawBitmapString("Y: " + ofToString(touchPosY), 10, 40);
-    ofDrawBitmapString("What Sample: " + ofToString(whatSample), 10, 60);
-    ofDrawBitmapString("C S Finger Down: " + ofToString(button.changeSampleFingerDown), 10, 80);
-    ofDrawBitmapString("Button X: " + ofToString(button.buttonX), 10, 100);
-    ofDrawBitmapString("Button Y: " + ofToString(button.buttonY), 10, 120);
+    ofDrawBitmapString("What Sample: " + ofToString(button.whatSample), 10, 60);
+    ofDrawBitmapString("Finger is inside button: " + ofToString(button.fingerIsInside), 10, 80);
+    ofDrawBitmapString("Button X: " + ofToString(button.posX), 10, 100);
+    ofDrawBitmapString("Button Y: " + ofToString(button.posY), 10, 120);
     ofDrawBitmapString("Volume: " + ofToString(volume), 10, 140);
     ofDrawBitmapString("Sound speed: " + ofToString(soundSpeed), 10, 160);
     ofDrawBitmapString("Sound brightness: " + ofToString(soundobject.SoundBrightness()), 10, 180);
-     */
-     
+    ofDrawBitmapString("Spectrum volume: " + ofToString(soundobject.SpectrumVolume()), 10, 200);
+    
      
 }
 
@@ -159,31 +154,31 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels){
     if (triggerPlay) {
         // itererover alle samolene og regner ut samplene en etter en
         for (int i = 0; i < bufferSize; i++){
-            switch (whatSample) {
+            switch (button.whatSample) {
                 case 1:
-                    sample = sample1.play(soundSpeed);
+                    sample = fileSample1.play(soundSpeed);
                     break;
                 case 2:
-                    sample = sample2.play(soundSpeed);
+                    sample = fileSample2.play(soundSpeed);
                     break;
                 case 3:
-                    sample = sample3.play(soundSpeed);
+                    sample = fileSample3.play(soundSpeed);
                     break;
                 case 4:
-                    sample = sample4.play(soundSpeed);
+                    sample = fileSample4.play(soundSpeed);
                     break;
                 case 5:
-                    sample = sample5.play(soundSpeed);
+                    sample = fileSample5.play(soundSpeed);
                     break;
                 case 6:
-                    sample = sample6.play(soundSpeed);
+                    sample = fileSample6.play(soundSpeed);
                     break;
                 default:
                     break;
             }
             
             
-            if (button.changeSampleFingerDown == false) {
+            if (button.fingerIsInside == false) {
                 channel1.stereo(sample, outputs1, panning);
             }
             
@@ -209,7 +204,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels){
     ///< Fade out volume when finger is lifted
     if (fingerIsLifted) {
         if (volume >= 0.0) {
-            volume = volume - 0.01;
+            volume = volume - 0.005;
         }
     }
     
@@ -233,40 +228,38 @@ void ofApp::touchDown(ofTouchEventArgs & touch){
     touchPosY = touch.y;
     
     ///< Set position of samples to 0 when finger is lifted
-    sample1.setPosition(0.);
-    sample2.setPosition(0.);
-    sample3.setPosition(0.);
-    sample4.setPosition(0.);
-    sample5.setPosition(0.);
-    sample6.setPosition(0.);
+    fileSample1.setPosition(0.);
+    fileSample2.setPosition(0.);
+    fileSample3.setPosition(0.);
+    fileSample4.setPosition(0.);
+    fileSample5.setPosition(0.);
+    fileSample6.setPosition(0.);
 
-    
-    ///< Set position of soundobject when mouse is pressed
-    soundobject.Position(touch.x, touch.y);
+
     
     fingerIsLifted = false;
     
 
-    volume = 1.0;
+    button.DistanceToButton(touch.x, touch.y);
     
-
     
     ///< Detect if finger is inside change-sample-button
-    if (touch.x > button.buttonX && touch.y < button.buttonY) {
-        button.changeSampleFingerDown = true;
+    if (button.fingerIsInside == true)
+    {
         volume = 0.0;
-    } else {
-        ///< Trigger play when touch is down
-        triggerPlay = true;
     }
-    
-    
+    else
+    {
+        triggerPlay = true;
+        volume = 1.0;
+        soundobject.Position(touch.x, touch.y, button.posX, button.posY, button.radius);
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::touchMoved(ofTouchEventArgs & touch){
     ///< Set position of soundobject when mouse is moved
-    soundobject.Position(touch.x, touch.y);
+    soundobject.Position(touch.x, touch.y, button.posX, button.posY, button.radius);
     
     
     ///< Update position of soundwaves when touch moves
@@ -282,20 +275,12 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
     
 
     
-  
-    ///< Change sample
-    if (touch.x > button.buttonX && touch.y < button.buttonY && button.changeSampleFingerDown) {
-        if(whatSample < 6) {
-            whatSample++;
-        } else {
-            whatSample = 1;
-        }
-    }
-    
-    ///< Detect if finger is lifted from change-sample-button
-    button.changeSampleFingerDown = false;
+
+
     
     fingerIsLifted = true;
+    
+    button.fingerIsInside = false;
     
     
 }

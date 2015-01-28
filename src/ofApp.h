@@ -44,7 +44,6 @@ class ofApp : public ofxiOSApp {
     
     bool triggerPlay;
     float soundSpeed;
-    int whatSample;
 
     bool fingerIsLifted;
 
@@ -62,12 +61,12 @@ class ofApp : public ofxiOSApp {
 
     
     // Maximilian sample playback declaration
-    ofxMaxiSample sample1;
-    ofxMaxiSample sample2;
-    ofxMaxiSample sample3;
-    ofxMaxiSample sample4;
-    ofxMaxiSample sample5;
-    ofxMaxiSample sample6;
+    ofxMaxiSample fileSample1;
+    ofxMaxiSample fileSample2;
+    ofxMaxiSample fileSample3;
+    ofxMaxiSample fileSample4;
+    ofxMaxiSample fileSample5;
+    ofxMaxiSample fileSample6;
     
     ofxMaxiMix channel1;
     double sample;

@@ -7,7 +7,8 @@
 
 #define BANDS 1024 // Number of bands in spectrum
 
-class Soundobject {
+class Soundobject
+{
 public:
     
 
@@ -29,6 +30,7 @@ public:
     float distanceToButton;
     float colorBrightness;
     float alpha;
+    float radius;
 
 
 

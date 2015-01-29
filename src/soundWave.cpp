@@ -8,10 +8,10 @@ Soundwave::Soundwave( float touchX, float touchY, float specVolume, float startR
 {
     pos.set(touchX, touchY);
     //colorBrightness = specVolume;
-    waveColorBrightness = colorBrightness;
-    radius = startRadius; // Radius from specVolume
-    myLineWidth = 1;
-    alpha = 255;
+    waveColorBrightness     = colorBrightness;
+    radius                  = startRadius; // Radius from specVolume
+    myLineWidth             = 1;
+    alpha                   = 255;
 }
 // --------------------------------------------------------
 
@@ -23,6 +23,7 @@ void Soundwave::Update(float soundSpeed, float volume) {
     
     //radius = radius + 40 * s;
     radius = radius + 1.2 * soundSpeed;
+
     
     if (volume == 1) {
         alpha = alpha - 1;
@@ -37,16 +38,17 @@ void Soundwave::Update(float soundSpeed, float volume) {
 
 ///< Draw the soundwave circles
 // --------------------------------------------------------
-void Soundwave::Draw() {
+void Soundwave::Draw()
+{
     ofNoFill();
-    color = ofColor(255, 255, 255, alpha);
+    color = ofColor( 255, 255, 255, alpha );
     //color.setBrightness(colorBrightness / 25);
     color.setBrightness( waveColorBrightness );
-    ofSetColor(color);
+    ofSetColor( color );
     ofEnableAntiAliasing();
-    ofSetCircleResolution(100);
-    ofSetLineWidth(myLineWidth);
-    ofCircle(pos.x, pos.y, radius);
+    ofSetCircleResolution( 100 );
+    ofSetLineWidth( myLineWidth );
+    ofCircle( pos.x, pos.y, radius );
 }
 // --------------------------------------------------------
 

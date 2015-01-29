@@ -10,7 +10,7 @@ void Button::Setup()
 {
     posX                 = ofGetWidth() * 0.98;
     posY                 = ofGetHeight() * 0.02;
-    radius               = ofGetWidth() / 20;
+    radius               = ofGetWidth() / 25;
     whatSample           = 1;
 }
 
@@ -22,20 +22,28 @@ void Button::ChangeSample()
 
 void Button::DistanceToButton(float touchX, float touchY)
 {
+    // Calculate if finger is inside button when touch is down.
     distToObj = sqrt(    (touchX - posX) * (touchX - posX) + (touchY - posY) * (touchY - posY)     ) ;
 
-    if (radius > distToObj) {
-        fingerIsInside = 1;
+    // If finger is inside button when touch is down, buttonIsPress to true.
+    if (radius > distToObj)
+    {
+        buttonIsPressed = 1;
     }
     else
     {
-        fingerIsInside = 0;
+        buttonIsPressed = 0;
     }
     
-    if (fingerIsInside) {
-        if(whatSample < 6) {
+    // If buttonIsPress is true, change sample.
+    if (buttonIsPressed)
+    {
+        if(whatSample < 9)
+        {
             whatSample++;
-        } else {
+        }
+        else
+        {
             whatSample = 1;
         }
     }
@@ -45,8 +53,8 @@ void Button::DistanceToButton(float touchX, float touchY)
 void Button::Draw()
 {
     ///< Change sample button
-    ofSetColor(50, 50, 50);
+    ofSetColor( 50, 50, 50 );
     ofNoFill();
-    ofCircle(posX, posY, radius);
-    ofDrawBitmapString(ofToString(whatSample), posX, posY);
+    ofCircle( posX, posY, radius );
+    ofDrawBitmapString( ofToString( whatSample ), posX - 5, posY + 5 );
 }

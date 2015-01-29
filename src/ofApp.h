@@ -29,10 +29,7 @@ class ofApp : public ofxiOSApp {
         void gotMemoryWarning();
         void deviceOrientationChanged(int newOrientation);
     
-    
-    float myTimer; // Timer for how often soundwaves are spawned
-    float touchPosX; // Declaration of soundwave pos X
-    float touchPosY; // Declaration of soundwave pos Y
+
     
     
     vector<Soundwave> soundwaves; // Soundwave vector
@@ -42,9 +39,10 @@ class ofApp : public ofxiOSApp {
     Button button;
     
     
+    float touchPosX;
+    float touchPosY;
     bool triggerPlay;
     float soundSpeed;
-
     bool fingerIsLifted;
 
 
@@ -67,6 +65,9 @@ class ofApp : public ofxiOSApp {
     ofxMaxiSample fileSample4;
     ofxMaxiSample fileSample5;
     ofxMaxiSample fileSample6;
+    ofxMaxiSample fileSample7;
+    ofxMaxiSample fileSample8;
+    ofxMaxiSample fileSample9;
     
     ofxMaxiMix channel1;
     double sample;
@@ -76,7 +77,7 @@ class ofApp : public ofxiOSApp {
     int fftSize;
     int nAverages;
     ofxMaxiFFT myFFT;
-    ofxMaxiFFTOctaveAnalyzer myFFTOctAna;
+    //ofxMaxiFFTOctaveAnalyzer myFFTOctAna;
 
     
 };

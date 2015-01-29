@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include "ofMain.h"
 
-class Soundwave{
+class Soundwave
+{
 public:
     
     Soundwave(float touchX, float touchY, float specVolume, float startRadius, float colorBrightness);

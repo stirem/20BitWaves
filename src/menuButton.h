@@ -20,7 +20,7 @@ public:
     float posY;
     float distToObj;
     float radius;
-    bool fingerIsInside;
+    bool buttonIsPressed;
     unsigned int whatSample;
 };
 

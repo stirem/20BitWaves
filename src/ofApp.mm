@@ -158,20 +158,20 @@ void ofApp::exit(){
 ///< ----------- M A X I M I L I A N -------------
 void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
 {
-    
-    
+	
+	ofxMaxiMix channel1;
+	double sample;
+	double outputs1[2];
+	
     if( initialBufferSize != bufferSize )
     {
         ofLog( OF_LOG_ERROR, "your buffer size was set to %i - but the stream needs a buffer size of %i", initialBufferSize, bufferSize );
         return;
     }
     
-    
-    
-    
     if ( triggerPlay )
     {
-        // itererover alle samolene og regner ut samplene en etter en
+        // Calculate audio vector by iterating over samples
         for ( int i = 0; i < bufferSize; i++ )
         {
             switch ( button.whatSample )
@@ -250,10 +250,6 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
         triggerPlay = false;
         fingerIsLifted = false;
     }
-    
-    
-    
-    
 }
 
 

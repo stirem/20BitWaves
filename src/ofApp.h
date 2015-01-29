@@ -32,18 +32,18 @@ class ofApp : public ofxiOSApp {
 
     
     
-    vector<Soundwave> soundwaves; // Soundwave vector
+		vector<Soundwave> soundwaves; // Soundwave vector
+	
+		Soundobject soundobject; // Soundobject ??
     
-    Soundobject soundobject; // Soundobject ??
-    
-    Button button;
+		Button button;
     
     
-    float touchPosX;
-    float touchPosY;
-    bool triggerPlay;
-    float soundSpeed;
-    bool fingerIsLifted;
+		float touchPosX;
+		float touchPosY;
+		bool  triggerPlay;
+		float soundSpeed;
+		bool  fingerIsLifted;
 
 
     
@@ -51,15 +51,23 @@ class ofApp : public ofxiOSApp {
     ///< MAXIMILIAN
     // REMEMBER TO INCLUDE ACCELERATE FRAMEWORK !!!!!!
     //void audioReceived( float * input, int bufferSize, int nChannels );
-    void audioRequested( float * output, int bufferSize, int nChannels );
-    int	initialBufferSize;
-    int	sampleRate;
-    float panning;
-    float volume;
+	
+	int	  initialBufferSize;
+	int	  sampleRate;
+	float panning;
+	float volume;
+	
+	/** Called every time there is a request to calculate a new audio vector.
+	 @param output			The audio vector
+	 @param bufferSize		Audio vector size
+	 @param nChannels		Number of audio channels
+	 */
+	void  audioRequested( float * output, int bufferSize, int nChannels );
 
     
     // Maximilian sample playback declaration
-    ofxMaxiSample fileSample1;
+	// TODO: Make this an array?
+	ofxMaxiSample fileSample1;
     ofxMaxiSample fileSample2;
     ofxMaxiSample fileSample3;
     ofxMaxiSample fileSample4;
@@ -69,9 +77,6 @@ class ofApp : public ofxiOSApp {
     ofxMaxiSample fileSample8;
     ofxMaxiSample fileSample9;
     
-    ofxMaxiMix channel1;
-    double sample;
-    double outputs1[2];
     
     // Declare FFT
     int fftSize;

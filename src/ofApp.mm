@@ -161,7 +161,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
 	
 	ofxMaxiMix channel1;
 	double sample;
-	double outputs1[2];
+	double stereomix[2];
 	
     if( initialBufferSize != bufferSize )
     {
@@ -169,10 +169,10 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
         return;
     }
     
-    if ( triggerPlay )
+    // Calculate audio vector by iterating over samples
+    for ( int i = 0; i < bufferSize; i++ )
     {
-        // Calculate audio vector by iterating over samples
-        for ( int i = 0; i < bufferSize; i++ )
+        if ( triggerPlay )
         {
             switch ( button.whatSample )
             {
@@ -206,24 +206,22 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
                 default:
                     break;
             }
-            
-            
-            // Play sample when finger is not inside change-sound-button.
-            if ( button.buttonIsPressed == false )
-            {
-                channel1.stereo( sample, outputs1, panning );
-            }
-            
-            // Process FFT Spectrum
-            if ( myFFT.process( sample ) )
-            {
-                myFFT.magsToDB();
-                //myFFTOctAna.calculate( myFFT.magnitudes );
-            }
-            
-            output[i*nChannels    ] = outputs1[0] * volume;
-            output[i*nChannels + 1] = outputs1[1] * volume;
         }
+        else
+            sample = 0.;
+        
+        // Stereo panning
+        channel1.stereo( sample, stereomix, panning );
+        
+        // Process FFT Spectrum
+        if ( myFFT.process( sample ) )
+        {
+            myFFT.magsToDB();
+            //myFFTOctAna.calculate( myFFT.magnitudes );
+        }
+        
+        output[i*nChannels    ] = stereomix[0] * volume;
+        output[i*nChannels + 1] = stereomix[1] * volume;
     }
 
     

@@ -9,6 +9,7 @@
 #include "menuButton.h"
 
 
+#define K_NUM_POLY_VOICES 10;
 
 class ofApp : public ofxiOSApp {
 	

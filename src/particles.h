@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include "ofMain.h"
 
-class Soundwave
+class Particles
 {
 public:
     
-    Soundwave(float touchX, float touchY, float specVolume, float startRadius, float colorBrightness);
+    Particles(float touchX, float touchY, float specVolume, float startRadius, float colorBrightness);
 
     void Update(float soundSpeed, float volume);
     void Draw();

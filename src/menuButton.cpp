@@ -8,9 +8,9 @@ Button::Button()
 
 void Button::Setup()
 {
-    posX                 = ofGetWidth() * 0.98;
-    posY                 = ofGetHeight() * 0.02;
-    radius               = ofGetWidth() / 25;
+    posX                 = 0;
+    posY                 = 0;
+    radius               = 100;
     whatSample           = 1;
 }
 

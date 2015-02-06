@@ -1,10 +1,10 @@
 
-#include "soundWave.h"
+#include "particles.h"
 
 
 ///< Get the position, color brightness and radius of soundwaves
 // --------------------------------------------------------
-Soundwave::Soundwave( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness )
+Particles::Particles( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness )
 {
     pos.set(touchX, touchY);
     //colorBrightness = specVolume;
@@ -19,7 +19,7 @@ Soundwave::Soundwave( float touchX, float touchY, float specVolume, float startR
 
 ///< Increase radius of soundwaves, and decrease alpha
 // --------------------------------------------------------
-void Soundwave::Update(float soundSpeed, float volume) {
+void Particles::Update(float soundSpeed, float volume) {
     
     //radius = radius + 40 * s;
     radius = radius + 1.2 * soundSpeed;
@@ -38,7 +38,7 @@ void Soundwave::Update(float soundSpeed, float volume) {
 
 ///< Draw the soundwave circles
 // --------------------------------------------------------
-void Soundwave::Draw()
+void Particles::Draw()
 {
     ofNoFill();
     color = ofColor( 255, 255, 255, alpha );

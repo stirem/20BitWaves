@@ -2,7 +2,7 @@
 
 
 ///< Remove soundwave vectors if alpha is 0 or less.
-bool shouldRemove(Soundwave &p)
+bool shouldRemove(Particles &p)
 {
     if(p.alpha <= 0 )return true;
     else return false;
@@ -13,10 +13,11 @@ bool shouldRemove(Soundwave &p)
 void ofApp::setup()
 {
     ///< Setup framerate, background color and show mouse
-    ofSetFrameRate(60);
-    ofBackground(0, 0, 0);
+    ofSetFrameRate( 60 );
+    ofBackground( 0, 0, 0 );
+    ofSetOrientation( OF_ORIENTATION_90_LEFT );
     
-    soundobject.Setup();
+    touchobject.Setup();
     
     button.Setup();
 
@@ -71,29 +72,29 @@ void ofApp::update()
     
     
     ///< Update spectrum analyze
-    soundobject.Update(val, volume);
+    touchobject.Update(val, volume);
     
     
     
-    ///< Increase radius of soundwaves, and decrease alpha
-    for( int i = 0; i < soundwaves.size(); i++ )
+    ///< Increase radius of particles, and decrease alpha
+    for( int i = 0; i < particles.size(); i++ )
     {
-        soundwaves[i].Update(soundSpeed, volume);
+        particles[i].Update(soundSpeed, volume);
     }
     
     
     ///< Remove soundwave when alpha is 0
-    ofRemove(soundwaves, shouldRemove);
+    ofRemove(particles, shouldRemove);
     
     
     
-    ///< Add soundwaves
+    ///< Add particles
     //if (volume > 0.0)
-    if ( soundobject.spectrumVolume > 1200 && volume > 0.0 )
+    if ( touchobject.spectrumVolume > 1200 && volume > 0.0 )
     {
         if (button.buttonIsPressed == false)// Do not add waves when pushing change-song-button.
         {
-            soundwaves.push_back( Soundwave(touchPosX, touchPosY, soundobject.SpectrumVolume(), soundobject.StartRadius(), soundobject.ColorBrightness() ) );
+            particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness() ) );
         }
     }
     
@@ -108,15 +109,15 @@ void ofApp::draw()
     
 
     
-    ///< Draw soundobject
-    soundobject.Draw();
+    ///< Draw touchobject
+    touchobject.Draw();
     
     
     
-    ///< Draw soundwaves
-    for( int i = 0; i < soundwaves.size(); i++ )
+    ///< Draw particles
+    for( int i = 0; i < particles.size(); i++ )
     {
-        soundwaves[i].Draw();
+        particles[i].Draw();
     }
     
     
@@ -135,13 +136,15 @@ void ofApp::draw()
     ofDrawBitmapString("Button Y: " + ofToString(button.posY), 10, 120);
     ofDrawBitmapString("Volume: " + ofToString(volume), 10, 140);
     ofDrawBitmapString("Sound speed: " + ofToString(soundSpeed), 10, 160);
-    ofDrawBitmapString("Sound brightness: " + ofToString(soundobject.SoundBrightness()), 10, 180);
-    ofDrawBitmapString("Spectrum volume: " + ofToString(soundobject.SpectrumVolume()), 10, 200);
+    ofDrawBitmapString("Sound brightness: " + ofToString(touchobject.SoundBrightness()), 10, 180);
+    ofDrawBitmapString("Spectrum volume: " + ofToString(touchobject.SpectrumVolume()), 10, 200);
     ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()), 10, 220);
-    ofDrawBitmapString("Start radius: " + ofToString(soundobject.startRadius), 10, 240);
+    ofDrawBitmapString("Start radius: " + ofToString(touchobject.startRadius), 10, 240);
     ofDrawBitmapString("Delta time: " + ofToString(ofGetLastFrameTime()), 10, 260);
-    ofDrawBitmapString("Soundobject radius: " + ofToString(soundobject.radius), 10, 280);
-    ofDrawBitmapString("How many soundwaves: " + ofToString(soundwaves.size()), 10, 300);
+    ofDrawBitmapString("Touchobject radius: " + ofToString(touchobject.radius), 10, 280);
+    ofDrawBitmapString("How many particless: " + ofToString(particles.size()), 10, 300);
+    ofDrawBitmapString("Finger is lifted: " + ofToString(fingerIsLifted), 10, 320);
+    
      
 }
 
@@ -226,7 +229,17 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
 
     
     ///< Change sound speed
-    soundSpeed = ofMap(touchPosY, ofGetHeight(), 0, 0.0, 1.0, true);
+    if ( touchPosY > ofGetHeight() / 2 )
+    {
+        soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, ofGetHeight(), 1.0, 0.1, true);
+    }
+    else if ( touchPosY < ofGetHeight() / 2 )
+    {
+        soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, 0, 1.0, 1.5, true);
+    }
+    
+    
+    //soundSpeed = ofMap(touchPosY, ofGetHeight(), 0, 0.0, 1.0, true);
     
     
     ///< Change sound panning
@@ -255,7 +268,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
 //--------------------------------------------------------------
 void ofApp::touchDown( ofTouchEventArgs & touch )
 {
-    ///< Update position of soundwaves when touch is pressed
+    ///< Update position of particles when touch is pressed
     touchPosX = touch.x;
     touchPosY = touch.y;
     
@@ -288,19 +301,19 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     {
         triggerPlay = true;
         volume = 1.0;
-        // Set position of soundobject when touch is moved
-        soundobject.Position(touch.x, touch.y, button.posX, button.posY, button.radius);
+        // Set position of touchobject when touch is moved
+        touchobject.Position(touch.x, touch.y, button.posX, button.posY, button.radius);
     }
 }
 
 //--------------------------------------------------------------
 void ofApp::touchMoved( ofTouchEventArgs & touch )
 {
-    ///< Set position of soundobject when touch is moved
-    soundobject.Position(touch.x, touch.y, button.posX, button.posY, button.radius);
+    ///< Set position of touchobject when touch is moved
+    touchobject.Position(touch.x, touch.y, button.posX, button.posY, button.radius);
     
     
-    ///< Update position of soundwaves when touch moves
+    ///< Update position of particles when touch moves
     touchPosX = touch.x;
     touchPosY = touch.y;
     

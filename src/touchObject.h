@@ -7,12 +7,12 @@
 
 #define BANDS 1024 // Number of bands in spectrum
 
-class Soundobject
+class Touchobject
 {
 public:
     
 
-    Soundobject(); // Constructor
+    Touchobject(); // Constructor
     
     void Setup();
     void Update(float *val, float volume);

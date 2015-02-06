@@ -4,8 +4,8 @@
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
 
-#include "soundWave.h"
-#include "soundObject.h"
+#include "particles.h"
+#include "touchObject.h"
 #include "menuButton.h"
 
 
@@ -33,9 +33,9 @@ class ofApp : public ofxiOSApp {
 
     
     
-		vector<Soundwave> soundwaves; // Soundwave vector
+		vector<Particles> particles; // Soundwave vector
 	
-		Soundobject soundobject; // Soundobject ??
+		Touchobject touchobject; // Touchobject ??
     
 		Button button;
     

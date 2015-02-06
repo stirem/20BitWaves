@@ -1,12 +1,12 @@
 
-#include "soundObject.h"
+#include "touchObject.h"
 
 
 
 
 // --------------------------------------------------------
-///< Constructor for Soundobject
-Soundobject::Soundobject()
+///< Constructor for Touchobject
+Touchobject::Touchobject()
 {
 
 }
@@ -14,7 +14,7 @@ Soundobject::Soundobject()
 
 
 // --------------------------------------------------------
-void Soundobject::Setup()
+void Touchobject::Setup()
 {
     // Set spectrum values to 0
     for (int i = 0; i<BANDS; i++) {
@@ -29,7 +29,7 @@ void Soundobject::Setup()
 
 
 // --------------------------------------------------------
-void Soundobject::Update( float *val, float volume )
+void Touchobject::Update( float *val, float volume )
 {
     
     
@@ -71,9 +71,9 @@ void Soundobject::Update( float *val, float volume )
     // Fade down soundobject when not playing
     if ( spectrumVolume < 1000 )
     {
-        if ( colorBrightness > 50 )
+        if ( colorBrightness > 0 )
         {
-            colorBrightness = colorBrightness - 1;
+            colorBrightness = colorBrightness - 5;
         }
     }
     
@@ -86,7 +86,7 @@ void Soundobject::Update( float *val, float volume )
 
 
 // --------------------------------------------------------
-float Soundobject::SpectrumVolume()
+float Touchobject::SpectrumVolume()
 {
     return spectrumVolume;
 }
@@ -97,7 +97,7 @@ float Soundobject::SpectrumVolume()
 
 
 // --------------------------------------------------------
-float Soundobject::SoundBrightness()
+float Touchobject::SoundBrightness()
 {
     return soundBrightness;
 }
@@ -108,7 +108,7 @@ float Soundobject::SoundBrightness()
 
 
 // --------------------------------------------------------
-float Soundobject::ColorBrightness()
+float Touchobject::ColorBrightness()
 {
    
     colorBrightness = ofMap( soundBrightness, 500, 770, 255, 10 );
@@ -123,7 +123,7 @@ float Soundobject::ColorBrightness()
 
 
 // --------------------------------------------------------
-float Soundobject::StartRadius()
+float Touchobject::StartRadius()
 {
     
     ///< Start radius for soundwaves based on the size of the soundobject.
@@ -144,7 +144,7 @@ float Soundobject::StartRadius()
 
 
 // --------------------------------------------------------
-void Soundobject::Position(float touchX, float touchY, float buttonX, float buttonY, float buttonRadius)
+void Touchobject::Position(float touchX, float touchY, float buttonX, float buttonY, float buttonRadius)
 {
 
     
@@ -167,7 +167,7 @@ void Soundobject::Position(float touchX, float touchY, float buttonX, float butt
 
 
 // --------------------------------------------------------
-void Soundobject::Draw()
+void Touchobject::Draw()
 {
     //ofEnableAlphaBlending();
     //OF_BLENDMODE_SCREEN;
@@ -181,13 +181,13 @@ void Soundobject::Draw()
     ofCircle(pos.x, pos.y, radius);
 
 
-    
+    /*
     ///< Spectrum
     ofSetColor(100, 100, 100);
     for (int i = 0; i < BANDS; i++) {
         ofRect(5 + i * 2, ofGetHeight(), 1, -spectrum[i] * 10);
     }
-    
+    */
     
     
     

@@ -5,15 +5,19 @@
 #include <stdio.h>
 #include "ofMain.h"
 
+#define NR_OF_SOUNDS 9
+#define SOUND_BUTTON_INDENT 0.25    ///< lkjhljhl
+#define SOUND_BUTTON_WIDTH 0.08     ///< alisudfoausdhfajsdhflasdhflajsdhfaljs
+
 class Button {
 public:
     
     Button(); // Constructor
     
     void Setup();
+    void Update( float touchX );
     void Draw();
-    void ChangeSample();
-    void DistanceToButton(float touchX, float touchY);
+    void DistanceToButton( float touchX, float touchY );
     
     
     float posX;
@@ -22,6 +26,9 @@ public:
     float radius;
     bool buttonIsPressed;
     unsigned int whatSample;
+    
+    ofTrueTypeFont fontLarge;
+    
 };
 
 

@@ -75,6 +75,9 @@ void ofApp::update()
         particles[i].Update(soundSpeed, volume);
     }
     
+    ///> Move Menu Button with finger
+    button.Update( touchPosX );
+    
     
     ///< Remove soundwave when alpha is 0
     ofRemove(particles, shouldRemove);
@@ -110,26 +113,27 @@ void ofApp::draw()
     // Draw change-sound-sample-button
     button.Draw();
     
+    
     /*
     ///< Debug text
     ofSetColor(100, 100, 100);
-    ofDrawBitmapString("Touch X: " + ofToString(touchPosX), 10, 20);
-    ofDrawBitmapString("Touch Y: " + ofToString(touchPosY), 10, 40);
-    ofDrawBitmapString("What Sample: " + ofToString(button.whatSample), 10, 60);
-    ofDrawBitmapString("Button is pressed: " + ofToString(button.buttonIsPressed), 10, 80);
-    ofDrawBitmapString("Button X: " + ofToString(button.posX), 10, 100);
-    ofDrawBitmapString("Button Y: " + ofToString(button.posY), 10, 120);
-    ofDrawBitmapString("Volume: " + ofToString(volume), 10, 140);
-    ofDrawBitmapString("Sound speed: " + ofToString(soundSpeed), 10, 160);
-    ofDrawBitmapString("Sound brightness: " + ofToString(touchobject.SoundBrightness()), 10, 180);
-    ofDrawBitmapString("Spectrum volume: " + ofToString(touchobject.SpectrumVolume()), 10, 200);
+     ofDrawBitmapString("Touch X: " + ofToString(touchPosX), 10, 20);
+     ofDrawBitmapString("Touch Y: " + ofToString(touchPosY), 10, 40);
+     ofDrawBitmapString("What Sample: " + ofToString(button.whatSample), 10, 60);
+     ofDrawBitmapString("Button is pressed: " + ofToString(button.buttonIsPressed), 10, 80);
+    // ofDrawBitmapString("Button X: " + ofToString(button.posX), 10, 100);
+    // ofDrawBitmapString("Button Y: " + ofToString(button.posY), 10, 120);
+    // ofDrawBitmapString("Volume: " + ofToString(volume), 10, 140);
+    // ofDrawBitmapString("Sound speed: " + ofToString(soundSpeed), 10, 160);
+    // ofDrawBitmapString("Sound brightness: " + ofToString(touchobject.SoundBrightness()), 10, 180);
+    // ofDrawBitmapString("Spectrum volume: " + ofToString(touchobject.SpectrumVolume()), 10, 200);
     ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()), 10, 220);
-    ofDrawBitmapString("Start radius: " + ofToString(touchobject.startRadius), 10, 240);
-    ofDrawBitmapString("Delta time: " + ofToString(ofGetLastFrameTime()), 10, 260);
-    ofDrawBitmapString("Touchobject radius: " + ofToString(touchobject.radius), 10, 280);
-    ofDrawBitmapString("How many particless: " + ofToString(particles.size()), 10, 300);
-    ofDrawBitmapString("Finger is lifted: " + ofToString(fingerIsLifted), 10, 320);
-     */
+    // ofDrawBitmapString("Start radius: " + ofToString(touchobject.startRadius), 10, 240);
+    // ofDrawBitmapString("Delta time: " + ofToString(ofGetLastFrameTime()), 10, 260);
+    // ofDrawBitmapString("Touchobject radius: " + ofToString(touchobject.radius), 10, 280);
+    // ofDrawBitmapString("How many particless: " + ofToString(particles.size()), 10, 300);
+    // ofDrawBitmapString("Finger is lifted: " + ofToString(fingerIsLifted), 10, 320);
+    */
     
 }
 
@@ -163,7 +167,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     {
         if ( triggerPlay )
         {
-           sample = fileSample[button.whatSample].play( soundSpeed );
+           sample = fileSample[button.whatSample].playOnce( soundSpeed ); // No loop
         }
         else
             sample = 0.;

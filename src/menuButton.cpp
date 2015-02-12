@@ -11,7 +11,7 @@ void Button::Setup()
     posX                 = 0;
     posY                 = 0;
     radius               = 100;
-    whatSample           = 1;
+    whatSample           = 0;
 }
 
 
@@ -38,13 +38,13 @@ void Button::DistanceToButton(float touchX, float touchY)
     // If buttonIsPress is true, change sample.
     if (buttonIsPressed)
     {
-        if(whatSample < 9)
+        if(whatSample < 8)
         {
             whatSample++;
         }
         else
         {
-            whatSample = 1;
+            whatSample = 0;
         }
     }
     

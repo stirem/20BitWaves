@@ -36,17 +36,13 @@ void ofApp::setup()
     
 
     // Load samples
-    fileSample1.load(ofToDataPath("Sound_Object_01.wav"));
-    fileSample2.load(ofToDataPath("Sound_Object_02.wav"));
-    fileSample3.load(ofToDataPath("Sound_Object_03.wav"));
-    fileSample4.load(ofToDataPath("Sound_Object_04.wav"));
-    fileSample5.load(ofToDataPath("Sound_Object_05.wav"));
-    fileSample6.load(ofToDataPath("Sound_Object_06.wav"));
-    fileSample7.load(ofToDataPath("Sound_Object_07.wav"));
-    fileSample8.load(ofToDataPath("Sound_Object_08.wav"));
-    fileSample9.load(ofToDataPath("Sound_Object_09.wav"));
-
+    for (int i = 0; i < NR_OF_SOUNDS; i++)
+    {
+        string fileNr = "Sound_Object_0" + ofToString( i ) + ".wav";
+        fileSample[i].load( ofToDataPath( fileNr ) );
+    }
     
+
     ///< openFrameworks sound stream
     ofSoundStreamSetup(2,0,this, sampleRate, initialBufferSize, 4);
     
@@ -58,8 +54,6 @@ void ofApp::setup()
     //myFFTOctAna.setup(sampleRate, fftSize/2, nAverages);
 
 
-
-    
 }
 
 //--------------------------------------------------------------
@@ -75,7 +69,6 @@ void ofApp::update()
     touchobject.Update(val, volume);
     
     
-    
     ///< Increase radius of particles, and decrease alpha
     for( int i = 0; i < particles.size(); i++ )
     {
@@ -85,7 +78,6 @@ void ofApp::update()
     
     ///< Remove soundwave when alpha is 0
     ofRemove(particles, shouldRemove);
-    
     
     
     ///< Add particles
@@ -99,19 +91,13 @@ void ofApp::update()
     }
     
 
-    
-    
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
-    
-
-    
     ///< Draw touchobject
     touchobject.Draw();
-    
     
     
     ///< Draw particles
@@ -124,8 +110,7 @@ void ofApp::draw()
     // Draw change-sound-sample-button
     button.Draw();
     
-    
-    
+    /*
     ///< Debug text
     ofSetColor(100, 100, 100);
     ofDrawBitmapString("Touch X: " + ofToString(touchPosX), 10, 20);
@@ -144,8 +129,8 @@ void ofApp::draw()
     ofDrawBitmapString("Touchobject radius: " + ofToString(touchobject.radius), 10, 280);
     ofDrawBitmapString("How many particless: " + ofToString(particles.size()), 10, 300);
     ofDrawBitmapString("Finger is lifted: " + ofToString(fingerIsLifted), 10, 320);
+     */
     
-     
 }
 
 //--------------------------------------------------------------
@@ -172,49 +157,21 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
         return;
     }
     
+    
     // Calculate audio vector by iterating over samples
     for ( int i = 0; i < bufferSize; i++ )
     {
         if ( triggerPlay )
         {
-            switch ( button.whatSample )
-            {
-                case 1:
-                    sample = fileSample1.play( soundSpeed );
-                    break;
-                case 2:
-                    sample = fileSample2.play( soundSpeed );
-                    break;
-                case 3:
-                    sample = fileSample3.play( soundSpeed );
-                    break;
-                case 4:
-                    sample = fileSample4.play( soundSpeed );
-                    break;
-                case 5:
-                    sample = fileSample5.play( soundSpeed );
-                    break;
-                case 6:
-                    sample = fileSample6.play( soundSpeed );
-                    break;
-                case 7:
-                    sample = fileSample7.play( soundSpeed );
-                    break;
-                case 8:
-                    sample = fileSample8.play( soundSpeed );
-                    break;
-                case 9:
-                    sample = fileSample9.play( soundSpeed );
-                    break;
-                default:
-                    break;
-            }
+           sample = fileSample[button.whatSample].play( soundSpeed );
         }
         else
             sample = 0.;
         
+        
         // Stereo panning
         channel1.stereo( sample, stereomix, panning );
+        
         
         // Process FFT Spectrum
         if ( myFFT.process( sample ) )
@@ -223,10 +180,12 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
             //myFFTOctAna.calculate( myFFT.magnitudes );
         }
         
+        
         output[i*nChannels    ] = stereomix[0] * volume;
         output[i*nChannels + 1] = stereomix[1] * volume;
     }
 
+    
     
     ///< Change sound speed
     if ( touchPosY > ofGetHeight() / 2 )
@@ -237,8 +196,6 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     {
         soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, 0, 1.0, 1.5, true);
     }
-    
-    
     //soundSpeed = ofMap(touchPosY, ofGetHeight(), 0, 0.0, 1.0, true);
     
     
@@ -254,6 +211,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
             volume = volume - 0.005;
         }
     }
+    
     
     ///< Stop playback when volume is 0 or less.
     if ( volume <= 0.0 )
@@ -272,16 +230,12 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     touchPosX = touch.x;
     touchPosY = touch.y;
     
+    
     ///< Set position of samples to 0 when finger is pressed
-    fileSample1.setPosition(0.);
-    fileSample2.setPosition(0.);
-    fileSample3.setPosition(0.);
-    fileSample4.setPosition(0.);
-    fileSample5.setPosition(0.);
-    fileSample6.setPosition(0.);
-    fileSample7.setPosition(0.);
-    fileSample8.setPosition(0.);
-    fileSample9.setPosition(0.);
+    for (int i = 0; i < NR_OF_SOUNDS; i++)
+    {
+        fileSample[i].setPosition( 0. );
+    }
 
 
     // Used to decrease volume when finger is lifted

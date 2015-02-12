@@ -8,8 +8,14 @@
 #include "touchObject.h"
 #include "menuButton.h"
 
+#include "ofxMaxim.h" // Include Maximilian in project
+#include "maximilian.h" // Inclde Maximilian in project
 
-#define K_NUM_POLY_VOICES 10;
+
+#define NR_OF_SOUNDS 9
+
+
+
 
 class ofApp : public ofxiOSApp {
 	
@@ -50,7 +56,8 @@ class ofApp : public ofxiOSApp {
     
     
     ///< MAXIMILIAN
-    // REMEMBER TO INCLUDE ACCELERATE FRAMEWORK !!!!!!
+    // REMEMBER TO INCLUDE ACCELERATE FRAMEWORK !
+    // Build phases -> Link Binary With Libraries -> + -> Accelerate Framework
     //void audioReceived( float * input, int bufferSize, int nChannels );
 	
 	int	  initialBufferSize;
@@ -67,16 +74,7 @@ class ofApp : public ofxiOSApp {
 
     
     // Maximilian sample playback declaration
-	// TODO: Make this an array?
-	ofxMaxiSample fileSample1;
-    ofxMaxiSample fileSample2;
-    ofxMaxiSample fileSample3;
-    ofxMaxiSample fileSample4;
-    ofxMaxiSample fileSample5;
-    ofxMaxiSample fileSample6;
-    ofxMaxiSample fileSample7;
-    ofxMaxiSample fileSample8;
-    ofxMaxiSample fileSample9;
+    ofxMaxiSample fileSample[NR_OF_SOUNDS];
     
     
     // Declare FFT

@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include "ofMain.h"
 
-#include "ofxMaxim.h" // Include Maximilian in project
-#include "maximilian.h" // Inclde Maximilian in project
+
 
 #define BANDS 1024 // Number of bands in spectrum
 

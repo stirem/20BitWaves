@@ -24,6 +24,7 @@
 		807CA1251A5D9C0B004DF79A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807CA1241A5D9C0B004DF79A /* Accelerate.framework */; };
 		80845BF21A5D8E200034AC8F /* particles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BEE1A5D8E200034AC8F /* particles.cpp */; };
 		80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BF01A5D8E200034AC8F /* touchObject.cpp */; };
+		809E75A61A94D02800EDBCC9 /* recording.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 809E75A41A94D02800EDBCC9 /* recording.cpp */; };
 		80A880FE1A70010E00A7AD6D /* menuButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A880FC1A70010E00A7AD6D /* menuButton.cpp */; };
 		9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */; };
 		96084990AF216648B8B98E00 /* maxiFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A4EE0E35ED739A31CD0153E /* maxiFFT.cpp */; };
@@ -83,6 +84,9 @@
 		80845BEF1A5D8E200034AC8F /* particles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particles.h; sourceTree = "<group>"; };
 		80845BF01A5D8E200034AC8F /* touchObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = touchObject.cpp; sourceTree = "<group>"; };
 		80845BF11A5D8E200034AC8F /* touchObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = touchObject.h; sourceTree = "<group>"; };
+		809E75A11A94BEB900EDBCC9 /* Definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
+		809E75A41A94D02800EDBCC9 /* recording.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = recording.cpp; sourceTree = "<group>"; };
+		809E75A51A94D02800EDBCC9 /* recording.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recording.h; sourceTree = "<group>"; };
 		80A880FC1A70010E00A7AD6D /* menuButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menuButton.cpp; sourceTree = "<group>"; };
 		80A880FD1A70010E00A7AD6D /* menuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menuButton.h; sourceTree = "<group>"; };
 		80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = stb_vorbis.c; path = ../../../addons/ofxMaxim/libs/stb_vorbis.c; sourceTree = SOURCE_ROOT; };
@@ -271,15 +275,18 @@
 		E4D8936A11527B74007E1F53 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				E4D8936B11527B74007E1F53 /* main.mm */,
+				809E75A11A94BEB900EDBCC9 /* Definitions.h */,
 				80845BEE1A5D8E200034AC8F /* particles.cpp */,
 				80845BEF1A5D8E200034AC8F /* particles.h */,
 				80845BF01A5D8E200034AC8F /* touchObject.cpp */,
 				80845BF11A5D8E200034AC8F /* touchObject.h */,
-				E4D8936B11527B74007E1F53 /* main.mm */,
-				E4D8936D11527B74007E1F53 /* ofApp.mm */,
-				E4D8936C11527B74007E1F53 /* ofApp.h */,
+				809E75A41A94D02800EDBCC9 /* recording.cpp */,
+				809E75A51A94D02800EDBCC9 /* recording.h */,
 				80A880FC1A70010E00A7AD6D /* menuButton.cpp */,
 				80A880FD1A70010E00A7AD6D /* menuButton.h */,
+				E4D8936D11527B74007E1F53 /* ofApp.mm */,
+				E4D8936C11527B74007E1F53 /* ofApp.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -404,6 +411,7 @@
 				80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */,
 				22F21CE3B902225374BA1CA2 /* maximilian.cpp in Sources */,
 				9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */,
+				809E75A61A94D02800EDBCC9 /* recording.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

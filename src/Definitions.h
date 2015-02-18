@@ -1,0 +1,13 @@
+#pragma once
+
+
+#define NUM_OF_SOUNDS 9
+//#define SOUND_BUTTON_INDENT 0.25
+//#define SOUND_BUTTON_WIDTH 0.08
+
+#define BUTTON_INDENT 0.05
+#define BUTTON_WIDTH 0.08
+
+#define SOUND_NUM_INDENT 0.13
+
+#define NUM_OF_MENU_POSITIONS 11

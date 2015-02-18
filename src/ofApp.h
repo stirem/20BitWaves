@@ -11,8 +11,10 @@
 #include "ofxMaxim.h" // Include Maximilian in project
 #include "maximilian.h" // Inclde Maximilian in project
 
+#include "Definitions.h"
 
-#define NR_OF_SOUNDS 9
+
+
 
 
 
@@ -43,7 +45,7 @@ class ofApp : public ofxiOSApp {
 	
 		Touchobject touchobject; // Touchobject ??
     
-		Button button;
+		Menu menu;
     
     
 		float touchPosX;
@@ -74,7 +76,7 @@ class ofApp : public ofxiOSApp {
 
     
     // Maximilian sample playback declaration
-    ofxMaxiSample fileSample[NR_OF_SOUNDS];
+    ofxMaxiSample fileSample[NUM_OF_SOUNDS + 1];
     
     
     // Declare FFT

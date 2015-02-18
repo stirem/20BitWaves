@@ -4,15 +4,13 @@
 
 #include <stdio.h>
 #include "ofMain.h"
+#include "Definitions.h"
 
-#define NR_OF_SOUNDS 9
-#define SOUND_BUTTON_INDENT 0.25    ///< lkjhljhl
-#define SOUND_BUTTON_WIDTH 0.08     ///< alisudfoausdhfajsdhflasdhflajsdhfaljs
 
-class Button {
+class Menu {
 public:
     
-    Button(); // Constructor
+    Menu(); // Constructor
     
     void Setup();
     void Update( float touchX );
@@ -22,10 +20,16 @@ public:
     
     float posX;
     float posY;
-    float distToObj;
-    float radius;
+    float distanceToButton;
+    float buttonRadius;
     bool buttonIsPressed;
     unsigned int whatSample;
+    unsigned int whatMenuNum;
+    float buttonHidePosX;
+    float buttonHidePosY;
+    float buttonActivePosX;
+    float buttonActivePosY;
+
     
     ofTrueTypeFont fontLarge;
     

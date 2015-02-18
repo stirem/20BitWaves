@@ -19,7 +19,7 @@ void ofApp::setup()
     
     touchobject.Setup();
     
-    button.Setup();
+    menu.Setup();
 
     
     triggerPlay             = false;
@@ -36,7 +36,7 @@ void ofApp::setup()
     
 
     // Load samples
-    for (int i = 0; i < NR_OF_SOUNDS; i++)
+    for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
     {
         string fileNr = "Sound_Object_0" + ofToString( i ) + ".wav";
         fileSample[i].load( ofToDataPath( fileNr ) );
@@ -76,7 +76,7 @@ void ofApp::update()
     }
     
     ///> Move Menu Button with finger
-    button.Update( touchPosX );
+    menu.Update( touchPosX );
     
     
     ///< Remove soundwave when alpha is 0
@@ -87,7 +87,7 @@ void ofApp::update()
     //if (volume > 0.0)
     if ( touchobject.spectrumVolume > 1200 && volume > 0.0 )
     {
-        if (button.buttonIsPressed == false)// Do not add waves when pushing change-song-button.
+        if (menu.buttonIsPressed == false)// Do not add waves when pushing change-song-button.
         {
             particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness() ) );
         }
@@ -111,16 +111,16 @@ void ofApp::draw()
     
     
     // Draw change-sound-sample-button
-    button.Draw();
+    menu.Draw();
     
     
-    /*
+    
     ///< Debug text
     ofSetColor(100, 100, 100);
      ofDrawBitmapString("Touch X: " + ofToString(touchPosX), 10, 20);
      ofDrawBitmapString("Touch Y: " + ofToString(touchPosY), 10, 40);
-     ofDrawBitmapString("What Sample: " + ofToString(button.whatSample), 10, 60);
-     ofDrawBitmapString("Button is pressed: " + ofToString(button.buttonIsPressed), 10, 80);
+     ofDrawBitmapString("What Sample: " + ofToString(menu.whatSample), 10, 60);
+     ofDrawBitmapString("Button is pressed: " + ofToString(menu.buttonIsPressed), 10, 80);
     // ofDrawBitmapString("Button X: " + ofToString(button.posX), 10, 100);
     // ofDrawBitmapString("Button Y: " + ofToString(button.posY), 10, 120);
     // ofDrawBitmapString("Volume: " + ofToString(volume), 10, 140);
@@ -133,7 +133,8 @@ void ofApp::draw()
     // ofDrawBitmapString("Touchobject radius: " + ofToString(touchobject.radius), 10, 280);
     // ofDrawBitmapString("How many particless: " + ofToString(particles.size()), 10, 300);
     // ofDrawBitmapString("Finger is lifted: " + ofToString(fingerIsLifted), 10, 320);
-    */
+    ofDrawBitmapString("What Menu Postition Number: " + ofToString(menu.whatMenuNum), 10, 340);
+    
     
 }
 
@@ -167,7 +168,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     {
         if ( triggerPlay )
         {
-           sample = fileSample[button.whatSample].playOnce( soundSpeed ); // No loop
+           sample = fileSample[menu.whatSample].playOnce( soundSpeed ); // No loop
         }
         else
             sample = 0.;
@@ -236,7 +237,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     ///< Set position of samples to 0 when finger is pressed
-    for (int i = 0; i < NR_OF_SOUNDS; i++)
+    for (int i = 0; i < NUM_OF_SOUNDS; i++)
     {
         fileSample[i].setPosition( 0. );
     }
@@ -247,11 +248,11 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     // Used to check distance from finger to button. If finger is inside button: change sample.
-    button.DistanceToButton(touch.x, touch.y);
+    menu.DistanceToButton(touch.x, touch.y);
     
     
     ///< Detect if finger is inside change-sample-button
-    if (button.buttonIsPressed == true)
+    if (menu.buttonIsPressed == true)
     {
         volume = 0.0;
     }
@@ -260,7 +261,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
         triggerPlay = true;
         volume = 1.0;
         // Set position of touchobject when touch is moved
-        touchobject.Position(touch.x, touch.y, button.posX, button.posY, button.radius);
+        touchobject.Position(touch.x, touch.y, menu.posX, menu.posY, menu.buttonRadius);
     }
 }
 
@@ -268,7 +269,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
 void ofApp::touchMoved( ofTouchEventArgs & touch )
 {
     ///< Set position of touchobject when touch is moved
-    touchobject.Position(touch.x, touch.y, button.posX, button.posY, button.radius);
+    touchobject.Position(touch.x, touch.y, menu.posX, menu.posY, menu.buttonRadius);
     
     
     ///< Update position of particles when touch moves
@@ -284,7 +285,7 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     fingerIsLifted = true;
     
     // Used to change sound sample
-    button.buttonIsPressed = false;
+    menu.buttonIsPressed = false;
 
 }
 

@@ -13,23 +13,26 @@ public:
     Menu(); // Constructor
     
     void Setup();
-    void Update( float touchX );
+    int Update( float touchX );
     void Draw();
-    void DistanceToButton( float touchX, float touchY );
+    void DistanceToButton( float touchDownX, float touchDownY );
+
     
     
-    float posX;
-    float posY;
+
     float distanceToButton;
     float buttonRadius;
     bool buttonIsPressed;
     unsigned int whatSample;
     unsigned int whatMenuNum;
-    float buttonHidePosX;
+    float buttonPosX;
     float buttonHidePosY;
-    float buttonActivePosX;
     float buttonActivePosY;
-
+    float nearestButton;
+    
+    bool recModeOn;
+    bool aboutBit20On;
+    bool fileBrowserOn;
     
     ofTrueTypeFont fontLarge;
     

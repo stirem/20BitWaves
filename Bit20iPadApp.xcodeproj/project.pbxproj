@@ -24,22 +24,19 @@
 		807CA1251A5D9C0B004DF79A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807CA1241A5D9C0B004DF79A /* Accelerate.framework */; };
 		80845BF21A5D8E200034AC8F /* particles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BEE1A5D8E200034AC8F /* particles.cpp */; };
 		80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BF01A5D8E200034AC8F /* touchObject.cpp */; };
-		809E75A61A94D02800EDBCC9 /* recording.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 809E75A41A94D02800EDBCC9 /* recording.cpp */; };
-		80A880FE1A70010E00A7AD6D /* menuButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A880FC1A70010E00A7AD6D /* menuButton.cpp */; };
+		809E75A61A94D02800EDBCC9 /* recording.mm in Sources */ = {isa = PBXBuildFile; fileRef = 809E75A41A94D02800EDBCC9 /* recording.mm */; };
+		80A880FE1A70010E00A7AD6D /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A880FC1A70010E00A7AD6D /* menu.cpp */; };
 		9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */; };
 		96084990AF216648B8B98E00 /* maxiFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A4EE0E35ED739A31CD0153E /* maxiFFT.cpp */; };
 		AF0580829426DC6BCA135A5C /* maxiGrains.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D2FB19B70632A6F86622D94 /* maxiGrains.cpp */; };
 		BB16EBD20F2B2A9500518274 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD10F2B2A9500518274 /* OpenGLES.framework */; };
 		BB16EBD90F2B2AB500518274 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD80F2B2AB500518274 /* QuartzCore.framework */; };
 		BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */; };
-		E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3ED613B38FB500A75A5D /* Project.xcconfig */; };
-		E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = E41D3EE513B3906D00A75A5D /* CoreOF.xcconfig */; };
 		E41D400B13B39D2100A75A5D /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400613B39D2100A75A5D /* AVFoundation.framework */; };
 		E41D400C13B39D2100A75A5D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400713B39D2100A75A5D /* CoreMedia.framework */; };
 		E41D400D13B39D2100A75A5D /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400813B39D2100A75A5D /* CoreVideo.framework */; };
 		E41D400E13B39D2100A75A5D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D400913B39D2100A75A5D /* MapKit.framework */; };
 		E41D421413B3A95300A75A5D /* libofxiOS_iphoneos_Debug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E41D410213B3A0D800A75A5D /* libofxiOS_iphoneos_Debug.a */; };
-		E4A823A412561BE3002F86A2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4A823A312561BE3002F86A2 /* CoreGraphics.framework */; };
 		E4D8936E11527B74007E1F53 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D8936B11527B74007E1F53 /* main.mm */; };
 		E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4D8936D11527B74007E1F53 /* ofApp.mm */; };
 /* End PBXBuildFile section */
@@ -85,10 +82,10 @@
 		80845BF01A5D8E200034AC8F /* touchObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = touchObject.cpp; sourceTree = "<group>"; };
 		80845BF11A5D8E200034AC8F /* touchObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = touchObject.h; sourceTree = "<group>"; };
 		809E75A11A94BEB900EDBCC9 /* Definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
-		809E75A41A94D02800EDBCC9 /* recording.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = recording.cpp; sourceTree = "<group>"; };
+		809E75A41A94D02800EDBCC9 /* recording.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = recording.mm; sourceTree = "<group>"; };
 		809E75A51A94D02800EDBCC9 /* recording.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recording.h; sourceTree = "<group>"; };
-		80A880FC1A70010E00A7AD6D /* menuButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menuButton.cpp; sourceTree = "<group>"; };
-		80A880FD1A70010E00A7AD6D /* menuButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menuButton.h; sourceTree = "<group>"; };
+		80A880FC1A70010E00A7AD6D /* menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
+		80A880FD1A70010E00A7AD6D /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
 		80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = stb_vorbis.c; path = ../../../addons/ofxMaxim/libs/stb_vorbis.c; sourceTree = SOURCE_ROOT; };
 		87D3A0051CCB2C0F0ECA139E /* maximilian.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = maximilian.cpp; path = ../../../addons/ofxMaxim/libs/maximilian.cpp; sourceTree = SOURCE_ROOT; };
 		9312F3864ED05FC3E847FF69 /* ofxMaxim.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMaxim.h; path = ../../../addons/ofxMaxim/src/ofxMaxim.h; sourceTree = SOURCE_ROOT; };
@@ -132,7 +129,6 @@
 				BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */,
 				53F323EB10A20EDB00E0DAE4 /* OpenAL.framework in Frameworks */,
 				5326AEA810A23A0500278DE6 /* CoreLocation.framework in Frameworks */,
-				E4A823A412561BE3002F86A2 /* CoreGraphics.framework in Frameworks */,
 				E41D400B13B39D2100A75A5D /* AVFoundation.framework in Frameworks */,
 				E41D400C13B39D2100A75A5D /* CoreMedia.framework in Frameworks */,
 				E41D400D13B39D2100A75A5D /* CoreVideo.framework in Frameworks */,
@@ -281,10 +277,10 @@
 				80845BEF1A5D8E200034AC8F /* particles.h */,
 				80845BF01A5D8E200034AC8F /* touchObject.cpp */,
 				80845BF11A5D8E200034AC8F /* touchObject.h */,
-				809E75A41A94D02800EDBCC9 /* recording.cpp */,
+				809E75A41A94D02800EDBCC9 /* recording.mm */,
 				809E75A51A94D02800EDBCC9 /* recording.h */,
-				80A880FC1A70010E00A7AD6D /* menuButton.cpp */,
-				80A880FD1A70010E00A7AD6D /* menuButton.h */,
+				80A880FC1A70010E00A7AD6D /* menu.cpp */,
+				80A880FD1A70010E00A7AD6D /* menu.h */,
 				E4D8936D11527B74007E1F53 /* ofApp.mm */,
 				E4D8936C11527B74007E1F53 /* ofApp.h */,
 			);
@@ -319,10 +315,15 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0610;
 				TargetAttributes = {
 					1D6058900D05DD3D006BFB54 = {
 						DevelopmentTeam = 6JD9G4L9SJ;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -366,8 +367,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E41D3ED713B38FB500A75A5D /* Project.xcconfig in Resources */,
-				E41D3EE613B3906D00A75A5D /* CoreOF.xcconfig in Resources */,
 				678E130817951530005B6D19 /* Icon@2x.png in Resources */,
 				678E130A17951536005B6D19 /* Icon.png in Resources */,
 				678E130C1795153C005B6D19 /* Default.png in Resources */,
@@ -399,7 +398,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80A880FE1A70010E00A7AD6D /* menuButton.cpp in Sources */,
+				80A880FE1A70010E00A7AD6D /* menu.cpp in Sources */,
 				E4D8936E11527B74007E1F53 /* main.mm in Sources */,
 				E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */,
 				0FCED26D40D46CF89A58E54C /* fft.cpp in Sources */,
@@ -411,7 +410,7 @@
 				80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */,
 				22F21CE3B902225374BA1CA2 /* maximilian.cpp in Sources */,
 				9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */,
-				809E75A61A94D02800EDBCC9 /* recording.cpp in Sources */,
+				809E75A61A94D02800EDBCC9 /* recording.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,7 +463,10 @@
 			baseConfigurationReference = E41D3ED613B38FB500A75A5D /* Project.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Stian Remvik (8CMY49YXPJ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stian Remvik (8CMY49YXPJ)";
@@ -483,7 +485,7 @@
 					../../../addons/ofxMaxim/libs,
 					../../../addons/ofxMaxim/src,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "ee8ba623-37d5-45f6-9991-6b893f526675";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ee8ba623-37d5-45f6-9991-6b893f526675";
@@ -498,7 +500,10 @@
 			baseConfigurationReference = E41D3ED613B38FB500A75A5D /* Project.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				CLANG_CXX_LIBRARY = "libstdc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Stian Remvik (8CMY49YXPJ)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Stian Remvik (8CMY49YXPJ)";
@@ -516,7 +521,7 @@
 					../../../addons/ofxMaxim/libs,
 					../../../addons/ofxMaxim/src,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE = "ee8ba623-37d5-45f6-9991-6b893f526675";
 				SDKROOT = iphoneos;

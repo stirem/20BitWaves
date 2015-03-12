@@ -35,16 +35,10 @@ void ofApp::setup()
     volume                  = 0.0;
     
 
-    // Load samples
-    for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
-    {
-        string fileNr = "Sound_Object_0" + ofToString( i ) + ".wav";
-        fileSample[i].load( ofToDataPath( fileNr ) );
-    }
-    
 
     ///< openFrameworks sound stream
-    ofSoundStreamSetup(2,0,this, sampleRate, initialBufferSize, 4);
+    //ofSoundStreamSetup( 2, 0, this, sampleRate, initialBufferSize, 4 );
+    soundStream.setup( this, 2, 1, sampleRate, initialBufferSize, 4 );
     
     
     // Setup FFT
@@ -54,6 +48,21 @@ void ofApp::setup()
     //myFFTOctAna.setup(sampleRate, fftSize/2, nAverages);
 
 
+    ///// R E C O R D I N G /////
+    recording.Setup();
+    
+
+    recSample.load( recording.myRecString );
+    
+    
+    // Load samples
+    for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
+    {
+        string fileNr = "Sound_Object_0" + ofToString( i ) + ".wav";
+        fileSample[i].load( ofToDataPath( fileNr ) );
+    }
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -67,13 +76,15 @@ void ofApp::update()
     
     ///< Update spectrum analyze
     touchobject.Update(val, volume);
-    
+
     
     ///< Increase radius of particles, and decrease alpha
-    for( int i = 0; i < particles.size(); i++ )
-    {
+
+    for( int i = 0; i < particles.size(); i++ ) {
         particles[i].Update(soundSpeed, volume);
     }
+
+    
     
     ///> Move Menu Button with finger
     menu.Update( touchPosX );
@@ -85,15 +96,27 @@ void ofApp::update()
     
     ///< Add particles
     //if (volume > 0.0)
-    if ( touchobject.spectrumVolume > 1200 && volume > 0.0 )
-    {
-        if (menu.buttonIsPressed == false)// Do not add waves when pushing change-song-button.
-        {
+    if ( !menu.buttonIsPressed && recording.readyToPlay ) {// Do not add waves when pushing change-song-button.
+        
+        if ( touchobject.spectrumVolume > 1200 && volume > 0.0 ) {
+        
             particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness() ) );
         }
     }
     
 
+    ///// R E C O R D I N G /////
+    if ( menu.recModeOn ) {
+        recording.Update( touchPosX, touchPosY, touchIsDown );
+    }
+    
+    if ( recording.saveFileIsDone ) {
+        recSample.load( recording.myRecString );
+        recording.saveFileIsDone = 0;
+    }
+    
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -110,40 +133,45 @@ void ofApp::draw()
     }
     
     
-    // Draw change-sound-sample-button
+    // Draw menu-button
     menu.Draw();
     
     
     
     ///< Debug text
     ofSetColor(100, 100, 100);
-     ofDrawBitmapString("Touch X: " + ofToString(touchPosX), 10, 20);
-     ofDrawBitmapString("Touch Y: " + ofToString(touchPosY), 10, 40);
-     ofDrawBitmapString("What Sample: " + ofToString(menu.whatSample), 10, 60);
-     ofDrawBitmapString("Button is pressed: " + ofToString(menu.buttonIsPressed), 10, 80);
-    // ofDrawBitmapString("Button X: " + ofToString(button.posX), 10, 100);
-    // ofDrawBitmapString("Button Y: " + ofToString(button.posY), 10, 120);
-    // ofDrawBitmapString("Volume: " + ofToString(volume), 10, 140);
-    // ofDrawBitmapString("Sound speed: " + ofToString(soundSpeed), 10, 160);
-    // ofDrawBitmapString("Sound brightness: " + ofToString(touchobject.SoundBrightness()), 10, 180);
-    // ofDrawBitmapString("Spectrum volume: " + ofToString(touchobject.SpectrumVolume()), 10, 200);
-    ofDrawBitmapString("FPS: " + ofToString(ofGetFrameRate()), 10, 220);
-    // ofDrawBitmapString("Start radius: " + ofToString(touchobject.startRadius), 10, 240);
-    // ofDrawBitmapString("Delta time: " + ofToString(ofGetLastFrameTime()), 10, 260);
-    // ofDrawBitmapString("Touchobject radius: " + ofToString(touchobject.radius), 10, 280);
-    // ofDrawBitmapString("How many particless: " + ofToString(particles.size()), 10, 300);
-    // ofDrawBitmapString("Finger is lifted: " + ofToString(fingerIsLifted), 10, 320);
-    ofDrawBitmapString("What Menu Postition Number: " + ofToString(menu.whatMenuNum), 10, 340);
+
+    //ofDrawBitmapString("What Sample: " + ofToString(menu.whatSample), 10, 60);
+    //ofDrawBitmapString("What Menu Postition Number: " + ofToString(menu.whatMenuNum), 10, 120);
+    //ofDrawBitmapString("Rec mode is on: " + ofToString(menu.recModeOn), 10, 140);
+    //ofDrawBitmapString("About Bit20 is on: " + ofToString(menu.aboutBit20On), 10, 160);
+    //ofDrawBitmapString("File browser is on: " + ofToString(menu.fileBrowserOn), 10, 180);
+    //ofDrawBitmapString("File path: " + ofToString(recording.myRecString), 10, 200);
+    //ofDrawBitmapString("Del button is pressed: " + ofToString(recording.delButtonIsPressed), 10, 220);
+    ofDrawBitmapString("myTimer: " + ofToString(recording.myTimer), 10, 240);
+    //ofDrawBitmapString("del button time: " + ofToString(recording.delButtonTime), 10, 260);
+    ofDrawBitmapString("Ready to play: " + ofToString(recording.readyToPlay), 10, 280);
+    ofDrawBitmapString("Wait for save time " + ofToString(recording.waitForSaveFileTime), 10, 300);
+    ofDrawBitmapString("Wait for save bool " + ofToString(recording.willWaitForSave), 10, 320);
     
     
+    ///// R E C O R D I N G /////
+    if ( menu.recModeOn ) {
+        recording.Draw();
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::exit(){
 
+    ///// R E C O R D I N G /////
+    recording.Exit();
+    
 }
 
 //--------------------------------------------------------------
+
+
 
 
 
@@ -166,42 +194,54 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     // Calculate audio vector by iterating over samples
     for ( int i = 0; i < bufferSize; i++ )
     {
-        if ( triggerPlay )
-        {
-           sample = fileSample[menu.whatSample].playOnce( soundSpeed ); // No loop
+        if ( recording.readyToPlay ) {
+            
+        
+            if ( triggerPlay )
+            {
+                
+                if ( menu.recModeOn ) {
+                    sample = recSample.playOnce( soundSpeed );
+                } else {
+                    sample = fileSample[menu.whatSample].playOnce( soundSpeed ); // No loop
+                }
+            }
+            else
+                sample = 0.;
+            
+            
+            // Stereo panning
+            channel1.stereo( sample, stereomix, panning );
+            
+            
+            // Process FFT Spectrum
+            if ( myFFT.process( sample ) )
+            {
+                myFFT.magsToDB();
+                //myFFTOctAna.calculate( myFFT.magnitudes );
+            }
+            
+            
+            output[i*nChannels    ] = stereomix[0] * volume;
+            output[i*nChannels + 1] = stereomix[1] * volume;
+            
         }
-        else
-            sample = 0.;
-        
-        
-        // Stereo panning
-        channel1.stereo( sample, stereomix, panning );
-        
-        
-        // Process FFT Spectrum
-        if ( myFFT.process( sample ) )
-        {
-            myFFT.magsToDB();
-            //myFFTOctAna.calculate( myFFT.magnitudes );
-        }
-        
-        
-        output[i*nChannels    ] = stereomix[0] * volume;
-        output[i*nChannels + 1] = stereomix[1] * volume;
     }
 
     
     
     ///< Change sound speed
-    if ( touchPosY > ofGetHeight() / 2 )
-    {
-        soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, ofGetHeight(), 1.0, 0.1, true);
+    if ( !menu.buttonIsPressed ) {
+        
+        if ( touchPosY > ofGetHeight() / 2 )
+        {
+            soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, ofGetHeight(), 1.0, 0.1, true);
+        }
+        else if ( touchPosY < ofGetHeight() / 2 )
+        {
+            soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, 0, 1.0, 1.5, true);
+        }
     }
-    else if ( touchPosY < ofGetHeight() / 2 )
-    {
-        soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, 0, 1.0, 1.5, true);
-    }
-    //soundSpeed = ofMap(touchPosY, ofGetHeight(), 0, 0.0, 1.0, true);
     
     
     ///< Change sound panning
@@ -228,6 +268,11 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
 
 
 
+/*void ofApp::audioReceived(float *input, int bufferSize, int nChannels) {
+
+}*/
+
+
 //--------------------------------------------------------------
 void ofApp::touchDown( ofTouchEventArgs & touch )
 {
@@ -237,11 +282,11 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     ///< Set position of samples to 0 when finger is pressed
-    for (int i = 0; i < NUM_OF_SOUNDS; i++)
-    {
+    for (int i = 0; i < NUM_OF_SOUNDS; i++) {
         fileSample[i].setPosition( 0. );
+        recSample.setPosition( 0. );
     }
-
+    
 
     // Used to decrease volume when finger is lifted
     fingerIsLifted = false;
@@ -251,26 +296,26 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     menu.DistanceToButton(touch.x, touch.y);
     
     
-    ///< Detect if finger is inside change-sample-button
-    if (menu.buttonIsPressed == true)
-    {
+    ///< Detect if finger is inside menu-button
+    if (menu.buttonIsPressed == true) {
         volume = 0.0;
-    }
-    else
-    {
+    } else {
         triggerPlay = true;
         volume = 1.0;
         // Set position of touchobject when touch is moved
-        touchobject.Position(touch.x, touch.y, menu.posX, menu.posY, menu.buttonRadius);
+        touchobject.Position( touch.x, touch.y );
     }
+    
+    touchIsDown = 1;
 }
 
 //--------------------------------------------------------------
 void ofApp::touchMoved( ofTouchEventArgs & touch )
 {
     ///< Set position of touchobject when touch is moved
-    touchobject.Position(touch.x, touch.y, menu.posX, menu.posY, menu.buttonRadius);
-    
+    if ( !menu.buttonIsPressed ) {
+        touchobject.Position( touch.x, touch.y );
+    }
     
     ///< Update position of particles when touch moves
     touchPosX = touch.x;
@@ -287,6 +332,8 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     // Used to change sound sample
     menu.buttonIsPressed = false;
 
+    
+    touchIsDown = 0;
 }
 
 //--------------------------------------------------------------

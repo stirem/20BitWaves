@@ -131,7 +131,7 @@ float Touchobject::StartRadius()
    
     
 
-    startRadius = ofMap( spectrumVolume, 1300, 1600, 10, 50 );
+    startRadius = ofMap( spectrumVolume, 1300, 1600, 10, 30 );
     
     radius = startRadius;
     
@@ -144,17 +144,10 @@ float Touchobject::StartRadius()
 
 
 // --------------------------------------------------------
-void Touchobject::Position(float touchX, float touchY, float buttonX, float buttonY, float buttonRadius)
+void Touchobject::Position( float touchX, float touchY )
 {
 
-    
-    distanceToButton = sqrt( (touchX - buttonX) * (touchX - buttonX) + (touchY - buttonY) * (touchY - buttonY) ) ;
-    
-    if (distanceToButton > buttonRadius)
-    {
-        
-    }
-    
+
     pos.set(touchX, touchY);
     
     
@@ -181,13 +174,13 @@ void Touchobject::Draw()
     ofCircle(pos.x, pos.y, radius);
 
 
-    /*
+    
     ///< Spectrum
-    ofSetColor(100, 100, 100);
+    /*ofSetColor(100, 100, 100);
     for (int i = 0; i < BANDS; i++) {
         ofRect(5 + i * 2, ofGetHeight(), 1, -spectrum[i] * 10);
-    }
-    */
+    }*/
+    
     
     
     

@@ -6,12 +6,14 @@
 
 #include "particles.h"
 #include "touchObject.h"
-#include "menuButton.h"
+#include "menu.h"
 
 #include "ofxMaxim.h" // Include Maximilian in project
 #include "maximilian.h" // Inclde Maximilian in project
 
 #include "Definitions.h"
+
+#include "recording.h"
 
 
 
@@ -40,12 +42,15 @@ class ofApp : public ofxiOSApp {
     
 
     
-    
-		vector<Particles> particles; // Soundwave vector
+		vector<Particles> particles; // Particles vector
 	
 		Touchobject touchobject; // Touchobject ??
     
 		Menu menu;
+    
+        Recording recording;
+    
+        ofSoundStream soundStream;
     
     
 		float touchPosX;
@@ -53,7 +58,11 @@ class ofApp : public ofxiOSApp {
 		bool  triggerPlay;
 		float soundSpeed;
 		bool  fingerIsLifted;
+    
+        bool touchIsDown;
 
+
+    
 
     
     
@@ -61,8 +70,10 @@ class ofApp : public ofxiOSApp {
     // REMEMBER TO INCLUDE ACCELERATE FRAMEWORK !
     // Build phases -> Link Binary With Libraries -> + -> Accelerate Framework
     //void audioReceived( float * input, int bufferSize, int nChannels );
+    
+    //void AudioIn( float * input, int bufferSize, int nChannels );
 	
-	int	  initialBufferSize;
+    int	  initialBufferSize;
 	int	  sampleRate;
 	float panning;
 	float volume;
@@ -77,6 +88,7 @@ class ofApp : public ofxiOSApp {
     
     // Maximilian sample playback declaration
     ofxMaxiSample fileSample[NUM_OF_SOUNDS + 1];
+    ofxMaxiSample recSample;
     
     
     // Declare FFT
@@ -85,6 +97,11 @@ class ofApp : public ofxiOSApp {
     ofxMaxiFFT myFFT;
     //ofxMaxiFFTOctaveAnalyzer myFFTOctAna;
 
+    
+
+    
+
+    
     
 };
 

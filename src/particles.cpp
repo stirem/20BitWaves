@@ -22,7 +22,7 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
 void Particles::Update(float soundSpeed, float volume) {
     
     //radius = radius + 40 * s;
-    radius = radius + 1.2 * soundSpeed;
+    radius = radius + 1 * soundSpeed;
 
     
     if (volume == 1) {

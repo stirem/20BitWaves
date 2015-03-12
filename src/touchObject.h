@@ -14,13 +14,13 @@ public:
     Touchobject(); // Constructor
     
     void Setup();
-    void Update(float *val, float volume);
+    void Update( float *val, float volume );
     void Draw();
     float ColorBrightness();
     float SpectrumVolume();
     float SoundBrightness();
     
-    void Position(float touchX, float touchY, float buttonX, float buttonY, float buttonRadius);
+    void Position( float touchX, float touchY );
     float StartRadius();
     
     float soundBrightness;

@@ -3,13 +3,13 @@
 
 int main(){
     ///< Enable Retina
-    /*
+    
     ofAppiOSWindow * iOSWindow = new ofAppiOSWindow();
     
-    iOSWindow->enableAntiAliasing(4);
+    //iOSWindow->enableAntiAliasing(4);
     
     iOSWindow->enableRetina();
-    */
+    
     
      
      

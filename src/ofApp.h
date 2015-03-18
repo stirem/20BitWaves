@@ -23,44 +23,43 @@
 
 class ofApp : public ofxiOSApp {
 	
-    public:
-        void setup();
-        void update();
-        void draw();
-        void exit();
-	
-        void touchDown(ofTouchEventArgs & touch);
-        void touchMoved(ofTouchEventArgs & touch);
-        void touchUp(ofTouchEventArgs & touch);
-        void touchDoubleTap(ofTouchEventArgs & touch);
-        void touchCancelled(ofTouchEventArgs & touch);
+public:
+    void setup();
+    void update();
+    void draw();
+    void exit();
 
-        void lostFocus();
-        void gotFocus();
-        void gotMemoryWarning();
-        void deviceOrientationChanged(int newOrientation);
-    
+    void touchDown(ofTouchEventArgs & touch);
+    void touchMoved(ofTouchEventArgs & touch);
+    void touchUp(ofTouchEventArgs & touch);
+    void touchDoubleTap(ofTouchEventArgs & touch);
+    void touchCancelled(ofTouchEventArgs & touch);
 
-    
-		vector<Particles> particles; // Particles vector
-	
-		Touchobject touchobject; // Touchobject ??
-    
-		Menu menu;
-    
-        Recording recording;
-    
-        ofSoundStream soundStream;
-    
-    
-		float touchPosX;
-		float touchPosY;
-		bool  triggerPlay;
-		float soundSpeed;
-		bool  fingerIsLifted;
-    
-        bool touchIsDown;
+    void lostFocus();
+    void gotFocus();
+    void gotMemoryWarning();
+    void deviceOrientationChanged(int newOrientation);
 
+
+
+    vector<Particles> particles; // Particles vector
+
+    Touchobject touchobject; // Touchobject ??
+
+    Menu menu;
+
+    Recording recording;
+
+    ofSoundStream soundStream;
+
+
+    float touchPosX;
+    float touchPosY;
+    bool  triggerPlay;
+    float soundSpeed;
+    bool  fingerIsLifted;
+    bool touchIsDown;
+    float addParticlesTimer;;
 
     
 

@@ -131,7 +131,8 @@ float Touchobject::StartRadius()
    
     
 
-    startRadius = ofMap( spectrumVolume, 1300, 1600, 10, 30 );
+    //startRadius = ofMap( spectrumVolume, 1300, 1600, 10, 30 );
+    startRadius = ofMap( spectrumVolume, 1300, 1600, ofGetScreenWidth() * 0.01, ofGetScreenWidth() * 0.03 );
     
     radius = startRadius;
     

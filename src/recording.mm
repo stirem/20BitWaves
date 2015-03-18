@@ -121,7 +121,7 @@ void Recording::Draw() {
     }
 
     if ( showDeleteButton ) {
-        ofSetColor( 255, 255, 255 );
+        ofSetColor( 50, 50, 50 );
         ofCircle( delButtonPosX, delButtonPosY, delButtonRadius );
     }
     

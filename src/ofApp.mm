@@ -25,6 +25,7 @@ void ofApp::setup()
     triggerPlay             = false;
     soundSpeed              = 1.0;
     fingerIsLifted          = false;
+    addParticlesTimer       = 0;
 
     
     
@@ -70,6 +71,7 @@ void ofApp::update()
 {
 
     
+    
     ///< MAXIMILIAN
     float *val = myFFT.magnitudesDB;
     
@@ -96,11 +98,16 @@ void ofApp::update()
     
     ///< Add particles
     //if (volume > 0.0)
+
     if ( !menu.buttonIsPressed && recording.readyToPlay ) {// Do not add waves when pushing change-song-button.
         
         if ( touchobject.spectrumVolume > 1200 && volume > 0.0 ) {
-        
-            particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness() ) );
+            
+            addParticlesTimer += ofGetLastFrameTime();
+            if ( addParticlesTimer >= 0.01 ) {
+                particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness() ) );
+                addParticlesTimer = 0;
+            }
         }
     }
     
@@ -148,11 +155,11 @@ void ofApp::draw()
     //ofDrawBitmapString("File browser is on: " + ofToString(menu.fileBrowserOn), 10, 180);
     //ofDrawBitmapString("File path: " + ofToString(recording.myRecString), 10, 200);
     //ofDrawBitmapString("Del button is pressed: " + ofToString(recording.delButtonIsPressed), 10, 220);
-    ofDrawBitmapString("myTimer: " + ofToString(recording.myTimer), 10, 240);
+    //ofDrawBitmapString("myTimer: " + ofToString(recording.myTimer), 10, 240);
     //ofDrawBitmapString("del button time: " + ofToString(recording.delButtonTime), 10, 260);
-    ofDrawBitmapString("Ready to play: " + ofToString(recording.readyToPlay), 10, 280);
-    ofDrawBitmapString("Wait for save time " + ofToString(recording.waitForSaveFileTime), 10, 300);
-    ofDrawBitmapString("Wait for save bool " + ofToString(recording.willWaitForSave), 10, 320);
+    //ofDrawBitmapString("Ready to play: " + ofToString(recording.readyToPlay), 10, 280);
+    //ofDrawBitmapString("Wait for save time " + ofToString(recording.waitForSaveFileTime), 10, 300);
+    //ofDrawBitmapString("Wait for save bool " + ofToString(recording.willWaitForSave), 10, 320);
     
     
     ///// R E C O R D I N G /////

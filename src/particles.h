@@ -19,7 +19,6 @@ public:
     float waveColorBrightness; // Color brightness of soundwaves
     float alpha;
     float myLineWidth;
-    
 
 
 };

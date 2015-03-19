@@ -13,7 +13,7 @@ public:
     Menu(); // Constructor
     
     void Setup();
-    int Update( float touchX );
+    int Update( float touchX, bool touchIsDown );
     void Draw();
     void DistanceToButton( float touchDownX, float touchDownY );
 

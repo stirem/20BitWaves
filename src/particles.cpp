@@ -4,7 +4,7 @@
 
 ///< Get the position, color brightness and radius of soundwaves
 // --------------------------------------------------------
-Particles::Particles( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness )
+Particles::Particles( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness, float soundSpeed )
 {
     pos.set(touchX, touchY);
     //colorBrightness = specVolume;
@@ -12,6 +12,7 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
     radius                  = startRadius; // Radius from specVolume
     myLineWidth             = 1;
     alpha                   = 255;
+    mySoundSpeed            = soundSpeed;
 }
 // --------------------------------------------------------
 
@@ -19,20 +20,22 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
 
 ///< Increase radius of soundwaves, and decrease alpha
 // --------------------------------------------------------
-void Particles::Update(float soundSpeed, float volume) {
+void Particles::Update( float soundSpeed, float volume ) {
     
     //radius = radius + 40 * s;
     //radius = radius + 1 * soundSpeed;
     //radius = radius + 1 * soundSpeed * ofGetLastFrameTime() * 100;
-    radius = radius + ( 0.05 * ofGetScreenWidth() * soundSpeed * ofGetLastFrameTime() );
+    
+    //radius = radius + ( 0.05 * ofGetScreenWidth() * soundSpeed * ofGetLastFrameTime() );
+    radius = radius + ( 0.05 * ofGetScreenWidth() * mySoundSpeed * ofGetLastFrameTime() );
     
     
-    if (volume == 1) {
+    if ( volume == 1 ) {
         //alpha = alpha - 1;
         alpha = alpha - ( 50 * ofGetLastFrameTime() );
     } else {
         //alpha = alpha - 1.5;
-        alpha = alpha - ( 75 * ofGetLastFrameTime() );
+        alpha = alpha - ( 150 * ofGetLastFrameTime() );
     }
 }
 // --------------------------------------------------------

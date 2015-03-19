@@ -21,7 +21,7 @@ void Menu::Setup()
 }
 
 
-int Menu::Update( float touchX )
+int Menu::Update( float touchX, bool touchIsDown )
 {
 
     // Get nearest button

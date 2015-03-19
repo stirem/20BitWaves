@@ -6,9 +6,9 @@ class Particles
 {
 public:
     
-    Particles(float touchX, float touchY, float specVolume, float startRadius, float colorBrightness);
+    Particles( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness, float soundSpeed );
 
-    void Update(float soundSpeed, float volume);
+    void Update( float soundSpeed, float volume );
     void Draw();
 
     
@@ -20,7 +20,7 @@ public:
     float alpha;
     float myLineWidth;
 
-
+    float mySoundSpeed;
 };
 
 

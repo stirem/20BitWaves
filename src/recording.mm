@@ -26,6 +26,9 @@ void Recording::Setup() {
     waitForSaveFileTime = 0;
     willWaitForSave = 0;
     readyToPlay = 1;
+    mAveragePower = 0;
+    mPeakPower = 0;
+    meter = 0;
     
     showDeleteButton = 1;
     delButtonIsPressed = 0;
@@ -38,7 +41,7 @@ void Recording::Setup() {
 }
 
 
-void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
+void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recModeOn ) {
     
     myTimer += ofGetLastFrameTime();
     
@@ -47,8 +50,7 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
     distanceToRecButton = sqrt(    (touchX - recButtonPosX) * (touchX - recButtonPosX) + (touchY - recButtonPosY) * (touchY - recButtonPosY)     ) ;
     
     if ( willTakeRecording ) {
-        if ( recButtonRadius > distanceToRecButton )
-        {
+        if ( recButtonRadius > distanceToRecButton ) {
             recButtonIsPressed = 1;
         }
         
@@ -107,8 +109,18 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
             willWaitForDelButton = 0;
         }
     }
+    
+    // Do not make sound or visuals when rec button is on
+    if ( willTakeRecording && recModeOn ) {
+        readyToPlay = 0;
+    }
 
-
+    
+    [audioRecorder updateMeters];
+    mAveragePower = [audioRecorder averagePowerForChannel:0];
+    ofLog() << mAveragePower;
+    
+    meter = ofMap(mAveragePower, -60, -30, 0, 100);
 }
 
 
@@ -120,6 +132,7 @@ void Recording::Draw() {
         ofCircle( recButtonPosX, recButtonPosY, recButtonRadius );
     }
 
+    // Delete button
     if ( showDeleteButton ) {
         ofSetColor( 50, 50, 50 );
         ofCircle( delButtonPosX, delButtonPosY, delButtonRadius );
@@ -127,33 +140,11 @@ void Recording::Draw() {
     
     
     // Spectrum
-    /*if ( recButtonIsPressed ) {
+    if ( recButtonIsPressed ) {
         ofSetColor( 255, 0, 0 );
-        for (int i = 0; i < myDrawInput.size(); i++) {
-
-            ofRect( 5 + i * 2, (ofGetWidth() * 0.25), 1, -myDrawInput[i] * 10);
-        }
-    }*/
+        ofRect( ofGetScreenWidth() * 0.25 , (ofGetScreenHeight() * 0.1), 10, -meter );
+    }
     
-    /*if ( recButtonIsPressed ) {
-        
-        //Graph of the sound buffer
-        int w = ofGetWidth() * 0.5;	// Width of the sound visualization picture
-        ofSetColor( 255, 0, 0 );
-        for (int x = 0; x < w; x++) {
-            int i = float(x) * 44100.0 / w;   // Convert x to buffer's position
-            ofLine( (ofGetWidth() * 0.25) + x, 100, (ofGetWidth() * 0.25) + x, 100 - myBuffInt[i] * 10 );
-        }
-    }*/
-    
-    // Rec square visual timer
-    /*if ( recButtonIsPressed ) {
-        recTimerWidth += ofGetLastFrameTime() * 10;
-        ofLog() << "recTimerWidth:" << recTimerWidth;
-        
-        ofSetColor( 255, 0, 0 );
-        ofRect(ofGetWidth() * 0.25, ofGetHeight() * 0.1, recTimerWidth, ofGetHeight() * 0.1 );
-    }*/
 }
 
 
@@ -240,6 +231,8 @@ void Recording::SetupAudioFile() {
     
     NSError *error = nil;
     
+
+    
     audioRecorder = [[AVAudioRecorder alloc]
                       initWithURL:soundFileURL
                       settings:recordSettings
@@ -252,8 +245,11 @@ void Recording::SetupAudioFile() {
         [audioRecorder prepareToRecord];
     }
     
+    audioRecorder.meteringEnabled = YES;
+    
     myRecString = ofxNSStringToString( soundFilePath );
-   
+ 
+    
 }
 
 

@@ -74,26 +74,26 @@ void ofApp::update()
     
     ///< MAXIMILIAN
     float *val = myFFT.magnitudesDB;
-    
+
     
     ///< Update spectrum analyze
-    touchobject.Update(val, volume);
+    touchobject.Update( val, volume );
 
     
     ///< Increase radius of particles, and decrease alpha
 
     for( int i = 0; i < particles.size(); i++ ) {
-        particles[i].Update(soundSpeed, volume);
+        particles[i].Update( soundSpeed, volume );
     }
 
     
     
     ///> Move Menu Button with finger
-    menu.Update( touchPosX );
+    menu.Update( touchPosX, touchIsDown );
     
     
     ///< Remove soundwave when alpha is 0
-    ofRemove(particles, shouldRemove);
+    ofRemove( particles, shouldRemove );
     
     
     ///< Add particles
@@ -105,7 +105,7 @@ void ofApp::update()
             
             addParticlesTimer += ofGetLastFrameTime();
             if ( addParticlesTimer >= 0.01 ) {
-                particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness() ) );
+                particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness(), soundSpeed ) );
                 addParticlesTimer = 0;
             }
         }
@@ -114,7 +114,7 @@ void ofApp::update()
 
     ///// R E C O R D I N G /////
     if ( menu.recModeOn ) {
-        recording.Update( touchPosX, touchPosY, touchIsDown );
+        recording.Update( touchPosX, touchPosY, touchIsDown, menu.recModeOn );
     }
     
     if ( recording.saveFileIsDone ) {
@@ -122,7 +122,12 @@ void ofApp::update()
         recording.saveFileIsDone = 0;
     }
     
+    // Set ready to play if not in rec mode
+    if ( !menu.recModeOn ) {
+        recording.readyToPlay = 1;
+    }
     
+
     
 }
 
@@ -146,20 +151,9 @@ void ofApp::draw()
     
     
     ///< Debug text
-    ofSetColor(100, 100, 100);
-
+    //ofSetColor(100, 100, 100);
     //ofDrawBitmapString("What Sample: " + ofToString(menu.whatSample), 10, 60);
-    //ofDrawBitmapString("What Menu Postition Number: " + ofToString(menu.whatMenuNum), 10, 120);
-    //ofDrawBitmapString("Rec mode is on: " + ofToString(menu.recModeOn), 10, 140);
-    //ofDrawBitmapString("About Bit20 is on: " + ofToString(menu.aboutBit20On), 10, 160);
-    //ofDrawBitmapString("File browser is on: " + ofToString(menu.fileBrowserOn), 10, 180);
-    //ofDrawBitmapString("File path: " + ofToString(recording.myRecString), 10, 200);
-    //ofDrawBitmapString("Del button is pressed: " + ofToString(recording.delButtonIsPressed), 10, 220);
-    //ofDrawBitmapString("myTimer: " + ofToString(recording.myTimer), 10, 240);
-    //ofDrawBitmapString("del button time: " + ofToString(recording.delButtonTime), 10, 260);
-    //ofDrawBitmapString("Ready to play: " + ofToString(recording.readyToPlay), 10, 280);
-    //ofDrawBitmapString("Wait for save time " + ofToString(recording.waitForSaveFileTime), 10, 300);
-    //ofDrawBitmapString("Wait for save bool " + ofToString(recording.willWaitForSave), 10, 320);
+
     
     
     ///// R E C O R D I N G /////
@@ -201,21 +195,25 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     // Calculate audio vector by iterating over samples
     for ( int i = 0; i < bufferSize; i++ )
     {
-        if ( recording.readyToPlay ) {
+        if ( recording.readyToPlay )
+        {
             
-        
             if ( triggerPlay )
             {
                 
-                if ( menu.recModeOn ) {
+                if ( menu.recModeOn )
+                {
                     sample = recSample.playOnce( soundSpeed );
-                } else {
+                }
+                else
+                {
                     sample = fileSample[menu.whatSample].playOnce( soundSpeed ); // No loop
                 }
             }
             else
+            {
                 sample = 0.;
-            
+            }
             
             // Stereo panning
             channel1.stereo( sample, stereomix, panning );
@@ -234,7 +232,6 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
             
         }
     }
-
     
     
     ///< Change sound speed

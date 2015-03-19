@@ -20,7 +20,7 @@ public:
     Recording();
     
     void Setup();
-    void Update( float touchX, float touchY, bool touchIsDown );
+    void Update( float touchX, float touchY, bool touchIsDown, bool recModeOn );
     void Draw();
     void Exit();
     
@@ -36,6 +36,7 @@ public:
     
     NSString *getAudioFilePath();
     
+    
     // -----------------------------
     
     float distanceToRecButton;
@@ -48,6 +49,11 @@ public:
     float waitForSaveFileTime;
     bool willWaitForSave;;
     bool readyToPlay;
+    float mAveragePower;
+    float mPeakPower;
+    float meter;
+    vector<RecCircles> recCircles;
+
     
     bool showDeleteButton;
     float distanceToDelButton;
@@ -62,6 +68,7 @@ public:
     float touchY;
     bool touchIsDown;
     float myTimer;
+    
 
 };
 

@@ -11,12 +11,36 @@ void Menu::Setup()
     fontLarge.loadFont("Fonts/DIN.otf", 18 );
     
     
-    buttonRadius        = ofGetScreenHeight() * 0.05;
-    whatSample          = 1;
-    buttonHidePosY      = ofGetScreenHeight() + ( buttonRadius * 0.5 );
-    buttonActivePosY    = ofGetScreenHeight() * 0.95;
-    buttonPosX          = ofGetScreenWidth() * 0.5;
+    buttonRadius            = ofGetScreenHeight() * 0.05;
+    buttonIsPressed         = false;
+    whatSample              = 1;
+    whatMenuNum             = 3;
+    whatMode                = 3;
+    buttonPosX              = ofGetScreenWidth() * 0.5;
+    buttonHidePosY          = ofGetScreenHeight() + ( buttonRadius * 0.5 );
+    buttonActivePosY        = ofGetScreenHeight() * 0.95;
+    pictogramsAndNumsPosY   = ofGetScreenHeight() * 0.8;
+    slideBallImageWidth     = ofGetScreenWidth() * 0.12;
+    slideBallImageHeight    = ofGetScreenHeight() * 0.1;
+    pictogramNumColor       = 100;
+    recMicPictogramColor    = 100;
+    bit20pictogramColor     = 100;
+    folderPictogramColor    = 100;
+    recModeOn               = false;
+    aboutBit20On            = false;
+    fileBrowserOn           = false;
+    
+    
+    recMicPictogram.loadImage( "recMicPictogram.png" );
+    slideBallPictogram.loadImage( "slideBallPictogram.png" );
+    bit20pictogram.loadImage( "bit20pictogram.png" );
+    folderPictogram.loadImage( "folderPictogram.png" );
 
+    for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
+    {
+        string picFileNr = "pictogram_num_" + ofToString( i ) + ".png";
+        pictogramNum[i].loadImage( ofToDataPath( picFileNr ) );
+    }
     
 }
 
@@ -41,9 +65,51 @@ int Menu::Update( float touchX, bool touchIsDown )
             nearestButton = i;
         }
     }
-
+    
     
     if ( buttonIsPressed )
+    {
+        
+        buttonPosX = touchX;
+        
+        // Set what menu number
+        whatMenuNum = nearestButton;
+    }
+    else
+    {
+        whatMode = whatMenuNum;
+        // Set what sound sample to play
+        if ( whatMode >= 3 )
+        {
+            whatSample = whatMode - 2;
+            recModeOn = 0;
+            aboutBit20On = 0;
+            fileBrowserOn = 0;
+        }
+        else if ( whatMode == 0 )
+        {
+            recModeOn = 0;
+            aboutBit20On = 1;
+            fileBrowserOn = 0;
+            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
+        } else if ( whatMode == 1 )
+        {
+            recModeOn = 0;
+            aboutBit20On = 0;
+            fileBrowserOn = 1;
+            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
+        }
+        else if ( whatMode == 2 )
+        {
+            recModeOn = 1;
+            aboutBit20On = 0;
+            fileBrowserOn = 0;
+            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
+        }
+    }
+
+    
+    /*if ( buttonIsPressed )
     {
         buttonPosX = touchX;
         
@@ -74,7 +140,7 @@ int Menu::Update( float touchX, bool touchIsDown )
             fileBrowserOn = 0;
             whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
         }
-    }
+    }*/
 
     
     // Retun what menu number to "recording mode" and "about Bit20". Show "recording mode" if 1 or show "about Bit20" if 0.
@@ -90,13 +156,9 @@ void Menu::DistanceToButton( float touchDownX, float touchDownY )
     distanceToButton = sqrt(    (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonActivePosY) * (touchDownY - buttonActivePosY)     ) ;
 
     // If finger is inside button when touch is down, buttonIsPress to true.
-    if ( buttonRadius > distanceToButton )
+    if ( (buttonRadius + (ofGetScreenWidth() * 0.01) ) > distanceToButton ) // Bigger area than button to make it easier to hit.
     {
         buttonIsPressed = 1;
-    }
-    else
-    {
-        buttonIsPressed = 0;
     }
 
 }
@@ -104,22 +166,68 @@ void Menu::DistanceToButton( float touchDownX, float touchDownY )
 
 void Menu::Draw()
 {
+    // Bit20 pictogram
+    if ( buttonIsPressed ) {
+        if ( whatMenuNum == 0 ) {
+            bit20pictogramColor = 255;
+        } else {
+            bit20pictogramColor = 100;
+        }
+        ofSetColor( bit20pictogramColor );
+        bit20pictogram.setAnchorPercent( 0.5, 0.5 );
+        bit20pictogram.draw( ( ofGetWidth() * SOUND_NUM_INDENT ) - ( ofGetWidth() * BUTTON_WIDTH ) * 2, pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
+    }
     
-    ///< What Sample numbers behind button
+    
+    // Folder pictogram
+    if ( buttonIsPressed ) {
+        if ( whatMenuNum == 1 ) {
+            folderPictogramColor = 255;
+        } else {
+            folderPictogramColor = 100;
+        }
+        ofSetColor( folderPictogramColor );
+        folderPictogram.setAnchorPercent( 0.5, 0.5 );
+        folderPictogram.draw( ( ofGetWidth() * SOUND_NUM_INDENT ) - ( ofGetWidth() * BUTTON_WIDTH ), pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
+    }
+    
+    
+    // Rec mic pictogram
     if ( buttonIsPressed )
     {
-        ofSetColor( 255, 255, 255, 255 );
-    }
-    else
-    {
-        ofSetColor( 0, 0, 0, 0 );
-    }
-    for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
-    {
-        fontLarge.drawString( ofToString( i ), ( (ofGetWidth() * SOUND_NUM_INDENT + 30) + ( (ofGetWidth() * BUTTON_WIDTH) * i) ), ( buttonActivePosY ) ); // +30 to compensate for Font origin X.
+        if ( whatMenuNum == 2 ) {
+            recMicPictogramColor = 255;
+        } else {
+            recMicPictogramColor = 100;
+        }
+        ofSetColor( recMicPictogramColor );
+        //recMicPictogram.setAnchorPoint( recMicPictogram.getWidth() * 0.5, recMicPictogram.getHeight() * 0.5 );
+        recMicPictogram.setAnchorPercent( 0.5, 0.5 );
+        recMicPictogram.draw( ( ofGetWidth() * SOUND_NUM_INDENT ), pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
+        //recMicPictogram.draw( (ofGetWidth() * BUTTON_INDENT) + ( (ofGetWidth() * BUTTON_WIDTH) * 2 ), pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
+        //recMicPictogram.draw( ofGetWidth() * SOUND_NUM_INDENT, pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
+        //recMicPictogram.draw( ofGetWidth() * SOUND_NUM_INDENT, pictogramsAndNumsPosY );
     }
     
     
+    ///< What Sample numbers above button
+    if ( buttonIsPressed )
+    {
+        for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
+        {
+            if ( whatMenuNum == i + 2 ) {
+                pictogramNumColor = 255;
+            } else {
+                pictogramNumColor = 100;
+            }
+            ofSetColor( pictogramNumColor );
+            pictogramNum[i].setAnchorPercent( 0.5, 0.5 );
+            pictogramNum[i].draw( ( (ofGetWidth() * SOUND_NUM_INDENT ) + ( (ofGetWidth() * BUTTON_WIDTH) * i) ), ( pictogramsAndNumsPosY ), ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
+            //fontLarge.drawString( ofToString( i ), ( (ofGetWidth() * SOUND_NUM_INDENT + 30) + ( (ofGetWidth() * BUTTON_WIDTH) * i) ), ( pictogramsAndNumsPosY ) ); // +30 to compensate for Font origin X.
+        }
+    }
+
+
     ///< What Menu Numbers (FOR DEBUGGING)
     /*if ( buttonIsPressed )
     {
@@ -149,9 +257,10 @@ void Menu::Draw()
         }
 
         
-        ofFill();
+        ofNoFill();
         ofCircle( buttonPosX, buttonActivePosY, buttonRadius );
-        
+        slideBallPictogram.setAnchorPercent( 0.5, 0.5 );
+        slideBallPictogram.draw( buttonPosX, buttonActivePosY, slideBallImageWidth, slideBallImageHeight );
     }
     else
     {
@@ -165,8 +274,10 @@ void Menu::Draw()
             ofSetColor( 0, 255, 0, 80 );
         }
         
-        ofFill();
+        ofNoFill();
         ofCircle( buttonPosX, buttonHidePosY, buttonRadius );
+        slideBallPictogram.setAnchorPercent( 0.5, 0.5 );
+        slideBallPictogram.draw( buttonPosX, buttonHidePosY, slideBallImageWidth, slideBallImageHeight );
     }
 
     

@@ -12,6 +12,9 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
 
+#include "recParticles.h"
+#include "recSpectrum.h"
+
 
 
 class Recording {
@@ -20,7 +23,7 @@ public:
     Recording();
     
     void Setup();
-    void Update( float touchX, float touchY, bool touchIsDown, bool recModeOn );
+    void Update( float touchXDown, float touchYDown, bool touchIsDown, bool recModeOn );
     void Draw();
     void Exit();
     
@@ -28,16 +31,21 @@ public:
     void PlayPresed();
     void StopPressed();
     
+    void distanceToDeleteButton( float touchX, float touchY, bool recModeOn );
+    
     void SetupAudioFile();
-    AVAudioRecorder *audioRecorder; // Apples own audio recorder from AVFoundation
-    bool isRecording;
-    string myRecString;
-    bool saveFileIsDone;
     
     NSString *getAudioFilePath();
     
     
+    
     // -----------------------------
+    
+    AVAudioRecorder *audioRecorder; // Apples own audio recorder from AVFoundation
+    bool isRecording;
+    string myRecString;
+    bool saveFileIsDone;
+
     
     float distanceToRecButton;
     float recButtonPosX;
@@ -49,10 +57,14 @@ public:
     float waitForSaveFileTime;
     bool willWaitForSave;;
     bool readyToPlay;
+    
     float mAveragePower;
     float mPeakPower;
+    vector<RecSpectrum> recSpectrum;
     float meter;
-    vector<RecCircles> recCircles;
+    vector<RecParticles> recParticles;
+    float addParticlesTimer;
+    int spectrumPosXinc;
 
     
     bool showDeleteButton;
@@ -63,10 +75,11 @@ public:
     bool delButtonIsPressed;
     float delButtonTime;
     bool willWaitForDelButton;
+    ofImage trashcan;
+    float eraseRecFileTimer;
     
     float touchX;
     float touchY;
-    bool touchIsDown;
     float myTimer;
     
 

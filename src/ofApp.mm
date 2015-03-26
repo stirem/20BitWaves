@@ -83,7 +83,7 @@ void ofApp::update()
     ///< Increase radius of particles, and decrease alpha
 
     for( int i = 0; i < particles.size(); i++ ) {
-        particles[i].Update( soundSpeed, volume );
+        particles[i].Update( soundSpeed, volume, sample );
     }
 
     
@@ -128,7 +128,6 @@ void ofApp::update()
     }
     
 
-    
 }
 
 //--------------------------------------------------------------
@@ -182,7 +181,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
 {
 	
 	ofxMaxiMix channel1;
-	double sample;
+	//double sample;
 	double stereomix[2];
 	
     if( initialBufferSize != bufferSize )
@@ -297,11 +296,14 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     // Used to check distance from finger to button. If finger is inside button: change sample.
-    menu.DistanceToButton(touch.x, touch.y);
+    menu.DistanceToButton( touch.x, touch.y );
+    
+    // Check if delete button is pressed
+    recording.distanceToDeleteButton( touch.x, touch.y, menu.recModeOn );
     
     
     ///< Detect if finger is inside menu-button
-    if (menu.buttonIsPressed == true) {
+    if ( menu.buttonIsPressed ) {
         volume = 0.0;
     } else {
         triggerPlay = true;
@@ -335,6 +337,8 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     
     // Used to change sound sample
     menu.buttonIsPressed = false;
+    
+    recording.delButtonIsPressed = false;
 
     
     touchIsDown = 0;

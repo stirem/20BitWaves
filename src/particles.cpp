@@ -20,7 +20,7 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
 
 ///< Increase radius of soundwaves, and decrease alpha
 // --------------------------------------------------------
-void Particles::Update( float soundSpeed, float volume ) {
+void Particles::Update( float soundSpeed, float volume, double sample ) {
     
     //radius = radius + 40 * s;
     //radius = radius + 1 * soundSpeed;
@@ -29,8 +29,8 @@ void Particles::Update( float soundSpeed, float volume ) {
     //radius = radius + ( 0.05 * ofGetScreenWidth() * soundSpeed * ofGetLastFrameTime() );
     radius = radius + ( 0.05 * ofGetScreenWidth() * mySoundSpeed * ofGetLastFrameTime() );
     
-    
-    if ( volume == 1 ) {
+    if ( sample != 0.0 ) {
+    //if ( volume == 1 ) {
         //alpha = alpha - 1;
         alpha = alpha - ( 50 * ofGetLastFrameTime() );
     } else {
@@ -52,7 +52,7 @@ void Particles::Draw()
     //color.setBrightness(colorBrightness / 25);
     color.setBrightness( waveColorBrightness );
     ofSetColor( color );
-    ofEnableAntiAliasing();
+    //ofEnableAntiAliasing();
     ofSetCircleResolution( 100 );
     ofSetLineWidth( myLineWidth );
     ofCircle( pos.x, pos.y, radius );

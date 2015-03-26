@@ -86,9 +86,10 @@ public:
 
     
     // Maximilian sample playback declaration
-    ofxMaxiSample fileSample[NUM_OF_SOUNDS + 1];
+    ofxMaxiSample fileSample[NUM_OF_SOUNDS + 1]; // + 1 because file names start on nr 1 and not 0.
     ofxMaxiSample recSample;
     
+    double sample;
     
     // Declare FFT
     int fftSize;

@@ -1,9 +1,6 @@
 
 #include "touchObject.h"
 
-
-
-
 // --------------------------------------------------------
 ///< Constructor for Touchobject
 Touchobject::Touchobject()
@@ -21,8 +18,12 @@ void Touchobject::Setup()
         spectrum[i] = 0.0f;
     }
     
-    alpha           = 255;
-    startRadius     = 0;
+    soundBrightness     = 0;
+    alpha               = 255;
+    startRadius         = 0;
+    spectrumVolume      = 0;
+    colorBrightness     = 0;
+    radius              = 0;
     
 }
 // --------------------------------------------------------
@@ -31,8 +32,6 @@ void Touchobject::Setup()
 // --------------------------------------------------------
 void Touchobject::Update( float *val, float volume )
 {
-    
-    
     // Sound spectrum
     for (int i = 0; i<BANDS; i++)
     {
@@ -40,8 +39,6 @@ void Touchobject::Update( float *val, float volume )
         spectrum[i] = max( spectrum[i], val[i]);
     }
     // --------------------
-    
-    
     
     
     // --------------------
@@ -64,10 +61,6 @@ void Touchobject::Update( float *val, float volume )
     // --------------------
 
     
-    
-    
-    
-    
     // Fade down soundobject when not playing
     if ( spectrumVolume < 1000 )
     {
@@ -75,14 +68,13 @@ void Touchobject::Update( float *val, float volume )
         {
             colorBrightness = colorBrightness - 5;
         }
+        
+        if( alpha > 0 ) alpha = alpha - 5;
+    } else {
+        alpha = 255;
     }
-    
-    
-    
 }
 // --------------------------------------------------------
-
-
 
 
 // --------------------------------------------------------
@@ -93,9 +85,6 @@ float Touchobject::SpectrumVolume()
 // --------------------------------------------------------
 
 
-
-
-
 // --------------------------------------------------------
 float Touchobject::SoundBrightness()
 {
@@ -104,22 +93,16 @@ float Touchobject::SoundBrightness()
 // --------------------------------------------------------
 
 
-
-
-
 // --------------------------------------------------------
 float Touchobject::ColorBrightness()
 {
    
-    colorBrightness = ofMap( soundBrightness, 500, 770, 255, 10 );
+    colorBrightness = ofMap( soundBrightness, 500, 770, 255, 20 );
     
     return colorBrightness;
     
 }
 // --------------------------------------------------------
-
-
-
 
 
 // --------------------------------------------------------
@@ -143,21 +126,12 @@ float Touchobject::StartRadius()
 // --------------------------------------------------------
 
 
-
 // --------------------------------------------------------
 void Touchobject::Position( float touchX, float touchY )
 {
-
-
     pos.set(touchX, touchY);
-    
-    
-    
-    
-    
 }
 // --------------------------------------------------------
-
 
 
 // --------------------------------------------------------
@@ -181,9 +155,7 @@ void Touchobject::Draw()
     for (int i = 0; i < BANDS; i++) {
         ofRect(5 + i * 2, ofGetHeight(), 1, -spectrum[i] * 10);
     }*/
-    
-    
-    
+
     
 }
 // --------------------------------------------------------

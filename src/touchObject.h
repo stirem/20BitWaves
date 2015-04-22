@@ -26,7 +26,6 @@ public:
     float soundBrightness;
     float spectrumVolume;
     float startRadius;
-    float distanceToButton;
     float colorBrightness;
     float alpha;
     float radius;

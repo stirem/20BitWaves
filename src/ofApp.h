@@ -16,11 +16,6 @@
 #include "recording.h"
 
 
-
-
-
-
-
 class ofApp : public ofxiOSApp {
 	
 public:
@@ -39,8 +34,7 @@ public:
     void gotFocus();
     void gotMemoryWarning();
     void deviceOrientationChanged(int newOrientation);
-
-
+    
 
     vector<Particles> particles; // Particles vector
 

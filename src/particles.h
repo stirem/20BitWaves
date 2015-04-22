@@ -16,7 +16,7 @@ public:
     ofColor color; // Color of soundwaves
     
     float radius; // Radius of soundwaves
-    float waveColorBrightness; // Color brightness of soundwaves
+    float circleColorBrightness; // Color brightness of particle circles
     float alpha;
     float myLineWidth;
 

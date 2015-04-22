@@ -8,27 +8,38 @@ Menu::Menu()
 
 void Menu::Setup()
 {
-    fontLarge.loadFont("Fonts/DIN.otf", 18 );
+    //fontLarge.loadFont("Fonts/DIN.otf", 18 );
     
+    buttonIsPressed             = false;
+    buttonPressedTimer          = 0;
+    whatSample                  = 1;
+    whatMenuNum                 = 3;
+    whatMode                    = 3;
     
-    buttonRadius            = ofGetScreenHeight() * 0.05;
-    buttonIsPressed         = false;
-    whatSample              = 1;
-    whatMenuNum             = 3;
-    whatMode                = 3;
-    buttonPosX              = ofGetScreenWidth() * 0.5;
-    buttonHidePosY          = ofGetScreenHeight() + ( buttonRadius * 0.5 );
-    buttonActivePosY        = ofGetScreenHeight() * 0.95;
-    pictogramsAndNumsPosY   = ofGetScreenHeight() * 0.8;
-    slideBallImageWidth     = ofGetScreenWidth() * 0.12;
-    slideBallImageHeight    = ofGetScreenHeight() * 0.1;
-    pictogramNumColor       = 100;
-    recMicPictogramColor    = 100;
-    bit20pictogramColor     = 100;
-    folderPictogramColor    = 100;
-    recModeOn               = false;
-    aboutBit20On            = false;
-    fileBrowserOn           = false;
+    /*buttonRadius              = ofGetScreenHeight() * 0.05;
+    buttonPosX                  = ofGetScreenWidth() * 0.5;
+    buttonHidePosY              = ofGetScreenHeight() + ( buttonRadius * 0.5 );
+    buttonActivePosY            = ofGetScreenHeight() * 0.95;
+    pictogramsAndNumsPosY       = ofGetScreenHeight() * 0.8;
+    slideBallImageWidth         = ofGetScreenWidth() * 0.12;
+    slideBallImageHeight        = ofGetScreenHeight() * 0.1;*/
+    
+    buttonRadius                = ofGetHeight() * 0.05;
+    buttonPosX                  = ofGetWidth() * 0.5;
+    buttonHidePosY              = ofGetHeight() + ( buttonRadius * 0.5 );
+    buttonActivePosY            = ofGetHeight() * 0.95;
+    pictogramsAndNumsPosY       = ofGetHeight() * 0.8;
+    slideBallImageWidth         = ofGetWidth() * 0.12;
+    slideBallImageHeight        = ofGetWidth() * 0.076; // Obs! Using ofGetWidth() to get same proportions on iphone 4s and 5s (dirrerent screen width)
+    
+    pictogramNumColor           = 100;
+    recMicPictogramColor        = 100;
+    bit20pictogramColor         = 100;
+    folderPictogramColor        = 100;
+    recModeOn                   = false;
+    aboutBit20On                = false;
+    fileBrowserOn               = false;
+    rectOverPictogramsOpacity   = 0;
     
     
     recMicPictogram.loadImage( "recMicPictogram.png" );
@@ -66,18 +77,25 @@ int Menu::Update( float touchX, bool touchIsDown )
         }
     }
     
-    
     if ( buttonIsPressed )
     {
+        buttonPressedTimer += ofGetLastFrameTime();
         
-        buttonPosX = touchX;
+        rectOverPictogramsOpacity = rectOverPictogramsOpacity - ( ofGetLastFrameTime() * 800 );
         
-        // Set what menu number
-        whatMenuNum = nearestButton;
+        if ( buttonPressedTimer > 0.3 )
+        {
+            buttonPosX = touchX;
+            whatMenuNum = nearestButton;
+        }
     }
     else
     {
+        rectOverPictogramsOpacity = 255;
+        buttonPressedTimer = 0;
+        pictogramNumColor = 0;
         whatMode = whatMenuNum;
+        
         // Set what sound sample to play
         if ( whatMode >= 3 )
         {
@@ -243,22 +261,32 @@ void Menu::Draw()
     }*/
     
     
+    
+    
+    // Black rectangle over pictograms that fades out
+    ofSetColor( 0, 0, 0, rectOverPictogramsOpacity );
+    ofFill();
+    ofRect( 0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() * 0.5 );
+    
+    
+    
     ///< Button
     if ( buttonIsPressed )
     {
         if ( !recModeOn && !aboutBit20On && !fileBrowserOn ) {
             ofSetColor( 255, 255, 255, 255 );
         } else if ( recModeOn ) {
-            ofSetColor( 255, 0, 0 );
-        } else if ( aboutBit20On ) {
-            ofSetColor( 0, 0, 255 );
-        } else if ( fileBrowserOn ) {
-            ofSetColor( 0, 255, 0 );
+            ofSetColor( 255, 0, 0, 255 );
         }
-
+        else if ( aboutBit20On ) {
+            ofSetColor( 255, 255, 255, 255 );
+        } else if ( fileBrowserOn ) {
+            ofSetColor( 255, 255, 255, 255 );
+        }
         
-        ofNoFill();
-        ofCircle( buttonPosX, buttonActivePosY, buttonRadius );
+        
+        //ofNoFill();
+        //ofCircle( buttonPosX, buttonActivePosY, buttonRadius );
         slideBallPictogram.setAnchorPercent( 0.5, 0.5 );
         slideBallPictogram.draw( buttonPosX, buttonActivePosY, slideBallImageWidth, slideBallImageHeight );
     }
@@ -268,39 +296,19 @@ void Menu::Draw()
             ofSetColor( 255, 255, 255, 40 );
         } else if ( recModeOn ) {
             ofSetColor( 255, 0, 0, 80 );
-        } else if ( aboutBit20On ) {
-            ofSetColor( 0, 0, 255, 80 );
+        }
+        else if ( aboutBit20On ) {
+            ofSetColor( 255, 255, 255, 40 );
         } else if ( fileBrowserOn ) {
-            ofSetColor( 0, 255, 0, 80 );
+            ofSetColor( 255, 255, 255, 40 );
         }
         
-        ofNoFill();
-        ofCircle( buttonPosX, buttonHidePosY, buttonRadius );
+        //ofNoFill();
+        //ofCircle( buttonPosX, buttonHidePosY, buttonRadius );
         slideBallPictogram.setAnchorPercent( 0.5, 0.5 );
         slideBallPictogram.draw( buttonPosX, buttonHidePosY, slideBallImageWidth, slideBallImageHeight );
     }
 
-    
-    
-    ///< Nr inside button
-    if ( buttonIsPressed )
-    {
-        if ( !recModeOn && !aboutBit20On && !fileBrowserOn ) {
-            ofSetColor( 0, 0, 0, 255 );
-            fontLarge.drawString( ofToString( whatSample ), buttonPosX - 9, buttonActivePosY ); // -13 to compensate for Font origin X
-        }
-    }
-    else
-    {
-        if ( !recModeOn && !aboutBit20On && !fileBrowserOn ) {
-            ofSetColor( 0, 0, 0, 100 );
-            fontLarge.drawString( ofToString( whatSample ), buttonPosX - 9, buttonHidePosY - 15 ); // -13 to compensate for Font origin X
-        }
-    }
-    
-    
-    
-    
 
 }
 

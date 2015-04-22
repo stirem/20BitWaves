@@ -15,16 +15,18 @@ void ofApp::setup()
     ///< Setup framerate, background color and show mouse
     ofSetFrameRate( 60 );
     ofBackground( 0, 0, 0 );
-    ofSetOrientation( OF_ORIENTATION_90_LEFT );
+
     
     touchobject.Setup();
     
     menu.Setup();
 
-    
+    touchPosX               = 0;
+    touchPosY               = 0;
     triggerPlay             = false;
     soundSpeed              = 1.0;
     fingerIsLifted          = false;
+    touchIsDown             = false;
     addParticlesTimer       = 0;
 
     
@@ -34,6 +36,7 @@ void ofApp::setup()
     initialBufferSize       = 512;
     panning                 = 0.5;
     volume                  = 0.0;
+    sample                  = 0.0;
     
 
 
@@ -64,13 +67,16 @@ void ofApp::setup()
     }
     
     
+
+    ofSetOrientation( OF_ORIENTATION_90_LEFT ); // Set this after recording.Setup() and menu.Setup() because of issue with ofGetWidth() vs ofGetScreenWidth().
+
+    
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-
-    
     
     ///< MAXIMILIAN
     float *val = myFFT.magnitudesDB;
@@ -119,42 +125,32 @@ void ofApp::update()
     
     if ( recording.saveFileIsDone ) {
         recSample.load( recording.myRecString );
-        recording.saveFileIsDone = 0;
+        recording.saveFileIsDone = false;
     }
     
     // Set ready to play if not in rec mode
     if ( !menu.recModeOn ) {
-        recording.readyToPlay = 1;
+        recording.readyToPlay = true;
     }
     
-
 }
 
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+    
+    // Draw menu-button
+    menu.Draw();
+    
     ///< Draw touchobject
     touchobject.Draw();
-    
     
     ///< Draw particles
     for( int i = 0; i < particles.size(); i++ )
     {
         particles[i].Draw();
     }
-    
-    
-    // Draw menu-button
-    menu.Draw();
-    
-    
-    
-    ///< Debug text
-    //ofSetColor(100, 100, 100);
-    //ofDrawBitmapString("What Sample: " + ofToString(menu.whatSample), 10, 60);
 
-    
-    
     ///// R E C O R D I N G /////
     if ( menu.recModeOn ) {
         recording.Draw();
@@ -194,12 +190,11 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     // Calculate audio vector by iterating over samples
     for ( int i = 0; i < bufferSize; i++ )
     {
-        if ( recording.readyToPlay )
+        if ( recording.readyToPlay && !recording.silenceWhenDeleting )
         {
             
             if ( triggerPlay )
             {
-                
                 if ( menu.recModeOn )
                 {
                     sample = recSample.playOnce( soundSpeed );
@@ -339,6 +334,8 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     menu.buttonIsPressed = false;
     
     recording.delButtonIsPressed = false;
+    
+    recording.silenceWhenDeleting = false;
 
     
     touchIsDown = 0;

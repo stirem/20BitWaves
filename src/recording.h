@@ -37,6 +37,7 @@ public:
     
     NSString *getAudioFilePath();
     
+    bool isFileInDir();
     
     
     // -----------------------------
@@ -57,6 +58,7 @@ public:
     float waitForSaveFileTime;
     bool willWaitForSave;;
     bool readyToPlay;
+    ofImage hold;
     
     float mAveragePower;
     float mPeakPower;
@@ -77,6 +79,7 @@ public:
     bool willWaitForDelButton;
     ofImage trashcan;
     float eraseRecFileTimer;
+    bool silenceWhenDeleting;
     
     float touchX;
     float touchY;

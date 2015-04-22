@@ -20,6 +20,7 @@ public:
     float distanceToButton;
     float buttonRadius;
     bool buttonIsPressed;
+    float buttonPressedTimer;
     unsigned int whatSample;
     unsigned int whatMenuNum;
     unsigned int whatMode;
@@ -34,12 +35,13 @@ public:
     int recMicPictogramColor;
     int bit20pictogramColor;
     int folderPictogramColor;
+    float rectOverPictogramsOpacity;
     
     bool recModeOn;
     bool aboutBit20On;
     bool fileBrowserOn;
     
-    ofTrueTypeFont fontLarge;
+    //ofTrueTypeFont fontLarge;
     
     ofImage recMicPictogram;
     ofImage slideBallPictogram;

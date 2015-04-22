@@ -25,32 +25,60 @@ void Recording::Setup() {
     
     myRecString = ofxNSStringToString( getAudioFilePath() ); // Init sound file
     
-    recButtonPosX                   = ofGetScreenWidth() * 0.5;
+    /*recButtonPosX                   = ofGetScreenWidth() * 0.5;
     recButtonPosY                   = ofGetScreenHeight() * 0.5;
     recButtonRadius                 = ofGetScreenWidth() * 0.15;
+    distanceToRecButton             = ofGetScreenWidth(); // Avoid rec button getting pushed on start*/
+    
+    recButtonPosX                   = ofGetWidth() * 0.5;
+    recButtonPosY                   = ofGetHeight() * 0.5;
+    recButtonRadius                 = ofGetWidth() * 0.15;
     distanceToRecButton             = ofGetWidth(); // Avoid rec button getting pushed on start
+    
     recButtonColor                  = 100;
-    willTakeRecording               = false;
+    
+    if( !isFileInDir() )
+    {
+        readyToPlay = false;
+        SetupAudioFile();
+        willTakeRecording = true;
+        showDeleteButton = false;
+    }
+    else
+    {
+        readyToPlay = true;
+        willTakeRecording = false;
+        showDeleteButton = true;
+    }
+    
     waitForSaveFileTime             = 0;
     willWaitForSave                 = false;
-    readyToPlay                     = true;
+
     mAveragePower                   = 0;
     mPeakPower                      = 0;
     meter                           = 0;
     addParticlesTimer               = 0;
     spectrumPosXinc                 = 0;
     
-    showDeleteButton                = true;
     delButtonIsPressed              = false;
-    delButtonPosX                   = ofGetScreenWidth() * 0.95;
+    
+    /*delButtonPosX                   = ofGetScreenWidth() * 0.95;
     delButtonPosY                   = ofGetScreenHeight() * 0.05;
     delButtonRadius                 = ofGetScreenWidth() * 0.02;
-    distanceToDelButton             = ofGetScreenWidth();
+    distanceToDelButton             = ofGetScreenWidth();*/
+    
+    delButtonPosX                   = ofGetWidth() * 0.95;
+    delButtonPosY                   = ofGetHeight() * 0.05;
+    delButtonRadius                 = ofGetWidth() * 0.02;
+    distanceToDelButton             = ofGetWidth();
+    
     delButtonTime                   = 0;
     willWaitForDelButton            = false;
     eraseRecFileTimer               = 0;
+    silenceWhenDeleting             = false;
     
     trashcan.loadImage( "trashcan.png" );
+    hold.loadImage( "hold.png" );
 }
 
 void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recModeOn ) {
@@ -93,8 +121,9 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
     if ( delButtonIsPressed ) {
         
         eraseRecFileTimer += ofGetLastFrameTime();
+        silenceWhenDeleting = true;
         
-        if ( eraseRecFileTimer >= 2.0 ) {
+        if ( eraseRecFileTimer >= 1.0 ) {
             readyToPlay = false;
             SetupAudioFile();
             willTakeRecording = true;
@@ -119,7 +148,6 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
     
     meter = ofMap(mAveragePower, -60, -30, 0, 100);
     //meter = ofMap(mPeakPower, -60, -30, 0, 100);
-    
     
     
     // Rec Spectrum
@@ -195,26 +223,30 @@ void Recording::Draw() {
         ofSetColor( recButtonColor, 0, 0 );
         ofFill();
         ofCircle( recButtonPosX, recButtonPosY, recButtonRadius );
+        ofSetColor( 255, 255, 255, 20 );
+        hold.setAnchorPercent( 0.5, 0.5 );
+        hold.draw( recButtonPosX, recButtonPosY, recButtonRadius, recButtonRadius * 0.29 );
     }
 
     // Delete button
     if ( showDeleteButton ) {
         ofSetColor( 255, 255, 255, 50 );
-        ofNoFill();
-        ofCircle( delButtonPosX, delButtonPosY, delButtonRadius );
+        //ofNoFill();
+        //ofCircle( delButtonPosX, delButtonPosY, delButtonRadius );
         //trashcan.setAnchorPoint( trashcan.getWidth() / 2, trashcan.getHeight() / 2 );
         trashcan.setAnchorPercent( 0.5, 0.5 );
         trashcan.draw( delButtonPosX, delButtonPosY, ofGetWidth() * 0.03, ofGetHeight() * 0.05 );
+        ofSetColor( 255, 255, 255, 20 );
+        hold.setAnchorPercent( 0.5, 0.5 );
+        hold.draw( delButtonPosX, delButtonPosY + ( trashcan.getHeight() * 0.1 ), ofGetWidth() * 0.02, ofGetHeight() * 0.008 );
 
     }
 
-
-    
     // Visual timer for delete file
     if ( delButtonIsPressed ) {
         ofSetColor( 255, 255, 255 );
         ofFill();
-        ofRect( ofGetWidth() * 0.42, ofGetHeight() * 0.25, eraseRecFileTimer * (ofGetWidth() * 0.1 ), ofGetHeight() * 0.1 );
+        ofRect( ofGetWidth() * 0.42, ofGetHeight() * 0.25, eraseRecFileTimer * (ofGetWidth() * 0.2 ), ofGetHeight() * 0.1 );
         ofNoFill();
         ofRect( ofGetWidth() * 0.42, ofGetHeight() * 0.25, ofGetWidth() * 0.2, ofGetHeight() * 0.1 );
     }
@@ -261,6 +293,7 @@ void Recording::StopPressed(){
         [audioRecorder stop];
         
         waitForSaveFileTime = myTimer;
+        
         willWaitForSave = 1;
         
         recButtonColor = 100;
@@ -270,20 +303,31 @@ void Recording::StopPressed(){
         showDeleteButton = 1;
     }
     
-
-    
     isRecording = false;
 }
 
 
 // Init sound file on startup
-NSString* Recording::getAudioFilePath(){
+NSString* Recording::getAudioFilePath() {
     NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [searchPaths objectAtIndex:0];
     NSString *fileName = [NSString stringWithFormat:@"%@/micRecording.wav", documentsPath];
+    
     return fileName;
 }
 
+bool Recording::isFileInDir() {
+    
+    NSFileManager *myManager = [NSFileManager defaultManager];
+    NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [searchPaths objectAtIndex:0];
+    
+    if([myManager fileExistsAtPath:[documentsDirectory stringByAppendingPathComponent:@"/micRecording.wav"]]){
+        return true;
+    } else {
+        return false;
+    }
+}
 
 // Setup sound file for recording
 void Recording::SetupAudioFile() {

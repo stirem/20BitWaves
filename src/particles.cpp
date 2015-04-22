@@ -8,7 +8,7 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
 {
     pos.set(touchX, touchY);
     //colorBrightness = specVolume;
-    waveColorBrightness     = colorBrightness;
+    circleColorBrightness   = colorBrightness;
     radius                  = startRadius; // Radius from specVolume
     myLineWidth             = 1;
     alpha                   = 255;
@@ -50,7 +50,7 @@ void Particles::Draw()
     ofNoFill();
     color = ofColor( 255, 255, 255, alpha );
     //color.setBrightness(colorBrightness / 25);
-    color.setBrightness( waveColorBrightness );
+    color.setBrightness( circleColorBrightness );
     ofSetColor( color );
     //ofEnableAntiAliasing();
     ofSetCircleResolution( 100 );

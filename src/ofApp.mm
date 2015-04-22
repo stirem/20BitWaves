@@ -53,10 +53,11 @@ void ofApp::setup()
 
 
     ///// R E C O R D I N G /////
-    recording.Setup();
-    
-
+    // Order here is important to check if rec file has content. If not, rec button will be shown.
+    recording.setup( );
     recSample.load( recording.myRecString );
+    recording.isRecSampleZero( recSample.length );
+
     
     
     // Load samples
@@ -125,6 +126,7 @@ void ofApp::update()
     
     if ( recording.saveFileIsDone ) {
         recSample.load( recording.myRecString );
+        recording.loadFileIsDone = true;
         recording.saveFileIsDone = false;
     }
     
@@ -132,6 +134,7 @@ void ofApp::update()
     if ( !menu.recModeOn ) {
         recording.readyToPlay = true;
     }
+
     
 }
 
@@ -161,20 +164,17 @@ void ofApp::draw()
 void ofApp::exit(){
 
     ///// R E C O R D I N G /////
-    recording.Exit();
+    //recording.Exit();
     
 }
 
 //--------------------------------------------------------------
 
 
-
-
-
-
 ///< ----------- M A X I M I L I A N -------------
 void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
 {
+    
 	
 	ofxMaxiMix channel1;
 	//double sample;
@@ -186,23 +186,35 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
         return;
     }
     
-    
     // Calculate audio vector by iterating over samples
     for ( int i = 0; i < bufferSize; i++ )
     {
-        if ( recording.readyToPlay && !recording.silenceWhenDeleting )
+        if ( recording.readyToPlay )
         {
-            
             if ( triggerPlay )
             {
                 if ( menu.recModeOn )
                 {
-                    sample = recSample.playOnce( soundSpeed );
+                    if ( !recording.silenceWhenDeleting )
+                    {
+                        if ( !recording.muteAudioWhileRecording )
+                        {
+                            if ( recording.loadFileIsDone )
+                            {
+                                sample = recSample.playOnce( soundSpeed );
+                            }
+                        }
+                        else
+                        {
+                            sample = 0.;
+                        }
+                    }
                 }
                 else
                 {
-                    sample = fileSample[menu.whatSample].playOnce( soundSpeed ); // No loop
+                    sample = fileSample[menu.whatSample].playOnce( soundSpeed );
                 }
+                
             }
             else
             {
@@ -223,8 +235,53 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
             
             output[i*nChannels    ] = stereomix[0] * volume;
             output[i*nChannels + 1] = stereomix[1] * volume;
-            
         }
+        
+
+        /*if ( recording.readyToPlay && !recording.silenceWhenDeleting )
+        {
+            if ( !recording.muteAudioWhileRecording )
+            {
+                if ( recording.loadFileIsDone )
+                {
+                    if ( triggerPlay )
+                    {
+                        if ( menu.recModeOn )
+                        {
+                            sample = recSample.playOnce( soundSpeed );
+                        }
+                        else
+                        {
+                            sample = fileSample[menu.whatSample].playOnce( soundSpeed ); // No loop
+                        }
+                    }
+                    else
+                    {
+                        sample = 0.;
+                    }
+                }
+            }
+            else
+            {
+                sample = 0.;
+            }
+            
+            
+            // Stereo panning
+            channel1.stereo( sample, stereomix, panning );
+            
+            
+            // Process FFT Spectrum
+            if ( myFFT.process( sample ) )
+            {
+                myFFT.magsToDB();
+                //myFFTOctAna.calculate( myFFT.magnitudes );
+            }
+            
+            
+            output[i*nChannels    ] = stereomix[0] * volume;
+            output[i*nChannels + 1] = stereomix[1] * volume;
+        }*/
     }
     
     

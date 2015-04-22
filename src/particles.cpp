@@ -32,7 +32,7 @@ void Particles::Update( float soundSpeed, float volume, double sample ) {
     if ( sample != 0.0 ) {
     //if ( volume == 1 ) {
         //alpha = alpha - 1;
-        alpha = alpha - ( 50 * ofGetLastFrameTime() );
+        alpha = alpha - ( 90 * ofGetLastFrameTime() );
     } else {
         //alpha = alpha - 1.5;
         alpha = alpha - ( 150 * ofGetLastFrameTime() );

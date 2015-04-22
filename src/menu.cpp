@@ -293,14 +293,14 @@ void Menu::Draw()
     else
     {
         if ( !recModeOn && !aboutBit20On && !fileBrowserOn ) {
-            ofSetColor( 255, 255, 255, 40 );
+            ofSetColor( 255, 255, 255, 60 );
         } else if ( recModeOn ) {
             ofSetColor( 255, 0, 0, 80 );
         }
         else if ( aboutBit20On ) {
-            ofSetColor( 255, 255, 255, 40 );
+            ofSetColor( 255, 255, 255, 60 );
         } else if ( fileBrowserOn ) {
-            ofSetColor( 255, 255, 255, 40 );
+            ofSetColor( 255, 255, 255, 60 );
         }
         
         //ofNoFill();

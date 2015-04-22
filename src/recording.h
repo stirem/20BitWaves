@@ -22,13 +22,12 @@ public:
     
     Recording();
     
-    void Setup();
+    void setup( );
     void Update( float touchXDown, float touchYDown, bool touchIsDown, bool recModeOn );
     void Draw();
     void Exit();
     
     void RecordPressed();
-    void PlayPresed();
     void StopPressed();
     
     void distanceToDeleteButton( float touchX, float touchY, bool recModeOn );
@@ -39,51 +38,58 @@ public:
     
     bool isFileInDir();
     
+    void isRecSampleZero( long recSampleLength );
+    
     
     // -----------------------------
     
-    AVAudioRecorder *audioRecorder; // Apples own audio recorder from AVFoundation
-    bool isRecording;
-    string myRecString;
-    bool saveFileIsDone;
+    // Recording
+    AVAudioRecorder         *audioRecorder; // Apples own audio recorder from AVFoundation
+    bool                    isRecording;
+    string                  myRecString;
+    bool                    saveFileIsDone;
+    float                   distanceToRecButton;
+    float                   recButtonPosX;
+    float                   recButtonPosY;
+    float                   recButtonRadius;
+    bool                    recButtonIsPressed;
+    int                     recButtonColor;
+    bool                    willTakeRecording;
+    float                   waitForSaveFileTime;
+    bool                    willWaitForSave;;
+    bool                    readyToPlay;
+    ofImage                 hold;
+    bool                    muteAudioWhileRecording;
+    bool                    loadFileIsDone; // is set in ofApp
+    
+    
+    // Spectrum
+    float                   mAveragePower;
+    float                   mPeakPower;
+    vector<RecSpectrum>     recSpectrum;
+    float                   meter;
+    vector<RecParticles>    recParticles;
+    float                   addParticlesTimer;
+    int                     spectrumPosXinc;
 
     
-    float distanceToRecButton;
-    float recButtonPosX;
-    float recButtonPosY;
-    float recButtonRadius;
-    bool recButtonIsPressed;
-    int recButtonColor;
-    bool willTakeRecording;
-    float waitForSaveFileTime;
-    bool willWaitForSave;;
-    bool readyToPlay;
-    ofImage hold;
+    // Delete button
+    bool                    showDeleteButton;
+    float                   distanceToDelButton;
+    float                   delButtonPosX;
+    float                   delButtonPosY;
+    float                   delButtonRadius;
+    bool                    delButtonIsPressed;
+    float                   delButtonTime;
+    bool                    willWaitForDelButton;
+    ofImage                 trashcan;
+    float                   eraseRecFileTimer;
+    bool                    silenceWhenDeleting;
     
-    float mAveragePower;
-    float mPeakPower;
-    vector<RecSpectrum> recSpectrum;
-    float meter;
-    vector<RecParticles> recParticles;
-    float addParticlesTimer;
-    int spectrumPosXinc;
-
     
-    bool showDeleteButton;
-    float distanceToDelButton;
-    float delButtonPosX;
-    float delButtonPosY;
-    float delButtonRadius;
-    bool delButtonIsPressed;
-    float delButtonTime;
-    bool willWaitForDelButton;
-    ofImage trashcan;
-    float eraseRecFileTimer;
-    bool silenceWhenDeleting;
-    
-    float touchX;
-    float touchY;
-    float myTimer;
+    float                   touchX;
+    float                   touchY;
+    float                   myTimer;
     
 
 };

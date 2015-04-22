@@ -15,7 +15,7 @@ Recording::Recording() {
 
 
 
-void Recording::Setup() {
+void Recording::setup() {
     
     myTimer = 0;
     
@@ -36,8 +36,11 @@ void Recording::Setup() {
     distanceToRecButton             = ofGetWidth(); // Avoid rec button getting pushed on start
     
     recButtonColor                  = 100;
+    muteAudioWhileRecording         = false;
+    loadFileIsDone                  = false;
     
-    if( !isFileInDir() )
+
+    /*if( !isFileInDir() )
     {
         readyToPlay = false;
         SetupAudioFile();
@@ -49,7 +52,7 @@ void Recording::Setup() {
         readyToPlay = true;
         willTakeRecording = false;
         showDeleteButton = true;
-    }
+    }*/
     
     waitForSaveFileTime             = 0;
     willWaitForSave                 = false;
@@ -81,6 +84,28 @@ void Recording::Setup() {
     hold.loadImage( "hold.png" );
 }
 
+
+void Recording::isRecSampleZero( long recSampleLength ) {
+    
+    ofLog() << "rec sample length: " << recSampleLength;
+    
+    if ( recSampleLength == 0 )
+    {
+        readyToPlay = false;
+        SetupAudioFile();
+        willTakeRecording = true;
+        showDeleteButton = false;
+    }
+    else
+    {
+        readyToPlay = true;
+        willTakeRecording = false;
+        showDeleteButton = true;
+        loadFileIsDone = true;
+    }
+    
+}
+
 void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recModeOn ) {
     
     myTimer += ofGetLastFrameTime();
@@ -108,13 +133,13 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
         }
     }
     
-    if ( willWaitForSave ) {
+    /*if ( willWaitForSave ) {
         if ( myTimer > waitForSaveFileTime + 1.0 ) {
             saveFileIsDone = 1;
             readyToPlay = 1;
             willWaitForSave = 0;
         }
-    }
+    }*/
 
     
     //// DELETE BUTTON ////
@@ -269,9 +294,13 @@ void Recording::Exit() {
 }
 
 
-void Recording::RecordPressed(){
+void Recording::RecordPressed() {
     
-    readyToPlay = 0;
+    muteAudioWhileRecording = true;
+    
+    readyToPlay = false;
+    
+    loadFileIsDone = false;
     
     recButtonColor = 255;
     
@@ -284,23 +313,29 @@ void Recording::RecordPressed(){
     
 }
 
-//!recording.recButtonIsPressed && !recording.delButtonIsPressed && !recording.willTakeRecording
 
-void Recording::StopPressed(){
+void Recording::StopPressed() {
     
-    if (isRecording) {
+    if ( isRecording ) {
         
         [audioRecorder stop];
         
-        waitForSaveFileTime = myTimer;
+        muteAudioWhileRecording = false;
         
-        willWaitForSave = 1;
+        readyToPlay = true;
+        
+        //waitForSaveFileTime = myTimer;
+        
+        //willWaitForSave = 1;
         
         recButtonColor = 100;
         
-        willTakeRecording = 0;
+        willTakeRecording = false;
         
-        showDeleteButton = 1;
+        showDeleteButton = true;
+        
+        saveFileIsDone = true;
+        
     }
     
     isRecording = false;
@@ -316,7 +351,9 @@ NSString* Recording::getAudioFilePath() {
     return fileName;
 }
 
-bool Recording::isFileInDir() {
+
+// Check if micRecording.wav is in the Documents directory
+/*bool Recording::isFileInDir() {
     
     NSFileManager *myManager = [NSFileManager defaultManager];
     NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -327,7 +364,8 @@ bool Recording::isFileInDir() {
     } else {
         return false;
     }
-}
+}*/
+
 
 // Setup sound file for recording
 void Recording::SetupAudioFile() {

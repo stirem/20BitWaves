@@ -19,41 +19,43 @@
 class ofApp : public ofxiOSApp {
 	
 public:
-    void setup();
-    void update();
-    void draw();
-    void exit();
+    void            setup();
+    void            update();
+    void            draw();
+    void            exit();
 
-    void touchDown(ofTouchEventArgs & touch);
-    void touchMoved(ofTouchEventArgs & touch);
-    void touchUp(ofTouchEventArgs & touch);
-    void touchDoubleTap(ofTouchEventArgs & touch);
-    void touchCancelled(ofTouchEventArgs & touch);
+    void            touchDown(ofTouchEventArgs & touch);
+    void            touchMoved(ofTouchEventArgs & touch);
+    void            touchUp(ofTouchEventArgs & touch);
+    void            touchDoubleTap(ofTouchEventArgs & touch);
+    void            touchCancelled(ofTouchEventArgs & touch);
 
-    void lostFocus();
-    void gotFocus();
-    void gotMemoryWarning();
-    void deviceOrientationChanged(int newOrientation);
+    void            lostFocus();
+    void            gotFocus();
+    void            gotMemoryWarning();
+    void            deviceOrientationChanged(int newOrientation);
     
 
     vector<Particles> particles; // Particles vector
 
-    Touchobject touchobject; // Touchobject ??
+    Touchobject     touchobject; // Touchobject ??
 
-    Menu menu;
+    Menu            menu;
 
-    Recording recording;
+    Recording       recording;
 
-    ofSoundStream soundStream;
+    ofSoundStream   soundStream;
 
 
-    float touchPosX;
-    float touchPosY;
-    bool  triggerPlay;
-    float soundSpeed;
-    bool  fingerIsLifted;
-    bool touchIsDown;
-    float addParticlesTimer;;
+    float           touchPosX;
+    float           touchPosY;
+    bool            triggerFileSamplePlay;
+    bool            triggerRecSamplePlay;
+    //bool            triggerPlay;
+    float           soundSpeed;
+    bool            fingerIsLifted;
+    bool            touchIsDown;
+    float           addParticlesTimer;;
 
     
 
@@ -66,29 +68,29 @@ public:
     
     //void AudioIn( float * input, int bufferSize, int nChannels );
 	
-    int	  initialBufferSize;
-	int	  sampleRate;
-	float panning;
-	float volume;
+    int             initialBufferSize;
+	int             sampleRate;
+	float           panning;
+	float           volume;
 	
 	/** Called every time there is a request to calculate a new audio vector.
 	 @param output			The audio vector
 	 @param bufferSize		Audio vector size
 	 @param nChannels		Number of audio channels
 	 */
-	void  audioRequested( float * output, int bufferSize, int nChannels );
+	void            audioRequested( float * output, int bufferSize, int nChannels );
 
     
     // Maximilian sample playback declaration
-    ofxMaxiSample fileSample[NUM_OF_SOUNDS + 1]; // + 1 because file names start on nr 1 and not 0.
-    ofxMaxiSample recSample;
+    ofxMaxiSample   fileSample[NUM_OF_SOUNDS + 1]; // + 1 because file names start on nr 1 and not 0.
+    ofxMaxiSample   recSample;
     
-    double sample;
+    double          sample;
     
     // Declare FFT
-    int fftSize;
-    int nAverages;
-    ofxMaxiFFT myFFT;
+    int             fftSize;
+    int             nAverages;
+    ofxMaxiFFT      myFFT;
     //ofxMaxiFFTOctaveAnalyzer myFFTOctAna;
 
     

@@ -23,7 +23,9 @@ void ofApp::setup()
 
     touchPosX               = 0;
     touchPosY               = 0;
-    triggerPlay             = false;
+    triggerFileSamplePlay   = false;
+    triggerRecSamplePlay    = false;
+    //triggerPlay             = false;
     soundSpeed              = 1.0;
     fingerIsLifted          = false;
     touchIsDown             = false;
@@ -117,25 +119,32 @@ void ofApp::update()
             }
         }
     }
-    
 
     ///// R E C O R D I N G /////
-    if ( menu.recModeOn ) {
+    if ( menu.recModeOn )
+    {
         recording.Update( touchPosX, touchPosY, touchIsDown, menu.recModeOn );
     }
     
-    if ( recording.saveFileIsDone ) {
+    // Load rec sample after recording (loadFileIsDone flag to prevent rec sample from being played before it is loaded)
+    if ( recording.saveFileIsDone )
+    {
         recSample.load( recording.myRecString );
         recording.loadFileIsDone = true;
         recording.saveFileIsDone = false;
     }
     
+    // Prevent rec sample from playing instantly after finger is lifted from rec button.
+    if ( recording.loadFileIsDone && touchIsDown ) {
+        recording.muteAudioWhileRecording = false;
+    }
+    
     // Set ready to play if not in rec mode
-    if ( !menu.recModeOn ) {
+    if ( !menu.recModeOn )
+    {
         recording.readyToPlay = true;
     }
 
-    
 }
 
 //--------------------------------------------------------------
@@ -174,7 +183,6 @@ void ofApp::exit(){
 ///< ----------- M A X I M I L I A N -------------
 void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
 {
-    
 	
 	ofxMaxiMix channel1;
 	//double sample;
@@ -188,6 +196,53 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     
     // Calculate audio vector by iterating over samples
     for ( int i = 0; i < bufferSize; i++ )
+    {
+        if ( recording.readyToPlay )
+        {
+            if ( menu.recModeOn )
+            {
+                if ( !recording.silenceWhenDeleting )
+                {
+                    if ( !recording.muteAudioWhileRecording )
+                    {
+                        if ( recording.loadFileIsDone )
+                        {
+                            if ( triggerRecSamplePlay ) {
+                                sample = recSample.playOnce( soundSpeed );
+                            }
+                        }
+                    }
+                    else
+                    {
+                        sample = 0.;
+                    }
+                }
+            }
+            else
+            {
+                if ( triggerFileSamplePlay ) {
+                    sample = fileSample[menu.whatSample].playOnce( soundSpeed );
+                }
+            }
+            
+            // Stereo panning
+            channel1.stereo( sample, stereomix, panning );
+            
+            
+            // Process FFT Spectrum
+            if ( myFFT.process( sample ) )
+            {
+                myFFT.magsToDB();
+                //myFFTOctAna.calculate( myFFT.magnitudes );
+            }
+            
+            
+            output[i*nChannels    ] = stereomix[0] * volume;
+            output[i*nChannels + 1] = stereomix[1] * volume;
+        }
+    }
+    
+    /*for ( int i = 0; i < bufferSize; i++ )
     {
         if ( recording.readyToPlay )
         {
@@ -236,57 +291,12 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
             output[i*nChannels    ] = stereomix[0] * volume;
             output[i*nChannels + 1] = stereomix[1] * volume;
         }
-        
-
-        /*if ( recording.readyToPlay && !recording.silenceWhenDeleting )
-        {
-            if ( !recording.muteAudioWhileRecording )
-            {
-                if ( recording.loadFileIsDone )
-                {
-                    if ( triggerPlay )
-                    {
-                        if ( menu.recModeOn )
-                        {
-                            sample = recSample.playOnce( soundSpeed );
-                        }
-                        else
-                        {
-                            sample = fileSample[menu.whatSample].playOnce( soundSpeed ); // No loop
-                        }
-                    }
-                    else
-                    {
-                        sample = 0.;
-                    }
-                }
-            }
-            else
-            {
-                sample = 0.;
-            }
-            
-            
-            // Stereo panning
-            channel1.stereo( sample, stereomix, panning );
-            
-            
-            // Process FFT Spectrum
-            if ( myFFT.process( sample ) )
-            {
-                myFFT.magsToDB();
-                //myFFTOctAna.calculate( myFFT.magnitudes );
-            }
-            
-            
-            output[i*nChannels    ] = stereomix[0] * volume;
-            output[i*nChannels + 1] = stereomix[1] * volume;
-        }*/
-    }
+    }*/
     
     
     ///< Change sound speed
-    if ( !menu.buttonIsPressed ) {
+    if ( !menu.buttonIsPressed )
+    {
         
         if ( touchPosY > ofGetHeight() / 2 )
         {
@@ -316,7 +326,9 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     ///< Stop playback when volume is 0 or less.
     if ( volume <= 0.0 )
     {
-        triggerPlay = false;
+        triggerFileSamplePlay = false;
+        triggerRecSamplePlay = false;
+        //triggerPlay = false;
         fingerIsLifted = false;
     }
 }
@@ -337,7 +349,8 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     ///< Set position of samples to 0 when finger is pressed
-    for (int i = 0; i < NUM_OF_SOUNDS; i++) {
+    for (int i = 0; i < NUM_OF_SOUNDS; i++)
+    {
         fileSample[i].setPosition( 0. );
         recSample.setPosition( 0. );
     }
@@ -355,23 +368,29 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     ///< Detect if finger is inside menu-button
-    if ( menu.buttonIsPressed ) {
+    if ( menu.buttonIsPressed || recording.delButtonIsPressed || recording.recButtonIsPressed )
+    {
         volume = 0.0;
-    } else {
-        triggerPlay = true;
+    }
+    else
+    {
+        triggerFileSamplePlay = true;
+        triggerRecSamplePlay = true;
+        //triggerPlay = true;
         volume = 1.0;
         // Set position of touchobject when touch is moved
         touchobject.Position( touch.x, touch.y );
     }
     
-    touchIsDown = 1;
+    touchIsDown = true;
 }
 
 //--------------------------------------------------------------
 void ofApp::touchMoved( ofTouchEventArgs & touch )
 {
     ///< Set position of touchobject when touch is moved
-    if ( !menu.buttonIsPressed ) {
+    if ( !menu.buttonIsPressed )
+    {
         touchobject.Position( touch.x, touch.y );
     }
     
@@ -394,8 +413,8 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     
     recording.silenceWhenDeleting = false;
 
-    
-    touchIsDown = 0;
+    touchIsDown = false;
+
 }
 
 //--------------------------------------------------------------

@@ -176,7 +176,7 @@ void Menu::DistanceToButton( float touchDownX, float touchDownY )
     // If finger is inside button when touch is down, buttonIsPress to true.
     if ( (buttonRadius + (ofGetScreenWidth() * 0.01) ) > distanceToButton ) // Bigger area than button to make it easier to hit.
     {
-        buttonIsPressed = 1;
+        buttonIsPressed = true;
     }
 
 }

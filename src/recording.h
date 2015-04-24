@@ -84,26 +84,19 @@ public:
     bool                    willWaitForDelButton;
     ofImage                 trashcan;
     float                   eraseRecFileTimer;
+    float                   eraseRectWidth;
     bool                    silenceWhenDeleting;
     
     
     float                   touchX;
     float                   touchY;
-    float                   myTimer;
     
 
 };
 
 
-
-
-
-
-
-
-
-
-
-
-
 #endif /* defined(__Bit20iPadApp__recording__) */
+
+
+
+

@@ -13,6 +13,8 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
     myLineWidth             = 1;
     alpha                   = 255;
     mySoundSpeed            = soundSpeed;
+    myScreenWidth           = ofGetScreenWidth();
+
 }
 // --------------------------------------------------------
 
@@ -27,12 +29,12 @@ void Particles::Update( float soundSpeed, float volume, double sample ) {
     //radius = radius + 1 * soundSpeed * ofGetLastFrameTime() * 100;
     
     //radius = radius + ( 0.05 * ofGetScreenWidth() * soundSpeed * ofGetLastFrameTime() );
-    radius = radius + ( 0.05 * ofGetScreenWidth() * mySoundSpeed * ofGetLastFrameTime() );
+    radius = radius + ( 0.05 * myScreenWidth * mySoundSpeed * ofGetLastFrameTime() );
     
     if ( sample != 0.0 ) {
     //if ( volume == 1 ) {
         //alpha = alpha - 1;
-        alpha = alpha - ( 90 * ofGetLastFrameTime() );
+        alpha = alpha - ( 50 * ofGetLastFrameTime() );
     } else {
         //alpha = alpha - 1.5;
         alpha = alpha - ( 150 * ofGetLastFrameTime() );

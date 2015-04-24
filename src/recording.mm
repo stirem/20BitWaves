@@ -17,8 +17,6 @@ Recording::Recording() {
 
 void Recording::setup() {
     
-    myTimer = 0;
-    
     isRecording = false;
     
     //SetupAudioFile();
@@ -38,7 +36,6 @@ void Recording::setup() {
     recButtonColor                  = 100;
     muteAudioWhileRecording         = false;
     loadFileIsDone                  = false;
-    
 
     /*if( !isFileInDir() )
     {
@@ -72,12 +69,13 @@ void Recording::setup() {
     
     delButtonPosX                   = ofGetWidth() * 0.95;
     delButtonPosY                   = ofGetHeight() * 0.05;
-    delButtonRadius                 = ofGetWidth() * 0.02;
+    delButtonRadius                 = ofGetWidth() * 0.03;
     distanceToDelButton             = ofGetWidth();
     
-    delButtonTime                   = 0;
+    delButtonTime                   = 0.0;
     willWaitForDelButton            = false;
-    eraseRecFileTimer               = 0;
+    eraseRecFileTimer               = 0.0;
+    eraseRectWidth                  = ofGetWidth() * 0.2;
     silenceWhenDeleting             = false;
     
     trashcan.loadImage( "trashcan.png" );
@@ -86,8 +84,6 @@ void Recording::setup() {
 
 
 void Recording::isRecSampleZero( long recSampleLength ) {
-    
-    ofLog() << "rec sample length: " << recSampleLength;
     
     if ( recSampleLength == 0 )
     {
@@ -107,9 +103,6 @@ void Recording::isRecSampleZero( long recSampleLength ) {
 }
 
 void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recModeOn ) {
-    
-    myTimer += ofGetLastFrameTime();
-    
     
     //// REC BUTTON ////
     distanceToRecButton = sqrt(    (touchX - recButtonPosX) * (touchX - recButtonPosX) + (touchY - recButtonPosY) * (touchY - recButtonPosY)     ) ;
@@ -143,12 +136,14 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
 
     
     //// DELETE BUTTON ////
-    if ( delButtonIsPressed ) {
-        
+    if ( delButtonIsPressed )
+    {
         eraseRecFileTimer += ofGetLastFrameTime();
+        eraseRectWidth = ofMap( eraseRecFileTimer, 0.0, 1.0, ofGetWidth() * 0.2, 0.0 );
         silenceWhenDeleting = true;
         
-        if ( eraseRecFileTimer >= 1.0 ) {
+        if ( eraseRecFileTimer >= 1.0 )
+        {
             readyToPlay = false;
             SetupAudioFile();
             willTakeRecording = true;
@@ -157,9 +152,9 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
         }
     }
     
-    
     // Do not make sound or visuals when rec button is on
-    if ( willTakeRecording && recModeOn ) {
+    if ( willTakeRecording && recModeOn )
+    {
         readyToPlay = 0;
     }
 
@@ -192,9 +187,7 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
         }
     
     }
-    
-    
-    
+
     // Rec Circle particles
     /*
     if ( isRecording ) {
@@ -239,12 +232,14 @@ void Recording::Draw() {
     }*/
     
     // Rec spectrum
-    for (int i = 0; i < recSpectrum.size(); i++) {
+    for (int i = 0; i < recSpectrum.size(); i++)
+    {
         recSpectrum[i].Draw();
     }
     
     // Rec button
-    if ( willTakeRecording ) {
+    if ( willTakeRecording )
+    {
         ofSetColor( recButtonColor, 0, 0 );
         ofFill();
         ofCircle( recButtonPosX, recButtonPosY, recButtonRadius );
@@ -254,26 +249,30 @@ void Recording::Draw() {
     }
 
     // Delete button
-    if ( showDeleteButton ) {
+    if ( showDeleteButton )
+    {
         ofSetColor( 255, 255, 255, 50 );
         //ofNoFill();
         //ofCircle( delButtonPosX, delButtonPosY, delButtonRadius );
-        //trashcan.setAnchorPoint( trashcan.getWidth() / 2, trashcan.getHeight() / 2 );
         trashcan.setAnchorPercent( 0.5, 0.5 );
         trashcan.draw( delButtonPosX, delButtonPosY, ofGetWidth() * 0.03, ofGetHeight() * 0.05 );
-        ofSetColor( 255, 255, 255, 20 );
-        hold.setAnchorPercent( 0.5, 0.5 );
-        hold.draw( delButtonPosX, delButtonPosY + ( trashcan.getHeight() * 0.1 ), ofGetWidth() * 0.02, ofGetHeight() * 0.008 );
+        //ofSetColor( 255, 255, 255, 20 );
+        //hold.setAnchorPercent( 0.5, 0.5 );
+        //hold.draw( delButtonPosX, delButtonPosY + ( trashcan.getHeight() * 0.1 ), ofGetWidth() * 0.02, ofGetHeight() * 0.008 );
 
     }
 
     // Visual timer for delete file
-    if ( delButtonIsPressed ) {
+    if ( delButtonIsPressed )
+    {
         ofSetColor( 255, 255, 255 );
         ofFill();
-        ofRect( ofGetWidth() * 0.42, ofGetHeight() * 0.25, eraseRecFileTimer * (ofGetWidth() * 0.2 ), ofGetHeight() * 0.1 );
+        //ofRect( ofGetWidth() * 0.42, ofGetHeight() * 0.25, eraseRecFileTimer * ( ofGetWidth() * 0.2 ), ofGetHeight() * 0.1 );
+        ofRect( ofGetWidth() * 0.4, ofGetHeight() * 0.25, eraseRectWidth, ofGetHeight() * 0.1 );
         ofNoFill();
-        ofRect( ofGetWidth() * 0.42, ofGetHeight() * 0.25, ofGetWidth() * 0.2, ofGetHeight() * 0.1 );
+        ofRect( ofGetWidth() * 0.4, ofGetHeight() * 0.25, ofGetWidth() * 0.2, ofGetHeight() * 0.1 );
+        hold.setAnchorPercent( 0.5, 0.5 );
+        hold.draw( ofGetWidth() * 0.5, ofGetHeight() * 0.15, ofGetWidth() * 0.075, ofGetHeight() * 0.023 );
     }
     
     
@@ -320,7 +319,7 @@ void Recording::StopPressed() {
         
         [audioRecorder stop];
         
-        muteAudioWhileRecording = false;
+        //muteAudioWhileRecording = false;
         
         readyToPlay = true;
         

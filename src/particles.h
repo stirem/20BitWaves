@@ -8,19 +8,24 @@ public:
     
     Particles( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness, float soundSpeed );
 
-    void Update( float soundSpeed, float volume, double sample );
-    void Draw();
+    void        Update( float soundSpeed, float volume, double sample );
+    void        Draw();
 
     
-    ofPoint pos; // Position of soundwaves
-    ofColor color; // Color of soundwaves
+    ofPoint     pos; // Position of soundwaves
+    ofColor     color; // Color of soundwaves
     
-    float radius; // Radius of soundwaves
-    float circleColorBrightness; // Color brightness of particle circles
-    float alpha;
-    float myLineWidth;
+    float       radius; // Radius of soundwaves
+    float       circleColorBrightness; // Color brightness of particle circles
+    float       alpha;
+    float       myLineWidth;
 
-    float mySoundSpeed;
+    float       mySoundSpeed;
+    
+private:
+    
+    float       myScreenWidth;
+    
 };
 
 

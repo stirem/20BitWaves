@@ -1,12 +1,12 @@
 
 #include "menu.h"
 
-Menu::Menu()
+menu::menu()
 {
 }
 
 
-void Menu::Setup()
+void menu::setup()
 {
     //fontLarge.loadFont("Fonts/DIN.otf", 18 );
     
@@ -25,9 +25,27 @@ void Menu::Setup()
     slideBallImageHeight        = ofGetScreenHeight() * 0.1;*/
     
     buttonRadius                = ofGetHeight() * 0.05;
+    
     buttonPosX                  = ofGetWidth() * 0.5;
+    bounceTimeX                 = 0;
+    bounceBeginningX            = 0;
+    bounceChangeX               = 0;
+    bounceDurationX             = 30;
+    doBounceButtonX             = false;
+    for ( int i = 0; i < NUM_OF_MENU_POSITIONS; i++) {
+        menuXpositions[i] = ( ofGetWidth() * (BUTTON_WIDTH * 0.5) ) * 1.5 + ( (ofGetWidth() * BUTTON_WIDTH) * i );
+    }
+
     buttonHidePosY              = ofGetHeight() + ( buttonRadius * 0.5 );
     buttonActivePosY            = ofGetHeight() * 0.95;
+    buttonPosY                  = buttonHidePosY;
+    bounceTimeY                 = 0;
+    bounceBeginningY            = buttonHidePosY;
+    bounceChangeY               = buttonActivePosY - buttonHidePosY;
+    bounceDurationY             = 30;
+    doBounceButtonY             = false;
+    
+    
     pictogramsAndNumsPosY       = ofGetHeight() * 0.8;
     slideBallImageWidth         = ofGetWidth() * 0.12;
     slideBallImageHeight        = ofGetWidth() * 0.076; // Obs! Using ofGetWidth() to get same proportions on iphone 4s and 5s (dirrerent screen width)
@@ -56,26 +74,30 @@ void Menu::Setup()
 }
 
 
-int Menu::Update( float touchX, bool touchIsDown )
+int menu::update( float touchX, bool touchIsDown )
 {
 
     // Get nearest button
-    float buttonPos = ofGetWidth() * ( BUTTON_INDENT + 0.5 * BUTTON_WIDTH );
-    float dist      = fabs( touchX - buttonPos );
+    float buttonPos     = ofGetWidth() * ( BUTTON_INDENT + (BUTTON_WIDTH * 0.5) );
+    float dist          = fabs( touchX - buttonPos );
     
     // Begynner med 0te button:
-    float minDist   = dist;
-    float nearestButton = 0;
+    float minDist       = dist;
+    int nearestButton   = 0;
     
     // Itererer over kommende buttons for å se om noen av de er nærmere
     for ( int i = 1; i < NUM_OF_MENU_POSITIONS; i++ ) {
         buttonPos += ofGetWidth() * ( BUTTON_WIDTH );
-        dist      = fabs( touchX - buttonPos );
+        dist = fabs( touchX - buttonPos );
         if (dist < minDist) {
             minDist = dist;
             nearestButton = i;
         }
     }
+    
+    ofLog() << "nearestButton: " << nearestButton;
+    ofLog() << "buttonPos: " << buttonPos;
+    ofLog() << "buttonPosX: " << buttonPosX;
     
     if ( buttonIsPressed )
     {
@@ -88,9 +110,17 @@ int Menu::Update( float touchX, bool touchIsDown )
             buttonPosX = touchX;
             whatMenuNum = nearestButton;
         }
+        
+        bounceButtonY( bounceTimeY, bounceBeginningY, bounceChangeY, bounceDurationY );
     }
     else
     {
+        buttonPosX = menuXpositions[whatMenuNum];
+        
+        doBounceButtonY = false;
+        buttonPosY = buttonHidePosY;
+        bounceTimeY = 0;
+        
         rectOverPictogramsOpacity = 255;
         buttonPressedTimer = 0;
         pictogramNumColor = 0;
@@ -125,41 +155,11 @@ int Menu::Update( float touchX, bool touchIsDown )
             whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
         }
     }
-
     
-    /*if ( buttonIsPressed )
-    {
-        buttonPosX = touchX;
-        
-        // Set what menu number
-        whatMenuNum = nearestButton;
-        
-        // Set what sound sample to play
-        if ( whatMenuNum >= 3 ) {
-            whatSample = whatMenuNum - 2;
-            recModeOn = 0;
-            aboutBit20On = 0;
-            fileBrowserOn = 0;
-        }
-        else if ( whatMenuNum == 0 ) {
-            recModeOn = 0;
-            aboutBit20On = 1;
-            fileBrowserOn = 0;
-            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
-        } else if ( whatMenuNum == 1 ) {
-            recModeOn = 0;
-            aboutBit20On = 0;
-            fileBrowserOn = 1;
-            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
-        }
-        else if ( whatMenuNum == 2 ) {
-            recModeOn = 1;
-            aboutBit20On = 0;
-            fileBrowserOn = 0;
-            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
-        }
-    }*/
-
+    // Bounce Button Y
+    if ( doBounceButtonY ) {
+        if ( bounceTimeY < bounceDurationY ) bounceTimeY++;
+    }
     
     // Retun what menu number to "recording mode" and "about Bit20". Show "recording mode" if 1 or show "about Bit20" if 0.
     return whatMenuNum;
@@ -168,21 +168,21 @@ int Menu::Update( float touchX, bool touchIsDown )
 
 
 
-void Menu::DistanceToButton( float touchDownX, float touchDownY )
+void menu::distanceToButton( float touchDownX, float touchDownY )
 {
     // Calculate if finger is inside button when touch is down. Using "buttonActive.." to make it easier to hit the button (since part of it is hidden below screen when in hide mode).
-    distanceToButton = sqrt(    (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonActivePosY) * (touchDownY - buttonActivePosY)     ) ;
+    _distanceToButton = sqrt(    (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonActivePosY) * (touchDownY - buttonActivePosY)     ) ;
 
     // If finger is inside button when touch is down, buttonIsPress to true.
-    if ( (buttonRadius + (ofGetScreenWidth() * 0.01) ) > distanceToButton ) // Bigger area than button to make it easier to hit.
+    if ( (buttonRadius + (ofGetScreenWidth() * 0.01) ) > _distanceToButton ) // Bigger area than button to make it easier to hit.
     {
-        buttonIsPressed = true;
+        buttonIsPressed = true; // This is set to false in ofApp::touchUp
     }
 
 }
 
 
-void Menu::Draw()
+void menu::draw()
 {
     // Bit20 pictogram
     if ( buttonIsPressed ) {
@@ -288,7 +288,7 @@ void Menu::Draw()
         //ofNoFill();
         //ofCircle( buttonPosX, buttonActivePosY, buttonRadius );
         slideBallPictogram.setAnchorPercent( 0.5, 0.5 );
-        slideBallPictogram.draw( buttonPosX, buttonActivePosY, slideBallImageWidth, slideBallImageHeight );
+        slideBallPictogram.draw( buttonPosX, buttonPosY, slideBallImageWidth, slideBallImageHeight );
     }
     else
     {
@@ -306,12 +306,86 @@ void Menu::Draw()
         //ofNoFill();
         //ofCircle( buttonPosX, buttonHidePosY, buttonRadius );
         slideBallPictogram.setAnchorPercent( 0.5, 0.5 );
-        slideBallPictogram.draw( buttonPosX, buttonHidePosY, slideBallImageWidth, slideBallImageHeight );
+        slideBallPictogram.draw( buttonPosX, buttonPosY, slideBallImageWidth, slideBallImageHeight );
     }
-
-
+    
+    
+    
+    
+    
+    // Menu X positions for debugging
+    for ( int i = 0; i < NUM_OF_MENU_POSITIONS; i++) {
+        ofSetColor( 255, 255, 255 );
+        ofCircle( menuXpositions[i], ofGetHeight() * 0.9, 1 );
+    }
+    
+    
 }
 
+
+
+void menu::bounceButtonY( float t, float b, float c, float d ) {
+    
+    doBounceButtonY = true;
+
+    // Elastic out
+    if ( t == 0 )
+    {
+        buttonPosY = b;
+    }
+    
+    if (( t /= d ) == 1 )
+    {
+        buttonPosY = b + c;
+    }
+    
+    float p = d * .3f;
+    float a = c;
+    float s = p / 4;
+    
+    buttonPosY = ( a * pow( 2, -10 * t) * sin( ( t * d - s) * ( 2 * PI ) / p ) + c + b );
+    
+    
+    /*
+     // Bounce out
+    if ((t/=d) < (1/2.75f)) {
+        buttonPosY = c*(7.5625f*t*t) + b;
+    } else if (t < (2/2.75f)) {
+        float postFix = t-=(1.5f/2.75f);
+        buttonPosY = c*(7.5625f*(postFix)*t + .75f) + b;
+    } else if (t < (2.5/2.75)) {
+        float postFix = t-=(2.25f/2.75f);
+        buttonPosY = c*(7.5625f*(postFix)*t + .9375f) + b;
+    } else {
+        float postFix = t-=(2.625f/2.75f);
+        buttonPosY = c*(7.5625f*(postFix)*t + .984375f) + b;
+    }
+    */
+}
+
+
+void menu::bounceButtonX( float t, float b, float c, float d ) {
+    
+    doBounceButtonX = true;
+    
+    // Elastic out
+    if ( t == 0 )
+    {
+        buttonPosX = b;
+    }
+    
+    if (( t /= d ) == 1 )
+    {
+        buttonPosX = b + c;
+    }
+    
+    float p = d * .3f;
+    float a = c;
+    float s = p / 4;
+    
+    buttonPosX = ( a * pow( 2, -10 * t) * sin( ( t * d - s) * ( 2 * PI ) / p ) + c + b );
+    
+}
 
 
 

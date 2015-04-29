@@ -40,7 +40,7 @@ public:
 
     Touchobject     touchobject; // Touchobject ??
 
-    Menu            menu;
+    menu            menu;
 
     Recording       recording;
 

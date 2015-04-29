@@ -19,7 +19,7 @@ void ofApp::setup()
     
     touchobject.Setup();
     
-    menu.Setup();
+    menu.setup();
 
     touchPosX               = 0;
     touchPosY               = 0;
@@ -98,7 +98,7 @@ void ofApp::update()
     
     
     ///> Move Menu Button with finger
-    menu.Update( touchPosX, touchIsDown );
+    menu.update( touchPosX, touchIsDown );
     
     
     ///< Remove soundwave when alpha is 0
@@ -152,7 +152,7 @@ void ofApp::draw()
 {
     
     // Draw menu-button
-    menu.Draw();
+    menu.draw();
     
     ///< Draw touchobject
     touchobject.Draw();
@@ -167,6 +167,9 @@ void ofApp::draw()
     if ( menu.recModeOn ) {
         recording.Draw();
     }
+    
+    ofSetColor( 255, 255, 255 );
+    ofDrawBitmapString( "fps: "+ ofToString( ofGetFrameRate() ), 10, 10 );
 }
 
 //--------------------------------------------------------------
@@ -361,7 +364,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     // Used to check distance from finger to button. If finger is inside button: change sample.
-    menu.DistanceToButton( touch.x, touch.y );
+    menu.distanceToButton( touch.x, touch.y );
     
     // Check if delete button is pressed
     recording.distanceToDeleteButton( touch.x, touch.y, menu.recModeOn );

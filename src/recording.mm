@@ -139,10 +139,10 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
     if ( delButtonIsPressed )
     {
         eraseRecFileTimer += ofGetLastFrameTime();
-        eraseRectWidth = ofMap( eraseRecFileTimer, 0.0, 1.0, ofGetWidth() * 0.2, 0.0 );
+        eraseRectWidth = ofMap( eraseRecFileTimer, 0.0, 0.5, ofGetWidth() * 0.2, 0.0 );
         silenceWhenDeleting = true;
         
-        if ( eraseRecFileTimer >= 1.0 )
+        if ( eraseRecFileTimer >= 0.5 )
         {
             readyToPlay = false;
             SetupAudioFile();
@@ -155,7 +155,7 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
     // Do not make sound or visuals when rec button is on
     if ( willTakeRecording && recModeOn )
     {
-        readyToPlay = 0;
+        readyToPlay = false;
     }
 
     
@@ -272,8 +272,10 @@ void Recording::Draw() {
         ofNoFill();
         ofRect( ofGetWidth() * 0.4, ofGetHeight() * 0.25, ofGetWidth() * 0.2, ofGetHeight() * 0.1 );
         hold.setAnchorPercent( 0.5, 0.5 );
-        hold.draw( ofGetWidth() * 0.5, ofGetHeight() * 0.15, ofGetWidth() * 0.075, ofGetHeight() * 0.023 );
+        //hold.draw( ofGetWidth() * 0.5, ofGetHeight() * 0.15, ofGetWidth() * 0.075, ofGetHeight() * 0.023 );
+
     }
+
     
     
     // Meter

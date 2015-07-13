@@ -56,23 +56,57 @@ void ofApp::setup()
 
     ///// R E C O R D I N G /////
     // Order here is important to check if rec file has content. If not, rec button will be shown.
-    recording.setup( );
-    recSample.load( recording.myRecString );
-    recording.isRecSampleZero( recSample.length );
+    //recording.setup( );
+    //recSample.load( recording.myRecString );
+    //recording.isRecSampleZero( recSample.length );
 
     
     
     // Load samples
-    for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
+    loadFileSamples();
+    
+   /* for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
     {
         string fileNr = "Sound_Object_0" + ofToString( i ) + ".wav";
         fileSample[i].load( ofToDataPath( fileNr ) );
-    }
+    }*/
+    
+    
     
     
 
     ofSetOrientation( OF_ORIENTATION_90_LEFT ); // Set this after recording.Setup() and menu.Setup() because of issue with ofGetWidth() vs ofGetScreenWidth().
 
+    
+    
+}
+
+//--------------------------------------------------------------
+void ofApp::loadFileSamples() {
+    
+    
+    
+    NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [searchPaths objectAtIndex:0];
+    NSString *extension = @"wav";
+    NSFileManager *fileManager = [ NSFileManager defaultManager ];
+    NSArray *contents = [ fileManager contentsOfDirectoryAtPath: documentsPath error: NULL ];
+    NSEnumerator *e = [ contents objectEnumerator ];
+    NSString *fileName;
+    
+    while ( ( fileName = [ e nextObject ] ) ) {
+        if ( [ [ fileName pathExtension ] isEqualToString: extension ] ) {
+            NSLog(@"File name: %@", fileName );
+            NSString *soundFilePath = [ documentsPath stringByAppendingPathComponent: fileName ];
+            string myFileString = ofxNSStringToString( soundFilePath );
+            vectorOfStrings.push_back( myFileString ); // Fill my own vector with strings
+        }
+    }
+
+    
+    for ( int i = 0; i < NUM_OF_SOUNDS; i++ ) {
+        fileSample[i].load( ofToDataPath( vectorOfStrings.at( i ) ) );
+    }
     
     
 }
@@ -168,8 +202,8 @@ void ofApp::draw()
         recording.Draw();
     }
     
-    ofSetColor( 255, 255, 255 );
-    ofDrawBitmapString( "fps: "+ ofToString( ofGetFrameRate() ), 10, 10 );
+    //ofSetColor( 255, 255, 255 );
+    //ofDrawBitmapString( "fps: "+ ofToString( ofGetFrameRate() ), 10, 10 );
 }
 
 //--------------------------------------------------------------
@@ -419,6 +453,9 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     touchIsDown = false;
 
 }
+
+
+
 
 //--------------------------------------------------------------
 void ofApp::touchDoubleTap(ofTouchEventArgs & touch){

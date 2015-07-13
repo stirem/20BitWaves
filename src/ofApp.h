@@ -35,6 +35,7 @@ public:
     void            gotMemoryWarning();
     void            deviceOrientationChanged(int newOrientation);
     
+    void            loadFileSamples();
 
     vector<Particles> particles; // Particles vector
 
@@ -57,6 +58,8 @@ public:
     bool            touchIsDown;
     float           addParticlesTimer;;
 
+    
+    vector<string> vectorOfStrings;
     
 
     

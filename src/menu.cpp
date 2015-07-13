@@ -95,10 +95,6 @@ int menu::update( float touchX, bool touchIsDown )
         }
     }
     
-    ofLog() << "nearestButton: " << nearestButton;
-    ofLog() << "buttonPos: " << buttonPos;
-    ofLog() << "buttonPosX: " << buttonPosX;
-    
     if ( buttonIsPressed )
     {
         buttonPressedTimer += ofGetLastFrameTime();
@@ -228,7 +224,7 @@ void menu::draw()
     }
     
     
-    ///< What Sample numbers above button
+    ///< What Sample numbers on button
     if ( buttonIsPressed )
     {
         for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
@@ -314,10 +310,10 @@ void menu::draw()
     
     
     // Menu X positions for debugging
-    for ( int i = 0; i < NUM_OF_MENU_POSITIONS; i++) {
+    /*for ( int i = 0; i < NUM_OF_MENU_POSITIONS; i++) {
         ofSetColor( 255, 255, 255 );
         ofCircle( menuXpositions[i], ofGetHeight() * 0.9, 1 );
-    }
+    }*/
     
     
 }

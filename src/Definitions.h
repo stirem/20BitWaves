@@ -1,7 +1,7 @@
 #pragma once
 
 
-#define NUM_OF_SOUNDS 9
+#define NUM_OF_SOUNDS 7
 //#define SOUND_BUTTON_INDENT 0.25
 //#define SOUND_BUTTON_WIDTH 0.08
 

@@ -55,7 +55,7 @@ void Particles::Draw()
     color.setBrightness( circleColorBrightness );
     ofSetColor( color );
     //ofEnableAntiAliasing();
-    ofSetCircleResolution( 100 );
+    ofSetCircleResolution( 50 );
     ofSetLineWidth( myLineWidth );
     ofCircle( pos.x, pos.y, radius );
 }

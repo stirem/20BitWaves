@@ -353,7 +353,7 @@ NSString* Recording::getAudioFilePath() {
 }
 
 
-// Check if micRecording.wav is in the Documents directory
+// Check if micRecording.wav is in the Documents directory. Ended up checking for length of file instead, since the file is generated on startup.
 /*bool Recording::isFileInDir() {
     
     NSFileManager *myManager = [NSFileManager defaultManager];
@@ -412,6 +412,7 @@ void Recording::SetupAudioFile() {
     audioRecorder.meteringEnabled = YES;
     
     myRecString = ofxNSStringToString( soundFilePath );
+    
  
     
 }

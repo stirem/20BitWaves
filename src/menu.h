@@ -14,7 +14,7 @@ public:
     
     void            setup();
     int             update( float touchX, bool touchIsDown );
-    void            draw();
+    void            draw( int howManySamples );
     void            distanceToButton( float touchDownX, float touchDownY );
     void            bounceButtonY( float t, float b, float c, float d );
     void            bounceButtonX( float t, float b, float c, float d );
@@ -25,7 +25,6 @@ public:
     float           buttonPressedTimer;
     unsigned int    whatSample;
     unsigned int    whatMenuNum;
-    unsigned int    whatMode;
     
     float           buttonPosX;
     float           bounceTimeX, bounceBeginningX, bounceChangeX, bounceDurationX;
@@ -43,21 +42,18 @@ public:
     float           slideBallImageWidth;
     float           slideBallImageHeight;
     int             pictogramNumColor;
-    int             recMicPictogramColor;
+    int             recMicPictogramColor[NUM_OF_REC_MODES];
     int             bit20pictogramColor;
-    int             folderPictogramColor;
     float           rectOverPictogramsOpacity;
-    bool            recModeOn;
+    bool            recModeOn[NUM_OF_REC_MODES];
     bool            aboutBit20On;
-    bool            fileBrowserOn;
     
     //ofTrueTypeFont fontLarge;
     
-    ofImage         recMicPictogram;
+    ofImage         recMicPictogram[NUM_OF_REC_MODES];
     ofImage         slideBallPictogram;
-    ofImage         pictogramNum[NUM_OF_SOUNDS + 1]; // + 1 because file names start on nr 1 and not 0.
+    ofImage         pictogramNum[NUM_OF_HARDCODED_SOUNDS]; // + 1 because file names start on nr 1 and not 0.
     ofImage         bit20pictogram;
-    ofImage         folderPictogram;
     
 };
 

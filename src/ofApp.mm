@@ -56,16 +56,18 @@ void ofApp::setup()
 
     ///// R E C O R D I N G /////
     // Order here is important to check if rec file has content. If not, rec button will be shown.
-    //recording.setup( );
-    //recSample.load( recording.myRecString );
-    //recording.isRecSampleZero( recSample.length );
+    recording.setup( );
+    recSample.load( recording.myRecString );
+    recording.isRecSampleZero( recSample.length );
 
     
     
     // Load samples
     loadFileSamples();
+
+
     
-   /* for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
+   /* for (int i = 1; i < NUM_OF_HARDCODED_SOUNDS + 1; i++)
     {
         string fileNr = "Sound_Object_0" + ofToString( i ) + ".wav";
         fileSample[i].load( ofToDataPath( fileNr ) );
@@ -84,9 +86,10 @@ void ofApp::setup()
 //--------------------------------------------------------------
 void ofApp::loadFileSamples() {
     
-    
-    
-    NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    // Are there any wav sound files in dir?
+    bool filesExist = false;
+
+    NSArray *searchPaths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
     NSString *documentsPath = [searchPaths objectAtIndex:0];
     NSString *extension = @"wav";
     NSFileManager *fileManager = [ NSFileManager defaultManager ];
@@ -96,19 +99,51 @@ void ofApp::loadFileSamples() {
     
     while ( ( fileName = [ e nextObject ] ) ) {
         if ( [ [ fileName pathExtension ] isEqualToString: extension ] ) {
-            NSLog(@"File name: %@", fileName );
+            NSLog( @"FileName: %@", fileName );
             NSString *soundFilePath = [ documentsPath stringByAppendingPathComponent: fileName ];
             string myFileString = ofxNSStringToString( soundFilePath );
             vectorOfStrings.push_back( myFileString ); // Fill my own vector with strings
+
+            filesExist = true;
         }
     }
+    
+    
 
+    ofLog() << "filesExist: " << filesExist;
     
-    for ( int i = 0; i < NUM_OF_SOUNDS; i++ ) {
-        fileSample[i].load( ofToDataPath( vectorOfStrings.at( i ) ) );
+    if ( filesExist ) {
+        
+        ofLog() << "vectorOfStrings.size(): " << vectorOfStrings.size();
+        howManySamples = vectorOfStrings.size();
+        
+        // Load the user installed (from iTunes to Document dir) file samples
+        // Load file sample strings into ofxMaxiSample fileSample.
+        for ( int i = 0; i < vectorOfStrings.size(); i++ ) {
+            fileSample[i].load( ofToDataPath( vectorOfStrings.at( i ) ) );
+        }
+        
+        // Empty vector from memory
+        for ( int i = 0; i < vectorOfStrings.size(); i++ ) {
+            vectorOfStrings.erase( vectorOfStrings.begin() + i );
+        }
+            
     }
+    else
+    {
+        howManySamples = NUM_OF_HARDCODED_SOUNDS;
+        
+        // Otherwise load the hard coded file samples
+        for (int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++)
+        {
+            string fileNr = "Sound_Object_0" + ofToString( i ) + ".wav";
+            fileSample[i].load( ofToDataPath( fileNr ) );
+        }
+    }
+        
     
-    
+
+
 }
 
 //--------------------------------------------------------------
@@ -155,7 +190,7 @@ void ofApp::update()
     }
 
     ///// R E C O R D I N G /////
-    if ( menu.recModeOn )
+    if ( menu.recModeOn[0] )
     {
         recording.Update( touchPosX, touchPosY, touchIsDown, menu.recModeOn );
     }
@@ -174,7 +209,7 @@ void ofApp::update()
     }
     
     // Set ready to play if not in rec mode
-    if ( !menu.recModeOn )
+    if ( !menu.recModeOn[0] )
     {
         recording.readyToPlay = true;
     }
@@ -186,7 +221,7 @@ void ofApp::draw()
 {
     
     // Draw menu-button
-    menu.draw();
+    menu.draw( howManySamples );
     
     ///< Draw touchobject
     touchobject.Draw();
@@ -198,12 +233,14 @@ void ofApp::draw()
     }
 
     ///// R E C O R D I N G /////
-    if ( menu.recModeOn ) {
+    if ( menu.recModeOn[0] ) {
         recording.Draw();
     }
     
-    //ofSetColor( 255, 255, 255 );
-    //ofDrawBitmapString( "fps: "+ ofToString( ofGetFrameRate() ), 10, 10 );
+    ofSetColor( 255, 255, 255 );
+    ofDrawBitmapString( "fps: "+ ofToString( ofGetFrameRate() ), 10, 20 );
+    ofDrawBitmapString( "what sample: "+ ofToString( menu.whatSample ), 10, 40 ) ;
+    ofDrawBitmapString( "what menu num: "+ ofToString( menu.whatMenuNum ), 10, 60 );
 }
 
 //--------------------------------------------------------------
@@ -236,7 +273,8 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     {
         if ( recording.readyToPlay )
         {
-            if ( menu.recModeOn )
+
+            if ( menu.recModeOn[0] )
             {
                 if ( !recording.silenceWhenDeleting )
                 {
@@ -255,6 +293,7 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
                     }
                 }
             }
+            
             else
             {
                 if ( triggerFileSamplePlay ) {
@@ -386,7 +425,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     ///< Set position of samples to 0 when finger is pressed
-    for (int i = 0; i < NUM_OF_SOUNDS; i++)
+    for (int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++)
     {
         fileSample[i].setPosition( 0. );
         recSample.setPosition( 0. );

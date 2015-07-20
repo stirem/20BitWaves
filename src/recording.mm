@@ -346,8 +346,9 @@ void Recording::StopPressed() {
 // Init sound file on startup
 NSString* Recording::getAudioFilePath() {
     NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsPath = [searchPaths objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@/micRecording.wav", documentsPath];
+    NSString *micRecPath = [[searchPaths objectAtIndex:0] stringByAppendingPathComponent:@"micRecordings"];
+    //NSString *documentsPath = [searchPaths objectAtIndex:0];
+    NSString *fileName = [NSString stringWithFormat:@"%@/micRecording.wav", micRecPath];
     
     return fileName;
 }
@@ -371,13 +372,28 @@ NSString* Recording::getAudioFilePath() {
 // Setup sound file for recording
 void Recording::SetupAudioFile() {
 
-    NSArray *dirPaths;
-    NSString *docsDir;
+    NSString *path;
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"micRecordings"]; // Create directory
+    NSError *error;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path])	//Does directory already exist?
+    {
+        if (![[NSFileManager defaultManager] createDirectoryAtPath:path
+                                       withIntermediateDirectories:NO
+                                                        attributes:nil
+                                                             error:&error])
+        {
+            NSLog(@"Create directory error: %@", error);
+        }
+    }
     
-    dirPaths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
-    docsDir = dirPaths[0];
+    //NSArray *dirPaths;
+    //NSString *docsDir;
     
-    NSString *soundFilePath = [docsDir stringByAppendingPathComponent:@"micRecording.wav"];
+    //dirPaths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
+    //docsDir = dirPaths[0];
+    
+    NSString *soundFilePath = [path stringByAppendingPathComponent:@"micRecording.wav"];
     
     NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
     
@@ -393,7 +409,7 @@ void Recording::SetupAudioFile() {
                                     AVSampleRateKey,
                                     nil];
     
-    NSError *error = nil;
+    error = nil;
     
 
     

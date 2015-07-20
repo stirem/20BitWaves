@@ -115,7 +115,7 @@ float Touchobject::StartRadius()
     
 
     //startRadius = ofMap( spectrumVolume, 1300, 1600, 10, 30 );
-    startRadius = ofMap( spectrumVolume, 1300, 1600, ofGetScreenWidth() * 0.01, ofGetScreenWidth() * 0.03 );
+    startRadius = ofMap( spectrumVolume, 1300, 1600, ofGetScreenWidth() * 0.01, ofGetScreenWidth() * 0.02 );
     
     radius = startRadius;
     
@@ -140,13 +140,13 @@ void Touchobject::Draw()
     //ofEnableAlphaBlending();
     //OF_BLENDMODE_SCREEN;
 
-    color = ofColor(255, 255, 255, alpha);
+    color = ofColor( 255, 255, 255, alpha );
     //color.setBrightness(mySpecVolume / 20);
     color.setBrightness( colorBrightness );
-    ofSetColor(color);
-    ofSetCircleResolution(100);
+    ofSetColor( color );
+    ofSetCircleResolution( 100 );
     ofFill();
-    ofCircle(pos.x, pos.y, radius);
+    ofCircle( pos.x, pos.y, radius );
 
 
     

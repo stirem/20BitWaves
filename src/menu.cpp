@@ -14,7 +14,6 @@ void menu::setup()
     buttonPressedTimer          = 0;
     whatSample                  = 1;
     whatMenuNum                 = 3;
-    whatMode                    = 3;
     
     /*buttonRadius              = ofGetScreenHeight() * 0.05;
     buttonPosX                  = ofGetScreenWidth() * 0.5;
@@ -51,21 +50,23 @@ void menu::setup()
     slideBallImageHeight        = ofGetWidth() * 0.076; // Obs! Using ofGetWidth() to get same proportions on iphone 4s and 5s (dirrerent screen width)
     
     pictogramNumColor           = 100;
-    recMicPictogramColor        = 100;
+    
     bit20pictogramColor         = 100;
-    folderPictogramColor        = 100;
-    recModeOn                   = false;
+    for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+        recModeOn[i] = false;
+        recMicPictogramColor[i] = 100;
+    }
     aboutBit20On                = false;
-    fileBrowserOn               = false;
     rectOverPictogramsOpacity   = 0;
     
     
-    recMicPictogram.loadImage( "recMicPictogram.png" );
+    for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+        recMicPictogram[i].loadImage( "recMicPictogram" + ofToString( i ) + ".png" );
+    }
     slideBallPictogram.loadImage( "slideBallPictogram.png" );
     bit20pictogram.loadImage( "bit20pictogram.png" );
-    folderPictogram.loadImage( "folderPictogram.png" );
 
-    for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
+    for (int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++)
     {
         string picFileNr = "pictogram_num_" + ofToString( i ) + ".png";
         pictogramNum[i].loadImage( ofToDataPath( picFileNr ) );
@@ -120,37 +121,54 @@ int menu::update( float touchX, bool touchIsDown )
         rectOverPictogramsOpacity = 255;
         buttonPressedTimer = 0;
         pictogramNumColor = 0;
-        whatMode = whatMenuNum;
         
         // Set what sound sample to play
-        if ( whatMode >= 3 )
+        if ( whatMenuNum >= 4 )
         {
-            whatSample = whatMode - 2;
-            recModeOn = 0;
-            aboutBit20On = 0;
-            fileBrowserOn = 0;
+            whatSample = whatMenuNum - NUM_OF_POS_TO_THE_LEFT_FOR_FILESAMPLES;
+            for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+                recModeOn[i] = false;
+            }
+            aboutBit20On = false;
         }
-        else if ( whatMode == 0 )
+        else if ( whatMenuNum == 0 )
         {
-            recModeOn = 0;
-            aboutBit20On = 1;
-            fileBrowserOn = 0;
+            for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+                recModeOn[i] = false;
+            }
+            aboutBit20On = true;
             whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
-        } else if ( whatMode == 1 )
+        } else if ( whatMenuNum == 1 )
         {
-            recModeOn = 0;
-            aboutBit20On = 0;
-            fileBrowserOn = 1;
+            for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+                recModeOn[0] = true;
+                recModeOn[1] = false;
+                recModeOn[2] = false;
+            }
+            aboutBit20On = false;
+            whatSample = false; // Maybe another solution to quiet the samples when in rec mode?
+        }
+        else if ( whatMenuNum == 2 )
+        {
+            for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+                recModeOn[0] = false;
+                recModeOn[1] = true;
+                recModeOn[2] = false;
+            }
+            aboutBit20On = false;
             whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
         }
-        else if ( whatMode == 2 )
+        else if ( whatMenuNum == 3 )
         {
-            recModeOn = 1;
-            aboutBit20On = 0;
-            fileBrowserOn = 0;
-            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
+            for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+                recModeOn[0] = false;
+                recModeOn[1] = false;
+                recModeOn[2] = true;
+            }
         }
     }
+    
+    
     
     // Bounce Button Y
     if ( doBounceButtonY ) {
@@ -159,6 +177,7 @@ int menu::update( float touchX, bool touchIsDown )
     
     // Retun what menu number to "recording mode" and "about Bit20". Show "recording mode" if 1 or show "about Bit20" if 0.
     return whatMenuNum;
+    
 }
 
 
@@ -178,7 +197,7 @@ void menu::distanceToButton( float touchDownX, float touchDownY )
 }
 
 
-void menu::draw()
+void menu::draw( int howManySamples )
 {
     // Bit20 pictogram
     if ( buttonIsPressed ) {
@@ -193,71 +212,54 @@ void menu::draw()
     }
     
     
-    // Folder pictogram
-    if ( buttonIsPressed ) {
-        if ( whatMenuNum == 1 ) {
-            folderPictogramColor = 255;
-        } else {
-            folderPictogramColor = 100;
-        }
-        ofSetColor( folderPictogramColor );
-        folderPictogram.setAnchorPercent( 0.5, 0.5 );
-        folderPictogram.draw( ( ofGetWidth() * SOUND_NUM_INDENT ) - ( ofGetWidth() * BUTTON_WIDTH ), pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
-    }
-    
-    
     // Rec mic pictogram
     if ( buttonIsPressed )
     {
-        if ( whatMenuNum == 2 ) {
-            recMicPictogramColor = 255;
-        } else {
-            recMicPictogramColor = 100;
+
+        for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+            
+            if ( whatMenuNum == 1 ) {
+                recMicPictogramColor[0] = 255;
+                recMicPictogramColor[1] = 100;
+                recMicPictogramColor[2] = 100;
+            } else if ( whatMenuNum == 2 ) {
+                recMicPictogramColor[0] = 100;
+                recMicPictogramColor[1] = 255;
+                recMicPictogramColor[2] = 100;
+            } else if ( whatMenuNum == 3 ) {
+                recMicPictogramColor[0] = 100;
+                recMicPictogramColor[1] = 100;
+                recMicPictogramColor[2] = 255;
+            } else {
+                recMicPictogramColor[i] = 100;
+            }
+            ofSetColor( recMicPictogramColor[i] );
+            
+            recMicPictogram[i].setAnchorPercent( 0.5, 0.5 );
+            recMicPictogram[i].draw( ( ofGetWidth() * SOUND_NUM_INDENT ) - ( ofGetWidth() * BUTTON_WIDTH ) + ( ( ofGetWidth() * BUTTON_WIDTH ) * i ), pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
         }
-        ofSetColor( recMicPictogramColor );
-        //recMicPictogram.setAnchorPoint( recMicPictogram.getWidth() * 0.5, recMicPictogram.getHeight() * 0.5 );
-        recMicPictogram.setAnchorPercent( 0.5, 0.5 );
-        recMicPictogram.draw( ( ofGetWidth() * SOUND_NUM_INDENT ), pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
-        //recMicPictogram.draw( (ofGetWidth() * BUTTON_INDENT) + ( (ofGetWidth() * BUTTON_WIDTH) * 2 ), pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
-        //recMicPictogram.draw( ofGetWidth() * SOUND_NUM_INDENT, pictogramsAndNumsPosY, ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
-        //recMicPictogram.draw( ofGetWidth() * SOUND_NUM_INDENT, pictogramsAndNumsPosY );
+    
     }
     
     
-    ///< What Sample numbers on button
+    ///< What Sample number pictograms
     if ( buttonIsPressed )
     {
-        for (int i = 1; i < NUM_OF_SOUNDS + 1; i++)
+        for (int i = 0; i < howManySamples; i++)
         {
-            if ( whatMenuNum == i + 2 ) {
+            if ( whatMenuNum == i + NUM_OF_POS_TO_THE_LEFT_FOR_FILESAMPLES ) {
                 pictogramNumColor = 255;
             } else {
                 pictogramNumColor = 100;
             }
             ofSetColor( pictogramNumColor );
             pictogramNum[i].setAnchorPercent( 0.5, 0.5 );
-            pictogramNum[i].draw( ( (ofGetWidth() * SOUND_NUM_INDENT ) + ( (ofGetWidth() * BUTTON_WIDTH) * i) ), ( pictogramsAndNumsPosY ), ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
+            pictogramNum[i].draw( ( (ofGetWidth() * SOUND_NUM_INDENT ) + ( ( ofGetWidth() * BUTTON_WIDTH ) ) * 2 + ( ( ofGetWidth() * BUTTON_WIDTH ) * i ) ), ( pictogramsAndNumsPosY ), ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
             //fontLarge.drawString( ofToString( i ), ( (ofGetWidth() * SOUND_NUM_INDENT + 30) + ( (ofGetWidth() * BUTTON_WIDTH) * i) ), ( pictogramsAndNumsPosY ) ); // +30 to compensate for Font origin X.
         }
     }
 
 
-    ///< What Menu Numbers (FOR DEBUGGING)
-    /*if ( buttonIsPressed )
-    {
-        ofSetColor( 255, 255, 255, 255 );
-    }
-    else
-    {
-        ofSetColor( 0, 0, 0, 0 );
-    }
-    for (int i = 0; i < NUM_OF_MENU_POSITIONS; i++)
-    {
-        fontLarge.drawString( ofToString( i ), ( (ofGetWidth() * BUTTON_INDENT + 30) + ( (ofGetWidth() * BUTTON_WIDTH) * i) ), ( ofGetScreenHeight() * 0.5 ) );
-    }*/
-    
-    
-    
     
     // Black rectangle over pictograms that fades out
     ofSetColor( 0, 0, 0, rectOverPictogramsOpacity );
@@ -269,16 +271,9 @@ void menu::draw()
     ///< Button
     if ( buttonIsPressed )
     {
-        if ( !recModeOn && !aboutBit20On && !fileBrowserOn ) {
-            ofSetColor( 255, 255, 255, 255 );
-        } else if ( recModeOn ) {
-            ofSetColor( 255, 0, 0, 255 );
-        }
-        else if ( aboutBit20On ) {
-            ofSetColor( 255, 255, 255, 255 );
-        } else if ( fileBrowserOn ) {
-            ofSetColor( 255, 255, 255, 255 );
-        }
+    
+        ofSetColor( 255, 255, 255, 255 );
+       
         
         
         //ofNoFill();
@@ -288,16 +283,9 @@ void menu::draw()
     }
     else
     {
-        if ( !recModeOn && !aboutBit20On && !fileBrowserOn ) {
-            ofSetColor( 255, 255, 255, 60 );
-        } else if ( recModeOn ) {
-            ofSetColor( 255, 0, 0, 80 );
-        }
-        else if ( aboutBit20On ) {
-            ofSetColor( 255, 255, 255, 60 );
-        } else if ( fileBrowserOn ) {
-            ofSetColor( 255, 255, 255, 60 );
-        }
+      
+        ofSetColor( 255, 255, 255, 60 );
+
         
         //ofNoFill();
         //ofCircle( buttonPosX, buttonHidePosY, buttonRadius );
@@ -308,12 +296,27 @@ void menu::draw()
     
     
     
+    ///< What Menu Numbers (FOR DEBUGGING)
+    /*if ( buttonIsPressed )
+     {
+     ofSetColor( 255, 255, 255, 255 );
+     }
+     else
+     {
+     ofSetColor( 0, 0, 0, 0 );
+     }*/
+    ofSetColor( 255, 255, 255, 255 );
+    for (int i = 0; i < NUM_OF_MENU_POSITIONS; i++)
+    {
+        ofDrawBitmapString( ofToString( i ), menuXpositions[i], ofGetScreenHeight() * 0.5 );
+    }
+    
     
     // Menu X positions for debugging
-    /*for ( int i = 0; i < NUM_OF_MENU_POSITIONS; i++) {
+    for ( int i = 0; i < NUM_OF_MENU_POSITIONS; i++) {
         ofSetColor( 255, 255, 255 );
         ofCircle( menuXpositions[i], ofGetHeight() * 0.9, 1 );
-    }*/
+    }
     
     
 }

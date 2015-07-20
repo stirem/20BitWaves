@@ -18,30 +18,31 @@ public:
     void        Draw();
     float       ColorBrightness();
     float       SpectrumVolume();
-    float       SoundBrightness();
+    
     
     void        Position( float touchX, float touchY );
     float       StartRadius();
     
-    float       soundBrightness;
     float       spectrumVolume;
+    
+
+
+
+    
+private:
+    
+    float       SoundBrightness();
+    
+    float       maxRadius;
+    float       soundBrightness;
     float       startRadius;
     float       colorBrightness;
     float       alpha;
     float       radius;
+    float       spectrum[BANDS];
 
-
-
-    
     ofPoint     pos;
     ofColor     color;
-    
-    
-       
-   
-    float       spectrum[BANDS];
-    
-
     
     
    

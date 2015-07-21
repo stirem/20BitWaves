@@ -22,7 +22,7 @@ public:
     
     Recording();
     
-    void setup( );
+    void setup( int whatNrAmI );
     void Update( float touchXDown, float touchYDown, bool touchIsDown, bool recModeOn );
     void Draw();
     void Exit();
@@ -32,9 +32,10 @@ public:
     
     void distanceToDeleteButton( float touchX, float touchY, bool recModeOn );
     
-    void SetupAudioFile();
+    void setupRecFile();
     
-    NSString *getAudioFilePath();
+    NSString *initRecFile();
+    //void initRecFile( unsigned int whatRecSample );
     
     bool isFileInDir();
     
@@ -90,6 +91,9 @@ public:
     
     float                   touchX;
     float                   touchY;
+    
+    int                     _whatNrAmI;
+
     
 
 };

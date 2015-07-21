@@ -43,7 +43,7 @@ public:
 
     menu            menu;
 
-    Recording       recording;
+    Recording       recording[NUM_OF_REC_MODES];
 
     ofSoundStream   soundStream;
 
@@ -87,7 +87,7 @@ public:
     
     // Maximilian sample playback declaration
     ofxMaxiSample   fileSample[NUM_OF_HARDCODED_SOUNDS]; // + 1 because file names start on nr 1 and not 0.
-    ofxMaxiSample   recSample;
+    ofxMaxiSample   recSample[NUM_OF_REC_MODES];
     
     double          sample;
     

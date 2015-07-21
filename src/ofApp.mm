@@ -55,10 +55,12 @@ void ofApp::setup()
 
 
     ///// R E C O R D I N G /////
-    // Order here is important to check if rec file has content. If not, rec button will be shown.
-    recording.setup( );
-    recSample.load( recording.myRecString );
-    recording.isRecSampleZero( recSample.length );
+    // Order here is important to check if rec file has content. If no content, rec button will be shown.
+    for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+        recording[i].setup( i );
+        recSample[i].load( recording[i].myRecString );
+        recording[i].isRecSampleZero( recSample[i].length );
+    }
 
     
     
@@ -176,8 +178,9 @@ void ofApp::update()
     
     ///< Add particles
     //if (volume > 0.0)
-
-    if ( !menu.buttonIsPressed && recording.readyToPlay ) {// Do not add waves when pushing change-song-button.
+   
+    
+    if ( !menu.buttonIsPressed && recording[ menu.whatRecSample ].readyToPlay ) {// Do not add waves when pushing change-song-button.
         
         if ( touchobject.spectrumVolume > 1200 && volume > 0.0 ) {
             
@@ -190,30 +193,33 @@ void ofApp::update()
     }
 
     ///// R E C O R D I N G /////
-    if ( menu.recModeOn[0] )
+
+    if ( menu.recModeOn[ menu.whatRecSample ] )
     {
-        recording.Update( touchPosX, touchPosY, touchIsDown, menu.recModeOn );
+        recording[ menu.whatRecSample ].Update( touchPosX, touchPosY, touchIsDown, menu.recModeOn );
     }
     
     // Load rec sample after recording (loadFileIsDone flag to prevent rec sample from being played before it is loaded)
-    if ( recording.saveFileIsDone )
+    if ( recording[ menu.whatRecSample ].saveFileIsDone )
     {
-        recSample.load( recording.myRecString );
-        recording.loadFileIsDone = true;
-        recording.saveFileIsDone = false;
+        recSample[ menu.whatRecSample ].load( recording[ menu.whatRecSample ].myRecString );
+        recording[ menu.whatRecSample ].loadFileIsDone = true;
+        recording[ menu.whatRecSample ].saveFileIsDone = false;
     }
     
     // Prevent rec sample from playing instantly after finger is lifted from rec button.
-    if ( recording.loadFileIsDone && touchIsDown ) {
-        recording.muteAudioWhileRecording = false;
+    if ( recording[ menu.whatRecSample ].loadFileIsDone && touchIsDown ) {
+        recording[ menu.whatRecSample ].muteAudioWhileRecording = false;
     }
     
     // Set ready to play if not in rec mode
-    if ( !menu.recModeOn[0] )
+    if ( !menu.recModeOn[ menu.whatRecSample ] )
     {
-        recording.readyToPlay = true;
+        recording[ menu.whatRecSample ].readyToPlay = true;
     }
 
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -233,14 +239,17 @@ void ofApp::draw()
     }
 
     ///// R E C O R D I N G /////
-    if ( menu.recModeOn[0] ) {
-        recording.Draw();
+
+    if ( menu.recModeOn[ menu.whatRecSample ] ) {
+        recording[ menu.whatRecSample ].Draw();
     }
+
     
     ofSetColor( 255, 255, 255 );
     ofDrawBitmapString( "fps: "+ ofToString( ofGetFrameRate() ), 10, 20 );
     ofDrawBitmapString( "what sample: "+ ofToString( menu.whatSample ), 10, 40 ) ;
     ofDrawBitmapString( "what menu num: "+ ofToString( menu.whatMenuNum ), 10, 60 );
+    ofDrawBitmapString( "what REC sample: "+ ofToString( menu.whatRecSample ), 10, 80 );
 }
 
 //--------------------------------------------------------------
@@ -269,7 +278,51 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
     }
     
     // Calculate audio vector by iterating over samples
+    
     for ( int i = 0; i < bufferSize; i++ )
+    {
+        
+
+        if ( menu.recModeOn[ menu.whatRecSample ] )
+        {
+            if ( recording[ menu.whatRecSample ].readyToPlay ) {
+                if ( recording[ menu.whatRecSample ].loadFileIsDone ) {
+                    if ( !recording[ menu.whatRecSample ].silenceWhenDeleting && !recording[ menu.whatRecSample ].muteAudioWhileRecording ) {
+                        if ( triggerRecSamplePlay ) {
+                            sample = recSample[ menu.whatRecSample ].playOnce( soundSpeed );
+                        }
+                    }
+                }
+            }
+        }
+        else if ( menu.fileSamplesModeOn )
+        {
+            if ( triggerFileSamplePlay ) {
+                sample = fileSample[ menu.whatSample ].playOnce( soundSpeed );
+            }
+        }
+        
+        
+        
+            
+        // Stereo panning
+        channel1.stereo( sample, stereomix, panning );
+        
+        
+        // Process FFT Spectrum
+        if ( myFFT.process( sample ) )
+        {
+            myFFT.magsToDB();
+            //myFFTOctAna.calculate( myFFT.magnitudes );
+        }
+        
+        
+        output[i*nChannels    ] = stereomix[0] * volume;
+        output[i*nChannels + 1] = stereomix[1] * volume;
+        
+    }
+    
+    /*for ( int i = 0; i < bufferSize; i++ )
     {
         if ( recording.readyToPlay )
         {
@@ -316,58 +369,9 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
             output[i*nChannels    ] = stereomix[0] * volume;
             output[i*nChannels + 1] = stereomix[1] * volume;
         }
-    }
-    
-    /*for ( int i = 0; i < bufferSize; i++ )
-    {
-        if ( recording.readyToPlay )
-        {
-            if ( triggerPlay )
-            {
-                if ( menu.recModeOn )
-                {
-                    if ( !recording.silenceWhenDeleting )
-                    {
-                        if ( !recording.muteAudioWhileRecording )
-                        {
-                            if ( recording.loadFileIsDone )
-                            {
-                                sample = recSample.playOnce( soundSpeed );
-                            }
-                        }
-                        else
-                        {
-                            sample = 0.;
-                        }
-                    }
-                }
-                else
-                {
-                    sample = fileSample[menu.whatSample].playOnce( soundSpeed );
-                }
-                
-            }
-            else
-            {
-                sample = 0.;
-            }
-            
-            // Stereo panning
-            channel1.stereo( sample, stereomix, panning );
-            
-            
-            // Process FFT Spectrum
-            if ( myFFT.process( sample ) )
-            {
-                myFFT.magsToDB();
-                //myFFTOctAna.calculate( myFFT.magnitudes );
-            }
-            
-            
-            output[i*nChannels    ] = stereomix[0] * volume;
-            output[i*nChannels + 1] = stereomix[1] * volume;
-        }
     }*/
+    
+    
     
     
     ///< Change sound speed
@@ -425,11 +429,10 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     
     
     ///< Set position of samples to 0 when finger is pressed
-    for (int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++)
-    {
-        fileSample[i].setPosition( 0. );
-        recSample.setPosition( 0. );
-    }
+ 
+    fileSample[ menu.whatSample ].setPosition( 0. );
+    recSample[ menu.whatRecSample ].setPosition( 0. );
+    
     
 
     // Used to decrease volume when finger is lifted
@@ -440,11 +443,11 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     menu.distanceToButton( touch.x, touch.y );
     
     // Check if delete button is pressed
-    recording.distanceToDeleteButton( touch.x, touch.y, menu.recModeOn );
+    recording[ menu.whatRecSample ].distanceToDeleteButton( touch.x, touch.y, menu.recModeOn );
     
     
     ///< Detect if finger is inside menu-button
-    if ( menu.buttonIsPressed || recording.delButtonIsPressed || recording.recButtonIsPressed )
+    if ( menu.buttonIsPressed || recording[ menu.whatRecSample ].delButtonIsPressed || recording[ menu.whatRecSample ].recButtonIsPressed )
     {
         volume = 0.0;
     }
@@ -485,9 +488,9 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     // Used to change sound sample
     menu.buttonIsPressed = false;
     
-    recording.delButtonIsPressed = false;
+    recording[ menu.whatRecSample ].delButtonIsPressed = false;
     
-    recording.silenceWhenDeleting = false;
+    recording[ menu.whatRecSample ].silenceWhenDeleting = false;
 
     touchIsDown = false;
 

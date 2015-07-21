@@ -24,6 +24,7 @@ public:
     bool            buttonIsPressed;
     float           buttonPressedTimer;
     unsigned int    whatSample;
+    unsigned int    whatRecSample;
     unsigned int    whatMenuNum;
     
     float           buttonPosX;
@@ -47,6 +48,7 @@ public:
     float           rectOverPictogramsOpacity;
     bool            recModeOn[NUM_OF_REC_MODES];
     bool            aboutBit20On;
+    bool            fileSamplesModeOn;
     
     //ofTrueTypeFont fontLarge;
     

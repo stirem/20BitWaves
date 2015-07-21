@@ -15,13 +15,15 @@ Recording::Recording() {
 
 
 
-void Recording::setup() {
+void Recording::setup( int whatNrAmI ) {
     
     isRecording = false;
     
-    //SetupAudioFile();
+    _whatNrAmI = whatNrAmI;
     
-    myRecString = ofxNSStringToString( getAudioFilePath() ); // Init sound file
+
+    myRecString = ofxNSStringToString( initRecFile() ); // Init sound file
+    
     
     /*recButtonPosX                   = ofGetScreenWidth() * 0.5;
     recButtonPosY                   = ofGetScreenHeight() * 0.5;
@@ -88,7 +90,7 @@ void Recording::isRecSampleZero( long recSampleLength ) {
     if ( recSampleLength == 0 )
     {
         readyToPlay = false;
-        SetupAudioFile();
+        setupRecFile();
         willTakeRecording = true;
         showDeleteButton = false;
     }
@@ -145,7 +147,7 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
         if ( eraseRecFileTimer >= 0.5 )
         {
             readyToPlay = false;
-            SetupAudioFile();
+            setupRecFile();
             willTakeRecording = true;
             showDeleteButton = false;
             delButtonIsPressed = false;
@@ -344,13 +346,17 @@ void Recording::StopPressed() {
 
 
 // Init sound file on startup
-NSString* Recording::getAudioFilePath() {
+NSString* Recording::initRecFile() {
     NSArray *searchPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *micRecPath = [[searchPaths objectAtIndex:0] stringByAppendingPathComponent:@"micRecordings"];
-    //NSString *documentsPath = [searchPaths objectAtIndex:0];
-    NSString *fileName = [NSString stringWithFormat:@"%@/micRecording.wav", micRecPath];
+    NSString *fileName;
+    
+
+    fileName = [ NSString stringWithFormat:@"%@/micRecording%d.wav", micRecPath, _whatNrAmI ];
+    
     
     return fileName;
+
 }
 
 
@@ -370,15 +376,15 @@ NSString* Recording::getAudioFilePath() {
 
 
 // Setup sound file for recording
-void Recording::SetupAudioFile() {
+void Recording::setupRecFile() {
 
-    NSString *path;
+    NSString *micRecPath;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    path = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"micRecordings"]; // Create directory
+    micRecPath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"micRecordings"]; // Create directory
     NSError *error;
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path])	//Does directory already exist?
+    if (![[NSFileManager defaultManager] fileExistsAtPath:micRecPath])	//Does directory already exist?
     {
-        if (![[NSFileManager defaultManager] createDirectoryAtPath:path
+        if (![[NSFileManager defaultManager] createDirectoryAtPath:micRecPath
                                        withIntermediateDirectories:NO
                                                         attributes:nil
                                                              error:&error])
@@ -392,8 +398,10 @@ void Recording::SetupAudioFile() {
     
     //dirPaths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
     //docsDir = dirPaths[0];
+    NSString *soundFilePath;
+
+    soundFilePath = [ NSString stringWithFormat:@"%@/micRecording%d.wav", micRecPath, _whatNrAmI ];
     
-    NSString *soundFilePath = [path stringByAppendingPathComponent:@"micRecording.wav"];
     
     NSURL *soundFileURL = [NSURL fileURLWithPath:soundFilePath];
     
@@ -428,6 +436,7 @@ void Recording::SetupAudioFile() {
     audioRecorder.meteringEnabled = YES;
     
     myRecString = ofxNSStringToString( soundFilePath );
+    
     
  
     

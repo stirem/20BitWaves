@@ -13,6 +13,7 @@ void menu::setup()
     buttonIsPressed             = false;
     buttonPressedTimer          = 0;
     whatSample                  = 1;
+    whatRecSample               = 0;
     whatMenuNum                 = 3;
     
     /*buttonRadius              = ofGetScreenHeight() * 0.05;
@@ -57,6 +58,7 @@ void menu::setup()
         recMicPictogramColor[i] = 100;
     }
     aboutBit20On                = false;
+    fileSamplesModeOn           = true;
     rectOverPictogramsOpacity   = 0;
     
     
@@ -112,7 +114,7 @@ int menu::update( float touchX, bool touchIsDown )
     }
     else
     {
-        buttonPosX = menuXpositions[whatMenuNum];
+        buttonPosX = menuXpositions[ whatMenuNum ];
         
         doBounceButtonY = false;
         buttonPosY = buttonHidePosY;
@@ -130,6 +132,7 @@ int menu::update( float touchX, bool touchIsDown )
                 recModeOn[i] = false;
             }
             aboutBit20On = false;
+            fileSamplesModeOn = true;
         }
         else if ( whatMenuNum == 0 )
         {
@@ -137,7 +140,7 @@ int menu::update( float touchX, bool touchIsDown )
                 recModeOn[i] = false;
             }
             aboutBit20On = true;
-            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
+            fileSamplesModeOn = false;
         } else if ( whatMenuNum == 1 )
         {
             for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
@@ -145,8 +148,9 @@ int menu::update( float touchX, bool touchIsDown )
                 recModeOn[1] = false;
                 recModeOn[2] = false;
             }
+            whatRecSample = 0;
             aboutBit20On = false;
-            whatSample = false; // Maybe another solution to quiet the samples when in rec mode?
+            fileSamplesModeOn = false;
         }
         else if ( whatMenuNum == 2 )
         {
@@ -155,8 +159,9 @@ int menu::update( float touchX, bool touchIsDown )
                 recModeOn[1] = true;
                 recModeOn[2] = false;
             }
+            whatRecSample = 1;
             aboutBit20On = false;
-            whatSample = 0; // Maybe another solution to quiet the samples when in rec mode?
+            fileSamplesModeOn = false;
         }
         else if ( whatMenuNum == 3 )
         {
@@ -165,6 +170,9 @@ int menu::update( float touchX, bool touchIsDown )
                 recModeOn[1] = false;
                 recModeOn[2] = true;
             }
+            whatRecSample = 2;
+            aboutBit20On = false;
+            fileSamplesModeOn = false;
         }
     }
     

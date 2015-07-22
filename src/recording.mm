@@ -168,7 +168,7 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
     mAveragePower = [audioRecorder averagePowerForChannel:0];
     mPeakPower = [audioRecorder peakPowerForChannel:0];
     
-    meter = ofMap(mAveragePower, -60, -30, 0, 100);
+    meter = ofMap( mAveragePower, -60, -30, 0, 100 );
     //meter = ofMap(mPeakPower, -60, -30, 0, 100);
     
     

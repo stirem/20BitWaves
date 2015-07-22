@@ -68,11 +68,17 @@ void Touchobject::Update( float *val, float volume )
         {
             colorBrightness = colorBrightness - 5;
         }
-        
         if( alpha > 0 ) alpha = alpha - 5;
+        
+        if ( radius >= 0 ) {
+            radius = radius - 1;
+        }
+        
     } else {
         alpha = 255;
     }
+    
+
 }
 // --------------------------------------------------------
 

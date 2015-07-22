@@ -98,6 +98,12 @@ public:
     //ofxMaxiFFTOctaveAnalyzer myFFTOctAna;
 
     ofxMaxiFilter myFilter;
+    
+    
+    
+    
+    
+    
 
     
 

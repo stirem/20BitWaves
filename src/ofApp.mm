@@ -15,6 +15,7 @@ void ofApp::setup()
     ///< Setup framerate, background color and show mouse
     ofSetFrameRate( 60 );
     ofBackground( 0, 0, 0 );
+    //ofSetVerticalSync( true );
 
     
     touchobject.Setup();
@@ -83,6 +84,8 @@ void ofApp::setup()
 
     
     
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -99,16 +102,23 @@ void ofApp::loadFileSamples() {
     NSEnumerator *e = [ contents objectEnumerator ];
     NSString *fileName;
     
+    int fileCounter = 0; // Prevent from loading more than 7 sounds
+    
     while ( ( fileName = [ e nextObject ] ) ) {
         if ( [ [ fileName pathExtension ] isEqualToString: extension ] ) {
             NSLog( @"FileName: %@", fileName );
             NSString *soundFilePath = [ documentsPath stringByAppendingPathComponent: fileName ];
             string myFileString = ofxNSStringToString( soundFilePath );
-            vectorOfStrings.push_back( myFileString ); // Fill my own vector with strings
+            fileCounter++;
+            if ( fileCounter <= 7 ) {
+                vectorOfStrings.push_back( myFileString ); // Fill my own vector with strings
+            }
 
             filesExist = true;
         }
     }
+    
+    ofLog() << "fileCounter: " << fileCounter;
     
     
 
@@ -177,20 +187,19 @@ void ofApp::update()
     
     
     ///< Add particles
-    //if (volume > 0.0)
-   
-    
     if ( !menu.buttonIsPressed && recording[ menu.whatRecSample ].readyToPlay ) {// Do not add waves when pushing change-song-button.
         
         if ( touchobject.spectrumVolume > 1200 && volume > 0.0 ) {
             
             addParticlesTimer += ofGetLastFrameTime();
-            if ( addParticlesTimer >= 0.01 ) {
+            if ( addParticlesTimer >= 0.03 ) {
                 particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness(), soundSpeed ) );
                 addParticlesTimer = 0;
             }
         }
     }
+
+
 
     ///// R E C O R D I N G /////
 
@@ -219,6 +228,8 @@ void ofApp::update()
     }
 
     
+    
+
     
 }
 
@@ -290,6 +301,8 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
                     if ( !recording[ menu.whatRecSample ].silenceWhenDeleting && !recording[ menu.whatRecSample ].muteAudioWhileRecording ) {
                         if ( triggerRecSamplePlay ) {
                             sample = recSample[ menu.whatRecSample ].playOnce( soundSpeed );
+                        } else {
+                            sample = 0.;
                         }
                     }
                 }
@@ -299,6 +312,8 @@ void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
         {
             if ( triggerFileSamplePlay ) {
                 sample = fileSample[ menu.whatSample ].playOnce( soundSpeed );
+            } else {
+                sample = 0.;
             }
         }
         
@@ -446,8 +461,12 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     recording[ menu.whatRecSample ].distanceToDeleteButton( touch.x, touch.y, menu.recModeOn );
     
     
-    ///< Detect if finger is inside menu-button
-    if ( menu.buttonIsPressed || recording[ menu.whatRecSample ].delButtonIsPressed || recording[ menu.whatRecSample ].recButtonIsPressed )
+    ///< Detect if finger is inside menu-button or del button
+    if ( menu.buttonIsPressed )
+    {
+        volume = 0.0;
+    }
+    else if ( menu.recModeOn[ menu.whatRecSample ] && recording[ menu.whatRecSample ].delButtonIsPressed )
     {
         volume = 0.0;
     }

@@ -7,10 +7,9 @@
 Particles::Particles( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness, float soundSpeed )
 {
     pos.set(touchX, touchY);
-    //colorBrightness = specVolume;
     circleColorBrightness   = colorBrightness;
     radius                  = startRadius; // Radius from specVolume
-    myLineWidth             = 1;
+    myLineWidth             = 3;
     alpha                   = 255;
     mySoundSpeed            = soundSpeed;
     myScreenWidth           = ofGetScreenWidth();
@@ -24,19 +23,12 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
 // --------------------------------------------------------
 void Particles::Update( float soundSpeed, float volume, double sample ) {
     
-    //radius = radius + 40 * s;
-    //radius = radius + 1 * soundSpeed;
-    //radius = radius + 1 * soundSpeed * ofGetLastFrameTime() * 100;
-    
-    //radius = radius + ( 0.05 * ofGetScreenWidth() * soundSpeed * ofGetLastFrameTime() );
+
     radius = radius + ( 0.05 * myScreenWidth * mySoundSpeed * ofGetLastFrameTime() );
     
     if ( sample != 0.0 ) {
-    //if ( volume == 1 ) {
-        //alpha = alpha - 1;
         alpha = alpha - ( 70 * ofGetLastFrameTime() );
     } else {
-        //alpha = alpha - 1.5;
         alpha = alpha - ( 150 * ofGetLastFrameTime() );
     }
 }

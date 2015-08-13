@@ -9,7 +9,7 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
     pos.set(touchX, touchY);
     circleColorBrightness   = colorBrightness;
     radius                  = startRadius; // Radius from specVolume
-    myLineWidth             = 3;
+    myLineWidth             = 1;
     alpha                   = 255;
     mySoundSpeed            = soundSpeed;
     myScreenWidth           = ofGetScreenWidth();

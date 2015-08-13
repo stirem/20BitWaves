@@ -305,15 +305,7 @@ void menu::draw( int howManySamples )
     
     
     ///< What Menu Numbers (FOR DEBUGGING)
-    /*if ( buttonIsPressed )
-     {
-     ofSetColor( 255, 255, 255, 255 );
-     }
-     else
-     {
-     ofSetColor( 0, 0, 0, 0 );
-     }*/
-    ofSetColor( 255, 255, 255, 255 );
+    /*ofSetColor( 255, 255, 255, 255 );
     for (int i = 0; i < NUM_OF_MENU_POSITIONS; i++)
     {
         ofDrawBitmapString( ofToString( i ), menuXpositions[i], ofGetScreenHeight() * 0.5 );
@@ -324,7 +316,7 @@ void menu::draw( int howManySamples )
     for ( int i = 0; i < NUM_OF_MENU_POSITIONS; i++) {
         ofSetColor( 255, 255, 255 );
         ofCircle( menuXpositions[i], ofGetHeight() * 0.9, 1 );
-    }
+    }*/
     
     
 }

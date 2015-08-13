@@ -192,7 +192,7 @@ void ofApp::update()
         if ( touchobject.spectrumVolume > 1200 && volume > 0.0 ) {
             
             addParticlesTimer += ofGetLastFrameTime();
-            if ( addParticlesTimer >= 0.03 ) {
+            if ( addParticlesTimer >= 0.01 ) {
                 particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness(), soundSpeed ) );
                 addParticlesTimer = 0;
             }
@@ -256,11 +256,11 @@ void ofApp::draw()
     }
 
     
-    ofSetColor( 255, 255, 255 );
+    /*ofSetColor( 255, 255, 255 );
     ofDrawBitmapString( "fps: "+ ofToString( ofGetFrameRate() ), 10, 20 );
     ofDrawBitmapString( "what sample: "+ ofToString( menu.whatSample ), 10, 40 ) ;
     ofDrawBitmapString( "what menu num: "+ ofToString( menu.whatMenuNum ), 10, 60 );
-    ofDrawBitmapString( "what REC sample: "+ ofToString( menu.whatRecSample ), 10, 80 );
+    ofDrawBitmapString( "what REC sample: "+ ofToString( menu.whatRecSample ), 10, 80 );*/
 }
 
 //--------------------------------------------------------------

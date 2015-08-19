@@ -82,6 +82,20 @@ void Recording::setup( int whatNrAmI ) {
     
     trashcan.loadImage( "trashcan.png" );
     hold.loadImage( "hold.png" );
+    
+    
+    // Enable bluetooth mic input
+    UInt32 allowBluetoothInput = 0;
+    
+    AudioSessionSetProperty (
+                             kAudioSessionProperty_OverrideCategoryEnableBluetoothInput,
+                             sizeof (allowBluetoothInput),
+                             &allowBluetoothInput
+                             );
+    
+    
+    
+    
 }
 
 

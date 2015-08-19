@@ -44,13 +44,15 @@ void ofApp::setup()
 
 
     ///< openFrameworks sound stream
-    //ofSoundStreamSetup( 2, 0, this, sampleRate, initialBufferSize, 4 );
+    //ofSoundStreamSetup( 2, 1, this, sampleRate, initialBufferSize, 4 );
     soundStream.setup( this, 2, 1, sampleRate, initialBufferSize, 4 );
+    //iosSoundStream.setup( 2, 0, sampleRate, initialBufferSize, 4 );
+    
     
     
     // Setup FFT
     fftSize = BANDS;
-    myFFT.setup(fftSize, 1024, 256);
+    myFFT.setup( fftSize, 1024, 256 );
     //nAverages = 12;
     //myFFTOctAna.setup(sampleRate, fftSize/2, nAverages);
 
@@ -152,7 +154,13 @@ void ofApp::loadFileSamples() {
             fileSample[i].load( ofToDataPath( fileNr ) );
         }
     }
-        
+    
+    
+    
+    // About Bit20
+    if ( menu.aboutBit20On ) {
+        about.setup();
+    }
     
 
 
@@ -229,6 +237,11 @@ void ofApp::update()
 
     
     
+    // About Bit20
+    if ( menu.aboutBit20On ) {
+        about.update();
+    }
+    
 
     
 }
@@ -254,6 +267,12 @@ void ofApp::draw()
     if ( menu.recModeOn[ menu.whatRecSample ] ) {
         recording[ menu.whatRecSample ].Draw();
     }
+    
+    
+    // About Bit20
+    if ( menu.aboutBit20On ) {
+        about.draw();
+    }
 
     
     /*ofSetColor( 255, 255, 255 );
@@ -275,18 +294,21 @@ void ofApp::exit(){
 
 
 ///< ----------- M A X I M I L I A N -------------
-void ofApp::audioRequested(float * output, int bufferSize, int nChannels)
+void ofApp::audioOut(float * output, int bufferSize, int nChannels)
 {
-	
-	ofxMaxiMix channel1;
-	//double sample;
-	double stereomix[2];
-	
+    
     if( initialBufferSize != bufferSize )
     {
         ofLog( OF_LOG_ERROR, "your buffer size was set to %i - but the stream needs a buffer size of %i", initialBufferSize, bufferSize );
         return;
     }
+    
+	
+	ofxMaxiMix channel1;
+	//double sample;
+	double stereomix[2];
+	
+
     
     // Calculate audio vector by iterating over samples
     

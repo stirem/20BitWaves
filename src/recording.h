@@ -11,6 +11,7 @@
 //#include "ofxGui.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
+#import <AVFoundation/AVAudioSession.h>
 
 #include "recParticles.h"
 #include "recSpectrum.h"
@@ -94,6 +95,9 @@ public:
     
     int                     _whatNrAmI;
 
+    
+    
+    BOOL                    setPreferredInput;
     
 
 };

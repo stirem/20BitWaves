@@ -21,13 +21,14 @@
 		678E130C1795153C005B6D19 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130B1795153C005B6D19 /* Default.png */; };
 		678E130E17951540005B6D19 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130D17951540005B6D19 /* Default@2x.png */; };
 		678E131017951549005B6D19 /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 678E130F17951549005B6D19 /* Default-568h@2x~iphone.png */; };
-		807CA1251A5D9C0B004DF79A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807CA1241A5D9C0B004DF79A /* Accelerate.framework */; };
+		807CA1251A5D9C0B004DF79A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807CA1241A5D9C0B004DF79A /* Accelerate.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		80845BF21A5D8E200034AC8F /* particles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BEE1A5D8E200034AC8F /* particles.cpp */; };
 		80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BF01A5D8E200034AC8F /* touchObject.cpp */; };
 		808D0B641ABAE8BF0070ADCB /* recParticles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 808D0B621ABAE8BF0070ADCB /* recParticles.cpp */; };
 		808D0B671ABB08A90070ADCB /* recSpectrum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 808D0B651ABB08A90070ADCB /* recSpectrum.cpp */; };
 		809E75A61A94D02800EDBCC9 /* recording.mm in Sources */ = {isa = PBXBuildFile; fileRef = 809E75A41A94D02800EDBCC9 /* recording.mm */; };
 		80A880FE1A70010E00A7AD6D /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A880FC1A70010E00A7AD6D /* menu.cpp */; };
+		80F46C761B7CB81800D20257 /* about.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80F46C741B7CB81800D20257 /* about.mm */; };
 		9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */; };
 		96084990AF216648B8B98E00 /* maxiFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A4EE0E35ED739A31CD0153E /* maxiFFT.cpp */; };
 		AF0580829426DC6BCA135A5C /* maxiGrains.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D2FB19B70632A6F86622D94 /* maxiGrains.cpp */; };
@@ -93,6 +94,9 @@
 		80A880FC1A70010E00A7AD6D /* menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
 		80A880FD1A70010E00A7AD6D /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
 		80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = stb_vorbis.c; path = ../../../addons/ofxMaxim/libs/stb_vorbis.c; sourceTree = SOURCE_ROOT; };
+		80F46C741B7CB81800D20257 /* about.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = about.mm; sourceTree = "<group>"; };
+		80F46C751B7CB81800D20257 /* about.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = about.h; sourceTree = "<group>"; };
+		80F46C771B7CD9B800D20257 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		87D3A0051CCB2C0F0ECA139E /* maximilian.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = maximilian.cpp; path = ../../../addons/ofxMaxim/libs/maximilian.cpp; sourceTree = SOURCE_ROOT; };
 		9312F3864ED05FC3E847FF69 /* ofxMaxim.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMaxim.h; path = ../../../addons/ofxMaxim/src/ofxMaxim.h; sourceTree = SOURCE_ROOT; };
 		95C3AC11BE0AC7EC464D2A36 /* maximilian.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = maximilian.h; path = ../../../addons/ofxMaxim/libs/maximilian.h; sourceTree = SOURCE_ROOT; };
@@ -156,6 +160,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				80F46C771B7CD9B800D20257 /* MediaPlayer.framework */,
 				678E130D17951540005B6D19 /* Default@2x.png */,
 				678E130917951536005B6D19 /* Icon.png */,
 				678E130717951530005B6D19 /* Icon@2x.png */,
@@ -277,6 +282,8 @@
 		E4D8936A11527B74007E1F53 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				80F46C741B7CB81800D20257 /* about.mm */,
+				80F46C751B7CB81800D20257 /* about.h */,
 				808D0B651ABB08A90070ADCB /* recSpectrum.cpp */,
 				808D0B661ABB08A90070ADCB /* recSpectrum.h */,
 				808D0B621ABAE8BF0070ADCB /* recParticles.cpp */,
@@ -413,6 +420,7 @@
 				E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */,
 				0FCED26D40D46CF89A58E54C /* fft.cpp in Sources */,
 				5C4A4AA5D4784DF23EA43038 /* maxiAtoms.cpp in Sources */,
+				80F46C761B7CB81800D20257 /* about.mm in Sources */,
 				96084990AF216648B8B98E00 /* maxiFFT.cpp in Sources */,
 				AF0580829426DC6BCA135A5C /* maxiGrains.cpp in Sources */,
 				80845BF21A5D8E200034AC8F /* particles.cpp in Sources */,

@@ -4,16 +4,19 @@
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
 
+#include "Definitions.h"
 #include "particles.h"
 #include "touchObject.h"
 #include "menu.h"
+#include "recording.h"
+#include "about.h"
 
 #include "ofxMaxim.h" // Include Maximilian in project
 #include "maximilian.h" // Inclde Maximilian in project
 
-#include "Definitions.h"
 
-#include "recording.h"
+
+
 
 
 class ofApp : public ofxiOSApp {
@@ -37,15 +40,18 @@ public:
     
     void            loadFileSamples();
 
-    vector<Particles> particles; // Particles vector
+    vector<Particles> particles;
 
-    Touchobject     touchobject; // Touchobject ??
+    Touchobject     touchobject;
 
     menu            menu;
 
     Recording       recording[NUM_OF_REC_MODES];
+    
+    About           about;
 
     ofSoundStream   soundStream;
+    ofxiOSSoundStream iosSoundStream;
 
 
     float           touchPosX;
@@ -82,8 +88,8 @@ public:
 	 @param bufferSize		Audio vector size
 	 @param nChannels		Number of audio channels
 	 */
-	void            audioRequested( float * output, int bufferSize, int nChannels );
-
+	void audioOut( float * output, int bufferSize, int nChannels );
+    
     
     // Maximilian sample playback declaration
     ofxMaxiSample   fileSample[NUM_OF_HARDCODED_SOUNDS]; // + 1 because file names start on nr 1 and not 0.
@@ -103,7 +109,7 @@ public:
     
     
     
-    
+
 
     
 

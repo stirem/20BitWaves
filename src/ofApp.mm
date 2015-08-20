@@ -21,6 +21,9 @@ void ofApp::setup()
     touchobject.Setup();
     
     menu.setup();
+    
+    about.setup();
+    
 
     touchPosX               = 0;
     touchPosY               = 0;
@@ -42,11 +45,9 @@ void ofApp::setup()
     sample                  = 0.0;
     
 
-
     ///< openFrameworks sound stream
     //ofSoundStreamSetup( 2, 1, this, sampleRate, initialBufferSize, 4 );
-    soundStream.setup( this, 2, 1, sampleRate, initialBufferSize, 4 );
-    //iosSoundStream.setup( 2, 0, sampleRate, initialBufferSize, 4 );
+    soundStream.setup( this, 2, about._inputValue, sampleRate, initialBufferSize, 4 );
     
     
     
@@ -60,7 +61,7 @@ void ofApp::setup()
     ///// R E C O R D I N G /////
     // Order here is important to check if rec file has content. If no content, rec button will be shown.
     for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
-        recording[i].setup( i );
+        recording[i].setup( i, about._inputValue );
         recSample[i].load( recording[i].myRecString );
         recording[i].isRecSampleZero( recSample[i].length );
     }
@@ -155,12 +156,7 @@ void ofApp::loadFileSamples() {
         }
     }
     
-    
-    
-    // About Bit20
-    if ( menu.aboutBit20On ) {
-        about.setup();
-    }
+
     
 
 
@@ -286,7 +282,11 @@ void ofApp::draw()
 void ofApp::exit(){
 
     ///// R E C O R D I N G /////
-    //recording.Exit();
+    for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+        recording[ i ].Exit();
+    }
+    
+    soundStream.close();
     
 }
 
@@ -479,8 +479,14 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     // Used to check distance from finger to button. If finger is inside button: change sample.
     menu.distanceToButton( touch.x, touch.y );
     
+    // Audio input value button (bluetooth)
+    about.distanceToButton( touch.x, touch.y );
+    
     // Check if delete button is pressed
     recording[ menu.whatRecSample ].distanceToDeleteButton( touch.x, touch.y, menu.recModeOn );
+    
+    // Rec button
+    recording[ menu.whatRecSample ].distanceToRecButton( touch.x, touch.y );
     
     
     ///< Detect if finger is inside menu-button or del button

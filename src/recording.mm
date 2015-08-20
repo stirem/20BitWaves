@@ -15,7 +15,7 @@ Recording::Recording() {
 
 
 
-void Recording::setup( int whatNrAmI ) {
+void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     
     isRecording = false;
     
@@ -33,7 +33,7 @@ void Recording::setup( int whatNrAmI ) {
     recButtonPosX                   = ofGetWidth() * 0.5;
     recButtonPosY                   = ofGetHeight() * 0.5;
     recButtonRadius                 = ofGetWidth() * 0.15;
-    distanceToRecButton             = ofGetWidth(); // Avoid rec button getting pushed on start
+    _distanceToRecButton             = ofGetWidth(); // Avoid rec button getting pushed on start
     
     recButtonColor                  = 100;
     muteAudioWhileRecording         = false;
@@ -79,19 +79,27 @@ void Recording::setup( int whatNrAmI ) {
     eraseRecFileTimer               = 0.0;
     eraseRectWidth                  = ofGetWidth() * 0.2;
     silenceWhenDeleting             = false;
+    if ( audioInputValue == 1 ) {
+        _bluetoothActive = 0;
+    } else {
+        _bluetoothActive = 1;
+    }
     
     trashcan.loadImage( "trashcan.png" );
     hold.loadImage( "hold.png" );
     
     
+    
+    
+    
     // Enable bluetooth mic input
-    UInt32 allowBluetoothInput = 0;
+    /*UInt32 allowBluetoothInput = 1;
     
     AudioSessionSetProperty (
                              kAudioSessionProperty_OverrideCategoryEnableBluetoothInput,
                              sizeof (allowBluetoothInput),
                              &allowBluetoothInput
-                             );
+                             );*/
     
     
     
@@ -120,12 +128,11 @@ void Recording::isRecSampleZero( long recSampleLength ) {
 
 void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recModeOn ) {
     
-    //// REC BUTTON ////
-    distanceToRecButton = sqrt(    (touchX - recButtonPosX) * (touchX - recButtonPosX) + (touchY - recButtonPosY) * (touchY - recButtonPosY)     ) ;
-    
     if ( willTakeRecording ) {
-        if ( recButtonRadius > distanceToRecButton ) {
-            recButtonIsPressed = 1;
+        if ( recButtonRadius > _distanceToRecButton ) {
+            if ( !_bluetoothActive ) {
+                recButtonIsPressed = 1;
+            }
         }
         
         // Touch Up
@@ -224,9 +231,17 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
 }
 
 
+void Recording::distanceToRecButton( float touchX, float touchY ) {
+    
+    // Checked in ofApp::touchDown function.
+    _distanceToRecButton = sqrt(    (touchX - recButtonPosX) * (touchX - recButtonPosX) + (touchY - recButtonPosY) * (touchY - recButtonPosY)     ) ;
+    
+}
+
+
 void Recording::distanceToDeleteButton( float touchX, float touchY, bool recModeOn ) {
     
-    //// DELETE BUTTON ////
+    // Checked in ofApp::touchDown function.
     distanceToDelButton = sqrt(    (touchX - delButtonPosX) * (touchX - delButtonPosX) + (touchY - delButtonPosY) * (touchY - delButtonPosY)     ) ;
     
     if ( showDeleteButton ) {
@@ -256,7 +271,11 @@ void Recording::Draw() {
     // Rec button
     if ( willTakeRecording )
     {
-        ofSetColor( recButtonColor, 0, 0 );
+        if ( _bluetoothActive ) {
+            ofSetColor( 100, 100, 100 );
+        } else {
+            ofSetColor( recButtonColor, 0, 0 );
+        }
         ofFill();
         ofCircle( recButtonPosX, recButtonPosY, recButtonRadius );
         ofSetColor( 255, 255, 255, 20 );
@@ -306,7 +325,7 @@ void Recording::Draw() {
 
 void Recording::Exit() {
     
-    //[soundFileURL release];
+    [audioRecorder release];
     
 }
 

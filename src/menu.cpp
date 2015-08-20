@@ -44,6 +44,7 @@ void menu::setup()
     bounceChangeY               = buttonActivePosY - buttonHidePosY;
     bounceDurationY             = 30;
     doBounceButtonY             = false;
+    _distanceToButton           = ofGetWidth();
     
     
     pictogramsAndNumsPosY       = ofGetHeight() * 0.8;

@@ -39,7 +39,7 @@ public:
     void            deviceOrientationChanged(int newOrientation);
     
     void            loadFileSamples();
-
+    
     vector<Particles> particles;
 
     Touchobject     touchobject;
@@ -51,7 +51,6 @@ public:
     About           about;
 
     ofSoundStream   soundStream;
-    ofxiOSSoundStream iosSoundStream;
 
 
     float           touchPosX;
@@ -64,10 +63,8 @@ public:
     bool            touchIsDown;
     float           addParticlesTimer;;
 
-    
     vector<string> vectorOfStrings;
     int             howManySamples;
-    
 
     
     

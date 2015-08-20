@@ -11,7 +11,7 @@
 //#include "ofxGui.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
-#import <AVFoundation/AVAudioSession.h>
+//#import <AVFoundation/AVAudioSession.h>
 
 #include "recParticles.h"
 #include "recSpectrum.h"
@@ -23,7 +23,7 @@ public:
     
     Recording();
     
-    void setup( int whatNrAmI );
+    void setup( int whatNrAmI, bool audioInputValue );
     void Update( float touchXDown, float touchYDown, bool touchIsDown, bool recModeOn );
     void Draw();
     void Exit();
@@ -31,6 +31,7 @@ public:
     void RecordPressed();
     void StopPressed();
     
+    void distanceToRecButton( float touchX, float touchY );
     void distanceToDeleteButton( float touchX, float touchY, bool recModeOn );
     
     void setupRecFile();
@@ -50,7 +51,7 @@ public:
     bool                    isRecording;
     string                  myRecString;
     bool                    saveFileIsDone;
-    float                   distanceToRecButton;
+    float                   _distanceToRecButton;
     float                   recButtonPosX;
     float                   recButtonPosY;
     float                   recButtonRadius;
@@ -94,10 +95,10 @@ public:
     float                   touchY;
     
     int                     _whatNrAmI;
+    
+    bool                    _bluetoothActive;
 
     
-    
-    BOOL                    setPreferredInput;
     
 
 };

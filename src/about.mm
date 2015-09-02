@@ -27,11 +27,11 @@ void About::setup() {
     
     _distanceToButton   = ofGetWidth();
     _buttonRadius       = ofGetWidth() * 0.01;
-    _buttonX            = ofGetWidth() * 0.25;
+    _buttonX            = ofGetWidth() * 0.15;
     _buttonY            = ofGetHeight() * 0.5;
     _buttonValue        = _inputValue;
     
-    _arial.loadFont( "arial.ttf", 20 );
+    _arial.loadFont( "arial.ttf", 16 );
     
     
 }

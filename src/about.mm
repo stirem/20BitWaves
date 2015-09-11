@@ -23,15 +23,22 @@ void About::setup() {
         ofLog() << "unable to load mySettings.xml check data/ folder";
     }
     
-    _inputValue         = XML.getValue( "INPUTVALUE", 1 );
+    _audioInputValue                        = XML.getValue( "AUDIO_INPUT_VALUE", 1 );
+    _isDelayActive                          = XML.getValue( "DELAY_ACTIVE", 0 );
     
-    _distanceToButton   = ofGetWidth();
-    _buttonRadius       = ofGetWidth() * 0.01;
-    _buttonX            = ofGetWidth() * 0.15;
-    _buttonY            = ofGetHeight() * 0.5;
-    _buttonValue        = _inputValue;
+    for ( int i = 0; i < NUM_OF_BUTTONS; i++ ) {
+        _distanceToButton[i]                = ofGetWidth();
+        _buttonRadius[i]                    = ofGetWidth() * 0.01;
+        _buttonX[i]                         = ofGetWidth() * 0.15;
+    }
+    _buttonY[kButtonBluetooth]              = ofGetHeight() * 0.5;
+    _buttonY[kButtonDelay]                  = ofGetHeight() * 0.2;
+    _buttonValue[kButtonBluetooth]          = _audioInputValue;
+    _buttonValue[kButtonDelay]              = _isDelayActive;
     
     _arial.loadFont( "arial.ttf", 16 );
+    
+
     
     
 }
@@ -45,42 +52,99 @@ void About::update(  ) {
 
 void About::draw() {
 
+
+    ofSetColor( 255, 255, 255 );
+    
+
+    /// BLUETOOTH BUTTON ///
     // Button
     // Outer circle
-    ofSetColor( 255, 255, 255 );
     ofNoFill();
-    ofCircle( _buttonX, _buttonY, _buttonRadius );
+    ofCircle( _buttonX[kButtonBluetooth], _buttonY[kButtonBluetooth], _buttonRadius[kButtonBluetooth] );
     
     // Inner filled circle
-    if ( !_buttonValue ) { // Audio input value 0 means no mic input and bluetooth on. Audio input value 1 means mic input is on, and bluetooth is off.
+    if ( !_buttonValue[kButtonBluetooth] ) { // WARNING! Audio input value 0 means no mic input and bluetooth on. Audio input value 1 means mic input is on, and bluetooth is off. So it is the other way around. Value 0 means button is filled, and value 1 means button is not filled.
         ofFill();
-        ofCircle( _buttonX, _buttonY, _buttonRadius * 0.8 ); // Smaller size than outer circle
+        ofCircle( _buttonX[kButtonBluetooth], _buttonY[kButtonBluetooth], _buttonRadius[kButtonBluetooth] * 0.8 ); // Smaller size than outer circle
     }
-    
     // Text
-    _arial.drawString( "Enable bluetooth speaker.\n (Setting will take effect the next time you start the app.\n When bluetooth is enabled, recording through microphone will be disabled.)", _buttonX + _buttonRadius * 2, _buttonY );
+    _arial.drawString( "Enable bluetooth speaker.\n (Setting will take effect the next time you start the app.\n When bluetooth is enabled, recording through microphone will be disabled.)", _buttonX[kButtonBluetooth] + _buttonRadius[kButtonBluetooth] * 2, _buttonY[kButtonBluetooth] );
+
+    
+    
+    
+    // DELAY BUTTON
+    // Button
+    // Outer circle
+    ofNoFill();
+    ofCircle( _buttonX[kButtonDelay], _buttonY[kButtonDelay], _buttonRadius[kButtonDelay] );
+    
+    // Inner filled circle
+    if ( _buttonValue[kButtonDelay] ) {
+        ofFill();
+        ofCircle( _buttonX[kButtonDelay], _buttonY[kButtonDelay], _buttonRadius[kButtonDelay] * 0.8 ); // Smaller size than outer circle
+    }
+    // Text
+    _arial.drawString( "Enable delay effect", _buttonX[kButtonDelay] + _buttonRadius[kButtonDelay] * 2, _buttonY[kButtonDelay] );
+
+    
+    
+    
+    
+    ofLog() << "_audio input value: " << _audioInputValue;
+    ofLog() << "delay is active: " << _isDelayActive;
+    ofLog() << "bluetooth button value: " << _buttonValue[kButtonBluetooth];
+    ofLog() << "delay button value: " << _buttonValue[kButtonDelay];
 
 }
 
 
 void About::distanceToButton( float touchDownX, float touchDownY ) {
     
-    _distanceToButton = sqrt(    (touchDownX - _buttonX) * (touchDownX - _buttonX) + (touchDownY - _buttonY) * (touchDownY - _buttonY)     ) ;
+    // This function is run in ofApp::update()
     
-    if ( (_buttonRadius + (ofGetWidth() * 0.01) ) > _distanceToButton ) // Bigger area than button to make it easier to hit.
+    
+    
+    /// BLUETOOTH BUTTON ///
+    _distanceToButton[kButtonBluetooth] = sqrt(    (touchDownX - _buttonX[kButtonBluetooth]) * (touchDownX - _buttonX[kButtonBluetooth]) + (touchDownY - _buttonY[kButtonBluetooth]) * (touchDownY - _buttonY[kButtonBluetooth])     ) ;
+    
+    if ( (_buttonRadius[kButtonBluetooth] + (ofGetWidth() * 0.01) ) > _distanceToButton[kButtonBluetooth] ) // Bigger area than button to make it easier to hit.
     {
-        if ( !_buttonValue ) {
-            _buttonValue = true;
-            XML.setValue( "INPUTVALUE", _buttonValue );
+        if ( !_buttonValue[kButtonBluetooth] ) {
+            _buttonValue[kButtonBluetooth] = true;
+            XML.setValue( "AUDIO_INPUT_VALUE", _buttonValue[kButtonBluetooth] );
             XML.saveFile( ofxiOSGetDocumentsDirectory() + "mySettings.xml" );
             ofLog() << "mySettings.xml saved to app documents dolder ";
         } else {
-            _buttonValue = false;
-            XML.setValue( "INPUTVALUE", _buttonValue );
+            _buttonValue[kButtonBluetooth] = false;
+            XML.setValue( "AUDIO_INPUT_VALUE", _buttonValue[kButtonBluetooth] );
             XML.saveFile( ofxiOSGetDocumentsDirectory() + "mySettings.xml" );
             ofLog() << "mySettings.xml saved to app documents dolder ";
         }
     }
+    
+    
+    
+    /// DELAY BUTTON ///
+    _distanceToButton[kButtonDelay] = sqrt(    (touchDownX - _buttonX[kButtonDelay]) * (touchDownX - _buttonX[kButtonDelay]) + (touchDownY - _buttonY[kButtonDelay]) * (touchDownY - _buttonY[kButtonDelay])     ) ;
+    
+    if ( (_buttonRadius[kButtonDelay] + (ofGetWidth() * 0.01) ) > _distanceToButton[kButtonDelay] ) // Bigger area than button to make it easier to hit.
+    {
+        if ( !_buttonValue[kButtonDelay] ) {
+            _buttonValue[kButtonDelay] = true;
+            _isDelayActive = true;
+            XML.setValue( "DELAY_ACTIVE", _buttonValue[kButtonDelay] );
+            XML.saveFile( ofxiOSGetDocumentsDirectory() + "mySettings.xml" );
+            ofLog() << "mySettings.xml saved to app documents dolder ";
+        } else {
+            _buttonValue[kButtonDelay] = false;
+            _isDelayActive = false;
+            XML.setValue( "DELAY_ACTIVE", _buttonValue[kButtonDelay] );
+            XML.saveFile( ofxiOSGetDocumentsDirectory() + "mySettings.xml" );
+            ofLog() << "mySettings.xml saved to app documents dolder ";
+        }
+    }
+    
     
 }
 

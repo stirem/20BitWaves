@@ -6,7 +6,7 @@ class RecSpectrum
 {
 public:
     
-    RecSpectrum( float meter, int recSpectrumPosXinc );
+    RecSpectrum( float meter, float recSpectrumPosXinc );
 
     void Draw();
     

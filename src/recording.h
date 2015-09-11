@@ -13,7 +13,6 @@
 #import <AVFoundation/AVFoundation.h>
 //#import <AVFoundation/AVAudioSession.h>
 
-#include "recParticles.h"
 #include "recSpectrum.h"
 
 
@@ -23,25 +22,36 @@ public:
     
     Recording();
     
-    void setup( int whatNrAmI, bool audioInputValue );
-    void Update( float touchXDown, float touchYDown, bool touchIsDown, bool recModeOn );
-    void Draw();
-    void Exit();
+    void                    setup( int whatNrAmI, bool audioInputValue );
+    void                    Update( float touchXDown, float touchYDown, bool touchIsDown, bool recModeOn );
+    void                    Draw();
+    void                    Exit();
+    void                    isRecSampleZero( long recSampleLength );
+    void                    distanceToRecButton( float touchX, float touchY );
+    void                    distanceToDeleteButton( float touchX, float touchY, bool recModeOn );
     
-    void RecordPressed();
-    void StopPressed();
+    string                  myRecString;
+    bool                    readyToPlay;
+    bool                    saveFileIsDone;
+    bool                    loadFileIsDone; // is set in ofApp
+    bool                    muteAudioWhileRecording;
+    bool                    silenceWhenDeleting;
+    bool                    delButtonIsPressed;
     
-    void distanceToRecButton( float touchX, float touchY );
-    void distanceToDeleteButton( float touchX, float touchY, bool recModeOn );
     
-    void setupRecFile();
+private:
     
-    NSString *initRecFile();
+    void                    RecordPressed();
+    void                    StopPressed();
+    
+    void                    setupRecFile();
+    
+    NSString                *initRecFile();
     //void initRecFile( unsigned int whatRecSample );
     
-    bool isFileInDir();
+    bool                    isFileInDir();
     
-    void isRecSampleZero( long recSampleLength );
+    
     
     
     // -----------------------------
@@ -49,8 +59,6 @@ public:
     // Recording
     AVAudioRecorder         *audioRecorder; // Apples own audio recorder from AVFoundation
     bool                    isRecording;
-    string                  myRecString;
-    bool                    saveFileIsDone;
     float                   _distanceToRecButton;
     float                   recButtonPosX;
     float                   recButtonPosY;
@@ -59,11 +67,10 @@ public:
     int                     recButtonColor;
     bool                    willTakeRecording;
     float                   waitForSaveFileTime;
-    bool                    willWaitForSave;;
-    bool                    readyToPlay;
+    bool                    willWaitForSave;
+
     ofImage                 hold;
-    bool                    muteAudioWhileRecording;
-    bool                    loadFileIsDone; // is set in ofApp
+    
     
     
     // Spectrum
@@ -71,10 +78,10 @@ public:
     float                   mPeakPower;
     vector<RecSpectrum>     recSpectrum;
     float                   meter;
-    vector<RecParticles>    recParticles;
     float                   addParticlesTimer;
-    int                     spectrumPosXinc;
-
+    float                   spectrumPosXinc;
+    float                   spectrumPosXincValue;
+    
     
     // Delete button
     bool                    showDeleteButton;
@@ -82,13 +89,11 @@ public:
     float                   delButtonPosX;
     float                   delButtonPosY;
     float                   delButtonRadius;
-    bool                    delButtonIsPressed;
     float                   delButtonTime;
     bool                    willWaitForDelButton;
     ofImage                 trashcan;
     float                   eraseRecFileTimer;
     float                   eraseRectWidth;
-    bool                    silenceWhenDeleting;
     
     
     float                   touchX;
@@ -98,8 +103,6 @@ public:
     
     bool                    _bluetoothActive;
 
-    
-    
 
 };
 

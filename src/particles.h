@@ -11,19 +11,17 @@ public:
     void        Update( float soundSpeed, float volume, double sample );
     void        Draw();
 
+    float       alpha;
+    
+private:
     
     ofPoint     pos; // Position of soundwaves
     ofColor     color; // Color of soundwaves
     
     float       radius; // Radius of soundwaves
     float       circleColorBrightness; // Color brightness of particle circles
-    float       alpha;
     float       myLineWidth;
-
     float       mySoundSpeed;
-    
-private:
-    
     float       myScreenWidth;
     
 };

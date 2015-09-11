@@ -28,7 +28,6 @@
 		807CA1251A5D9C0B004DF79A /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 807CA1241A5D9C0B004DF79A /* Accelerate.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		80845BF21A5D8E200034AC8F /* particles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BEE1A5D8E200034AC8F /* particles.cpp */; };
 		80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BF01A5D8E200034AC8F /* touchObject.cpp */; };
-		808D0B641ABAE8BF0070ADCB /* recParticles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 808D0B621ABAE8BF0070ADCB /* recParticles.cpp */; };
 		808D0B671ABB08A90070ADCB /* recSpectrum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 808D0B651ABB08A90070ADCB /* recSpectrum.cpp */; };
 		809E75A61A94D02800EDBCC9 /* recording.mm in Sources */ = {isa = PBXBuildFile; fileRef = 809E75A41A94D02800EDBCC9 /* recording.mm */; };
 		80A880FE1A70010E00A7AD6D /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A880FC1A70010E00A7AD6D /* menu.cpp */; };
@@ -94,8 +93,6 @@
 		80845BEF1A5D8E200034AC8F /* particles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = particles.h; sourceTree = "<group>"; };
 		80845BF01A5D8E200034AC8F /* touchObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = touchObject.cpp; sourceTree = "<group>"; };
 		80845BF11A5D8E200034AC8F /* touchObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = touchObject.h; sourceTree = "<group>"; };
-		808D0B621ABAE8BF0070ADCB /* recParticles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = recParticles.cpp; sourceTree = "<group>"; };
-		808D0B631ABAE8BF0070ADCB /* recParticles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recParticles.h; sourceTree = "<group>"; };
 		808D0B651ABB08A90070ADCB /* recSpectrum.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = recSpectrum.cpp; sourceTree = "<group>"; };
 		808D0B661ABB08A90070ADCB /* recSpectrum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recSpectrum.h; sourceTree = "<group>"; };
 		809E75A11A94BEB900EDBCC9 /* Definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
@@ -327,8 +324,6 @@
 				80F46C751B7CB81800D20257 /* about.h */,
 				808D0B651ABB08A90070ADCB /* recSpectrum.cpp */,
 				808D0B661ABB08A90070ADCB /* recSpectrum.h */,
-				808D0B621ABAE8BF0070ADCB /* recParticles.cpp */,
-				808D0B631ABAE8BF0070ADCB /* recParticles.h */,
 				E4D8936B11527B74007E1F53 /* main.mm */,
 				809E75A11A94BEB900EDBCC9 /* Definitions.h */,
 				80845BEE1A5D8E200034AC8F /* particles.cpp */,
@@ -470,7 +465,6 @@
 				804E7EAD1B85D62000736D2D /* tinyxmlparser.cpp in Sources */,
 				80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */,
 				804E7EAC1B85D62000736D2D /* tinyxmlerror.cpp in Sources */,
-				808D0B641ABAE8BF0070ADCB /* recParticles.cpp in Sources */,
 				804E7EAB1B85D62000736D2D /* tinyxml.cpp in Sources */,
 				22F21CE3B902225374BA1CA2 /* maximilian.cpp in Sources */,
 				9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */,

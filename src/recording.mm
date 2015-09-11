@@ -61,6 +61,7 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     meter                           = 0;
     addParticlesTimer               = 0;
     spectrumPosXinc                 = 0;
+    spectrumPosXincValue            = ofGetWidth() * 0.001;
     
     delButtonIsPressed              = false;
     
@@ -131,18 +132,21 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
     if ( willTakeRecording ) {
         if ( recButtonRadius > _distanceToRecButton ) {
             if ( !_bluetoothActive ) {
-                recButtonIsPressed = 1;
+                recButtonIsPressed = true;
             }
         }
         
-        // Touch Up
-        if ( !touchIsDown ) {
-            recButtonIsPressed = 0;
+
+        // Rec stoppes when touch is lifted or spectrum wave reaches end of screen
+        if ( !touchIsDown || spectrumPosXinc > ofGetWidth() )
+        {
+            recButtonIsPressed = false;
             
             if ( isRecording ) {
                 StopPressed();
             }
         }
+        
         
         if ( recButtonIsPressed ) {
             RecordPressed();
@@ -197,7 +201,7 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
     if ( isRecording ) {
         addParticlesTimer += ofGetLastFrameTime();
         if ( addParticlesTimer >= 0.01 ) {
-            spectrumPosXinc++;
+            spectrumPosXinc = spectrumPosXinc + spectrumPosXincValue;
             recSpectrum.push_back( RecSpectrum( meter, spectrumPosXinc ) );
             addParticlesTimer = 0;
         }

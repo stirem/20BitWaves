@@ -5,6 +5,11 @@
 #include "ofxXmlSettings.h"
 #include "ofxiOSExtras.h"
 
+#define NUM_OF_BUTTONS 2
+#define kButtonBluetooth 0
+#define kButtonDelay 1
+
+
 
 class About
 {
@@ -18,16 +23,17 @@ public:
     
     void                    distanceToButton( float touchDownX, float touchDownY );
     
-    bool                    _inputValue;
+    bool                    _audioInputValue;
+    bool                    _isDelayActive;
     
 private:
     
     ofxXmlSettings          XML;
-    float                   _distanceToButton;
-    float                   _buttonRadius;
-    float                   _buttonX;
-    float                   _buttonY;
-    bool                    _buttonValue;
+    float                   _distanceToButton[NUM_OF_BUTTONS];
+    float                   _buttonRadius[NUM_OF_BUTTONS];
+    float                   _buttonX[NUM_OF_BUTTONS];
+    float                   _buttonY[NUM_OF_BUTTONS];
+    bool                    _buttonValue[NUM_OF_BUTTONS];
 
     
     ofTrueTypeFont          _arial;

@@ -43,11 +43,12 @@ void ofApp::setup()
     panning                 = 0.5;
     volume                  = 0.0;
     sample                  = 0.0;
+    _filterLeftRight        = 0.0;
     
 
     ///< openFrameworks sound stream
     //ofSoundStreamSetup( 2, 1, this, sampleRate, initialBufferSize, 4 );
-    soundStream.setup( this, 2, about._inputValue, sampleRate, initialBufferSize, 4 );
+    soundStream.setup( this, 2, about._audioInputValue, sampleRate, initialBufferSize, 4 );
     
     
     
@@ -61,7 +62,7 @@ void ofApp::setup()
     ///// R E C O R D I N G /////
     // Order here is important to check if rec file has content. If no content, rec button will be shown.
     for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
-        recording[i].setup( i, about._inputValue );
+        recording[i].setup( i, about._audioInputValue );
         recSample[i].load( recording[i].myRecString );
         recording[i].isRecSampleZero( recSample[i].length );
     }
@@ -237,7 +238,6 @@ void ofApp::update()
     if ( menu.aboutBit20On ) {
         about.update();
     }
-    
 
     
 }
@@ -307,6 +307,8 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
 	ofxMaxiMix channel1;
 	//double sample;
 	double stereomix[2];
+    double myOutput;
+
 	
 
     
@@ -341,74 +343,33 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         
         
         
+        
+        
+        // Delay line with feedback ( double input, int size, double feedback ) size = delay time
+        if ( about._isDelayActive ) {
+            myOutput = myDelay.dl( sample, _filterLeftRight, 0.8 );
+        } else {
+            myOutput = sample;
+        }
+     
+        
             
         // Stereo panning
-        channel1.stereo( sample, stereomix, panning );
-        
+        channel1.stereo( myOutput, stereomix, panning );
+
         
         // Process FFT Spectrum
-        if ( myFFT.process( sample ) )
+        if ( myFFT.process( myOutput ) )
         {
             myFFT.magsToDB();
             //myFFTOctAna.calculate( myFFT.magnitudes );
         }
-        
+
         
         output[i*nChannels    ] = stereomix[0] * volume;
         output[i*nChannels + 1] = stereomix[1] * volume;
         
     }
-    
-    /*for ( int i = 0; i < bufferSize; i++ )
-    {
-        if ( recording.readyToPlay )
-        {
-
-            if ( menu.recModeOn[0] )
-            {
-                if ( !recording.silenceWhenDeleting )
-                {
-                    if ( !recording.muteAudioWhileRecording )
-                    {
-                        if ( recording.loadFileIsDone )
-                        {
-                            if ( triggerRecSamplePlay ) {
-                                sample = recSample.playOnce( soundSpeed );
-                            }
-                        }
-                    }
-                    else
-                    {
-                        sample = 0.;
-                    }
-                }
-            }
-            
-            else
-            {
-                if ( triggerFileSamplePlay ) {
-                    sample = fileSample[menu.whatSample].playOnce( soundSpeed );
-                }
-            }
-            
-            // Stereo panning
-            channel1.stereo( sample, stereomix, panning );
-            
-            
-            // Process FFT Spectrum
-            if ( myFFT.process( sample ) )
-            {
-                myFFT.magsToDB();
-                //myFFTOctAna.calculate( myFFT.magnitudes );
-            }
-            
-            
-            output[i*nChannels    ] = stereomix[0] * volume;
-            output[i*nChannels + 1] = stereomix[1] * volume;
-        }
-    }*/
-    
-    
     
     
     ///< Change sound speed
@@ -417,17 +378,22 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         
         if ( touchPosY > ofGetHeight() / 2 )
         {
-            soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, ofGetHeight(), 1.0, 0.1, true);
+            soundSpeed = ofMap( touchPosY, ofGetHeight() / 2, ofGetHeight(), 1.0, 0.1, true );
         }
         else if ( touchPosY < ofGetHeight() / 2 )
         {
-            soundSpeed = ofMap(touchPosY, ofGetHeight() / 2, 0, 1.0, 1.5, true);
+            soundSpeed = ofMap( touchPosY, ofGetHeight() / 2, 0, 1.0, 1.5, true );
         }
     }
     
     
     ///< Change sound panning
-    panning = ofMap(touchPosX, 0, ofGetWidth(), 0.0, 1.0, true);
+    panning = ofMap( touchPosX, 0, ofGetWidth(), 0.0, 1.0, true );
+    
+    if ( about._isDelayActive ) {
+        _filterLeftRight = ofMap( touchPosX, 0, ofGetWidth(), 1400, 14000, true );
+    }
+    
     
     
     ///< Fade out volume when finger is lifted
@@ -445,7 +411,6 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
     {
         triggerFileSamplePlay = false;
         triggerRecSamplePlay = false;
-        //triggerPlay = false;
         fingerIsLifted = false;
     }
 }
@@ -463,31 +428,23 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     ///< Update position of particles when touch is pressed
     touchPosX = touch.x;
     touchPosY = touch.y;
-    
-    
-    ///< Set position of samples to 0 when finger is pressed
- 
-    fileSample[ menu.whatSample ].setPosition( 0. );
-    recSample[ menu.whatRecSample ].setPosition( 0. );
-    
-    
 
     // Used to decrease volume when finger is lifted
     fingerIsLifted = false;
-    
     
     // Used to check distance from finger to button. If finger is inside button: change sample.
     menu.distanceToButton( touch.x, touch.y );
     
     // Audio input value button (bluetooth)
-    about.distanceToButton( touch.x, touch.y );
+    if ( menu.aboutBit20On ) {
+        about.distanceToButton( touch.x, touch.y );
+    }
     
     // Check if delete button is pressed
     recording[ menu.whatRecSample ].distanceToDeleteButton( touch.x, touch.y, menu.recModeOn );
     
     // Rec button
     recording[ menu.whatRecSample ].distanceToRecButton( touch.x, touch.y );
-    
     
     ///< Detect if finger is inside menu-button or del button
     if ( menu.buttonIsPressed )
@@ -500,9 +457,12 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     }
     else
     {
+        // Set position of samples to 0 when finger is pressed
+        fileSample[ menu.whatSample ].setPosition( 0. );
+        recSample[ menu.whatRecSample ].setPosition( 0. );
+        
         triggerFileSamplePlay = true;
         triggerRecSamplePlay = true;
-        //triggerPlay = true;
         volume = 1.0;
         // Set position of touchobject when touch is moved
         touchobject.Position( touch.x, touch.y );
@@ -524,6 +484,7 @@ void ofApp::touchMoved( ofTouchEventArgs & touch )
     touchPosX = touch.x;
     touchPosY = touch.y;
     
+
 }
 
 //--------------------------------------------------------------
@@ -540,6 +501,7 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     recording[ menu.whatRecSample ].silenceWhenDeleting = false;
 
     touchIsDown = false;
+    
 
 }
 

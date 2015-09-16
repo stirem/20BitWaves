@@ -238,6 +238,9 @@ void ofApp::update()
     if ( menu.aboutBit20On ) {
         about.update();
     }
+    
+    
+
 
     
 }
@@ -396,12 +399,24 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
     
     
     
-    ///< Fade out volume when finger is lifted
-    if ( fingerIsLifted )
+    ///< Fade out volume when finger is lifted or menu is pressed
+    if ( fingerIsLifted  )
     {
         if ( volume >= 0.0 )
         {
             volume = volume - 0.005;
+        }
+    } else if ( menu.buttonIsPressed ) {
+        if ( volume >= 0.0 )
+        {
+            volume = volume - 0.005;
+        }
+    }
+    
+    if ( menu.buttonIsPressed ) {
+        if ( volume >= 0.0 )
+        {
+            volume = volume - 0.05;
         }
     }
     
@@ -449,14 +464,15 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     ///< Detect if finger is inside menu-button or del button
     if ( menu.buttonIsPressed )
     {
-        volume = 0.0;
+        //volume = 0.0;
     }
     else if ( menu.recModeOn[ menu.whatRecSample ] && recording[ menu.whatRecSample ].delButtonIsPressed )
     {
         volume = 0.0;
     }
-    else
-    {
+    
+    if ( !menu.buttonIsPressed ) {
+    
         // Set position of samples to 0 when finger is pressed
         fileSample[ menu.whatSample ].setPosition( 0. );
         recSample[ menu.whatRecSample ].setPosition( 0. );
@@ -467,6 +483,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
         // Set position of touchobject when touch is moved
         touchobject.Position( touch.x, touch.y );
     }
+
     
     touchIsDown = true;
 }

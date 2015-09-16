@@ -32,6 +32,7 @@ private:
     void            bounceButtonX( float t, float b, float c, float d );
     
     float           _distanceToButton;
+    float           _buttonPressArea;
     float           buttonRadius;
     float           buttonPressedTimer;
     unsigned int    whatMenuNum;

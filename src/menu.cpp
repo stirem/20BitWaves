@@ -14,7 +14,7 @@ void menu::setup()
     buttonPressedTimer          = 0;
     whatSample                  = 1;
     whatRecSample               = 0;
-    whatMenuNum                 = 3;
+    whatMenuNum                 = 4;
     
     /*buttonRadius              = ofGetScreenHeight() * 0.05;
     buttonPosX                  = ofGetScreenWidth() * 0.5;
@@ -33,12 +33,17 @@ void menu::setup()
     bounceDurationX             = 30;
     doBounceButtonX             = false;
     for ( int i = 0; i < NUM_OF_MENU_POSITIONS; i++) {
-        menuXpositions[i] = ( ofGetWidth() * (BUTTON_WIDTH * 0.5) ) * 1.5 + ( (ofGetWidth() * BUTTON_WIDTH) * i );
+        menuXpositions[i] = ( ofGetWidth() * (BUTTON_WIDTH * 0.5) ) * 2.0 + ( (ofGetWidth() * BUTTON_WIDTH) * i );
     }
 
-    buttonHidePosY              = ofGetHeight() + ( buttonRadius * 0.5 );
-    buttonActivePosY            = ofGetHeight() * 0.95;
+    
+    slideBallImageWidth         = ofGetWidth() * 0.08;
+    slideBallImageHeight        = ofGetWidth() * 0.076; // Obs! Using ofGetWidth() to get same proportions on iphone 4s and 5s (dirrerent screen width)
+    buttonHidePosY              = ofGetHeight() + ( slideBallImageHeight * 0.2 );
+    //buttonActivePosY            = ofGetHeight() * 0.95;
+    buttonActivePosY            = ofGetHeight() - ( slideBallImageHeight * 0.5 );
     buttonPosY                  = buttonHidePosY;
+    _buttonPressArea            = slideBallImageHeight;
     bounceTimeY                 = 0;
     bounceBeginningY            = buttonHidePosY;
     bounceChangeY               = buttonActivePosY - buttonHidePosY;
@@ -48,8 +53,6 @@ void menu::setup()
     
     
     pictogramsAndNumsPosY       = ofGetHeight() * 0.8;
-    slideBallImageWidth         = ofGetWidth() * 0.12;
-    slideBallImageHeight        = ofGetWidth() * 0.076; // Obs! Using ofGetWidth() to get same proportions on iphone 4s and 5s (dirrerent screen width)
     
     pictogramNumColor           = 100;
     
@@ -195,10 +198,12 @@ int menu::update( float touchX, bool touchIsDown )
 void menu::distanceToButton( float touchDownX, float touchDownY )
 {
     // Calculate if finger is inside button when touch is down. Using "buttonActive.." to make it easier to hit the button (since part of it is hidden below screen when in hide mode).
-    _distanceToButton = sqrt(    (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonActivePosY) * (touchDownY - buttonActivePosY)     ) ;
-
+    //_distanceToButton = sqrt(    (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonActivePosY) * (touchDownY - buttonActivePosY)     ) ;
+    _distanceToButton = sqrt(    (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonHidePosY) * (touchDownY - buttonHidePosY)     ) ;
+    
     // If finger is inside button when touch is down, buttonIsPress to true.
-    if ( (buttonRadius + (ofGetScreenWidth() * 0.01) ) > _distanceToButton ) // Bigger area than button to make it easier to hit.
+    //if ( (buttonRadius + (ofGetScreenWidth() * 0.1) ) > _distanceToButton ) // Bigger area than button to make it easier to hit.
+    if ( _buttonPressArea > _distanceToButton )
     {
         buttonIsPressed = true; // This is set to false in ofApp::touchUp
     }
@@ -263,6 +268,7 @@ void menu::draw( int howManySamples )
             }
             ofSetColor( pictogramNumColor );
             pictogramNum[i].setAnchorPercent( 0.5, 0.5 );
+            //pictogramNum[i].draw( ( (ofGetWidth() * SOUND_NUM_INDENT ) + ( ( ofGetWidth() * BUTTON_WIDTH ) ) * 2 + ( ( ofGetWidth() * BUTTON_WIDTH ) * i ) ), ( pictogramsAndNumsPosY ), ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
             pictogramNum[i].draw( ( (ofGetWidth() * SOUND_NUM_INDENT ) + ( ( ofGetWidth() * BUTTON_WIDTH ) ) * 2 + ( ( ofGetWidth() * BUTTON_WIDTH ) * i ) ), ( pictogramsAndNumsPosY ), ofGetWidth() * 0.05, ofGetWidth() * 0.05 );
             //fontLarge.drawString( ofToString( i ), ( (ofGetWidth() * SOUND_NUM_INDENT + 30) + ( (ofGetWidth() * BUTTON_WIDTH) * i) ), ( pictogramsAndNumsPosY ) ); // +30 to compensate for Font origin X.
         }

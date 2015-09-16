@@ -87,14 +87,6 @@ void About::draw() {
     // Text
     _arial.drawString( "Enable delay effect", _buttonX[kButtonDelay] + _buttonRadius[kButtonDelay] * 2, _buttonY[kButtonDelay] );
 
-    
-    
-    
-    
-    ofLog() << "_audio input value: " << _audioInputValue;
-    ofLog() << "delay is active: " << _isDelayActive;
-    ofLog() << "bluetooth button value: " << _buttonValue[kButtonBluetooth];
-    ofLog() << "delay button value: " << _buttonValue[kButtonDelay];
 
 }
 

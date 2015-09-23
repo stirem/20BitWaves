@@ -311,6 +311,11 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
 	//double sample;
 	double stereomix[2];
     double myOutput;
+    double myDelayOutput;
+    //double myDistortionOutput;
+    //double myFlangOutput;
+    //double myChorusOutput;
+    //double myNormalizedOutput;
 
 	
 
@@ -348,9 +353,28 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         
         
         
-        // Delay line with feedback ( double input, int size, double feedback ) size = delay time
+        
         if ( about._isDelayActive ) {
-            myOutput = myDelay.dl( sample, _filterLeftRight, 0.8 );
+            //myOutput = myDelay.dl( sample, _filterLeftRight, 0.8 );
+       
+            // Flanger: input, delay, feedback, speed, depth
+            //myFlangOutput = myFlanger.flange( sample, 14000, 0.7, 0.5, 0.8 );
+            
+            //myDistortionOutput = myDistortion.fastAtanDist( sample, _effectLeftRight );
+            
+            // Delay line with feedback ( double input, int size, double feedback ) size = delay time
+
+            
+            // Chorus: input, delay, feedback, speed, depth
+            //myChorusOutput = myChorus.chorus( sample, _filterLeftRight, 0.1, 0.5, 0.8 );
+            
+            //myOutput = myDelayOutput;
+            //myOutput = myDistortion.atanDist( sample, 50 );
+            
+            myDelayOutput = myDelay.dl( sample, _filterLeftRight, 0.8 );
+            myOutput = myDelayOutput;
+        
+            
         } else {
             myOutput = sample;
         }
@@ -391,7 +415,8 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
     
     
     ///< Change sound panning
-    panning = ofMap( touchPosX, 0, ofGetWidth(), 0.0, 1.0, true );
+    //panning = ofMap( touchPosX, 0, ofGetWidth(), 0.0, 1.0, true );
+    panning = 0.5;
     
     if ( about._isDelayActive ) {
         _filterLeftRight = ofMap( touchPosX, 0, ofGetWidth(), 1400, 14000, true );

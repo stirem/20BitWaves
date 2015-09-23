@@ -36,7 +36,7 @@ void About::setup() {
     _buttonValue[kButtonBluetooth]          = _audioInputValue;
     _buttonValue[kButtonDelay]              = _isDelayActive;
     
-    _arial.loadFont( "arial.ttf", 16 );
+    _arial.loadFont( "Fonts/arial.ttf", 16 );
     
 
     

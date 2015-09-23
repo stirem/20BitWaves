@@ -294,7 +294,7 @@ void Recording::Draw() {
         //ofNoFill();
         //ofCircle( delButtonPosX, delButtonPosY, delButtonRadius );
         trashcan.setAnchorPercent( 0.5, 0.5 );
-        trashcan.draw( delButtonPosX, delButtonPosY, ofGetWidth() * 0.03, ofGetHeight() * 0.05 );
+        trashcan.draw( delButtonPosX, delButtonPosY, ofGetWidth() * 0.03, ofGetWidth() * 0.035 );
         //ofSetColor( 255, 255, 255, 20 );
         //hold.setAnchorPercent( 0.5, 0.5 );
         //hold.draw( delButtonPosX, delButtonPosY + ( trashcan.getHeight() * 0.1 ), ofGetWidth() * 0.02, ofGetHeight() * 0.008 );

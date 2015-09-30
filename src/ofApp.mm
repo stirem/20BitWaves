@@ -184,7 +184,7 @@ void ofApp::update()
     
     
     ///> Move Menu Button with finger
-    menu.update( touchPosX, touchIsDown );
+    menu.update( );
     
     
     ///< Remove soundwave when alpha is 0
@@ -192,7 +192,7 @@ void ofApp::update()
     
     
     ///< Add particles
-    if ( !menu.buttonIsPressed && recording[ menu.whatRecSample ].readyToPlay ) {// Do not add waves when pushing change-song-button.
+    if ( !menu._isInMenu && recording[ menu._whatRecSample ].readyToPlay ) {// Do not add waves when pushing change-song-button.
         
         if ( touchobject.spectrumVolume > 1200 && volume > 0.0 ) {
             
@@ -208,34 +208,35 @@ void ofApp::update()
 
     ///// R E C O R D I N G /////
 
-    if ( menu.recModeOn[ menu.whatRecSample ] )
+    if ( menu._whatMode == kModeRec )
+    //if ( menu.recModeOn[ menu.whatRecSample ] )
     {
-        recording[ menu.whatRecSample ].Update( touchPosX, touchPosY, touchIsDown, menu.recModeOn );
+        recording[ menu._whatRecSample ].Update( touchPosX, touchPosY, touchIsDown );
     }
     
     // Load rec sample after recording (loadFileIsDone flag to prevent rec sample from being played before it is loaded)
-    if ( recording[ menu.whatRecSample ].saveFileIsDone )
+    if ( recording[ menu._whatRecSample ].saveFileIsDone )
     {
-        recSample[ menu.whatRecSample ].load( recording[ menu.whatRecSample ].myRecString );
-        recording[ menu.whatRecSample ].loadFileIsDone = true;
-        recording[ menu.whatRecSample ].saveFileIsDone = false;
+        recSample[ menu._whatRecSample ].load( recording[ menu._whatRecSample ].myRecString );
+        recording[ menu._whatRecSample ].loadFileIsDone = true;
+        recording[ menu._whatRecSample ].saveFileIsDone = false;
     }
     
     // Prevent rec sample from playing instantly after finger is lifted from rec button.
-    if ( recording[ menu.whatRecSample ].loadFileIsDone && touchIsDown ) {
-        recording[ menu.whatRecSample ].muteAudioWhileRecording = false;
+    if ( recording[ menu._whatRecSample ].loadFileIsDone && touchIsDown ) {
+        recording[ menu._whatRecSample ].muteAudioWhileRecording = false;
     }
     
     // Set ready to play if not in rec mode
-    if ( !menu.recModeOn[ menu.whatRecSample ] )
+    /*if ( !menu.recModeOn[ menu.whatRecSample ] )
     {
-        recording[ menu.whatRecSample ].readyToPlay = true;
-    }
+        recording[ menu._whatRecSample ].readyToPlay = true;
+    }*/
 
     
     
     // About Bit20
-    if ( menu.aboutBit20On ) {
+    if ( menu._whatMode == kModeAbout ) {
         about.update();
     }
     
@@ -250,7 +251,7 @@ void ofApp::draw()
 {
     
     // Draw menu-button
-    menu.draw( howManySamples );
+    menu.draw( );
     
     ///< Draw touchobject
     touchobject.Draw();
@@ -262,16 +263,19 @@ void ofApp::draw()
     }
 
     ///// R E C O R D I N G /////
-
-    if ( menu.recModeOn[ menu.whatRecSample ] ) {
-        recording[ menu.whatRecSample ].Draw();
+    if ( !menu._isInMenu ) {
+        if ( menu._whatMode == kModeRec ) {
+        //if ( menu.recModeOn[ menu.whatRecSample ] ) {
+            recording[ menu._whatRecSample ].Draw();
+        }
     }
     
     
     // About Bit20
-    if ( menu.aboutBit20On ) {
+    if ( menu._whatMode == kModeAbout ) {
         about.draw();
     }
+
 
     
     /*ofSetColor( 255, 255, 255 );
@@ -326,13 +330,13 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
     {
         
 
-        if ( menu.recModeOn[ menu.whatRecSample ] )
+        if ( menu._whatMode == kModeRec )
         {
-            if ( recording[ menu.whatRecSample ].readyToPlay ) {
-                if ( recording[ menu.whatRecSample ].loadFileIsDone ) {
-                    if ( !recording[ menu.whatRecSample ].silenceWhenDeleting && !recording[ menu.whatRecSample ].muteAudioWhileRecording ) {
+            if ( recording[ menu._whatRecSample ].readyToPlay ) {
+                if ( recording[ menu._whatRecSample ].loadFileIsDone ) {
+                    if ( !recording[ menu._whatRecSample ].silenceWhenDeleting && !recording[ menu._whatRecSample ].muteAudioWhileRecording ) {
                         if ( triggerRecSamplePlay ) {
-                            sample = recSample[ menu.whatRecSample ].playOnce( soundSpeed );
+                            sample = recSample[ menu._whatRecSample ].playOnce( soundSpeed );
                         } else {
                             sample = 0.;
                         }
@@ -340,10 +344,11 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
                 }
             }
         }
-        else if ( menu.fileSamplesModeOn )
+        else if ( menu._whatMode == kModeFileSample )
+        //else if ( menu.fileSamplesModeOn )
         {
             if ( triggerFileSamplePlay ) {
-                sample = fileSample[ menu.whatSample ].playOnce( soundSpeed );
+                sample = fileSample[ menu._whatFileSample ].playOnce( soundSpeed );
             } else {
                 sample = 0.;
             }
@@ -400,7 +405,7 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
     
     
     ///< Change sound speed
-    if ( !menu.buttonIsPressed )
+    if ( !menu._isInMenu )
     {
         
         if ( touchPosY > ofGetHeight() / 2 )
@@ -431,14 +436,14 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         {
             volume = volume - 0.005;
         }
-    } else if ( menu.buttonIsPressed ) {
+    } else if ( menu._isInMenu ) {
         if ( volume >= 0.0 )
         {
             volume = volume - 0.005;
         }
     }
     
-    if ( menu.buttonIsPressed ) {
+    if ( menu._isInMenu ) {
         if ( volume >= 0.0 )
         {
             volume = volume - 0.05;
@@ -472,38 +477,37 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     // Used to decrease volume when finger is lifted
     fingerIsLifted = false;
     
-    // Used to check distance from finger to button. If finger is inside button: change sample.
-    menu.distanceToButton( touch.x, touch.y );
-    
-    // Used to check distance from finger to tiny button (main menu).
-    menu.distanceToTinyButton( touch.x, touch.y );
-    
-    // Audio input value button (bluetooth)
-    if ( menu.aboutBit20On ) {
+    // Audio input value button (bluetooth) and delay on/off button
+    if ( menu._whatMode == kModeAbout ) {
         about.distanceToButton( touch.x, touch.y );
     }
     
-    // Check if delete button is pressed
-    recording[ menu.whatRecSample ].distanceToDeleteButton( touch.x, touch.y, menu.recModeOn );
+    // Tiny button
+    menu.distanceToTinyButton( touch.x, touch.y );
+    // Pictogram buttons
+    if ( menu._isInMenu ) {
+        menu.distanceToMenuButtons( touch.x, touch.y );
+    }
     
-    // Rec button
-    recording[ menu.whatRecSample ].distanceToRecButton( touch.x, touch.y );
+
+    if ( !menu._isInMenu ) {
+        // Check if delete button is pressed
+        recording[ menu._whatRecSample ].distanceToDeleteButton( touch.x, touch.y );
+        // Rec button
+        recording[ menu._whatRecSample ].distanceToRecButton( touch.x, touch.y );
+    }
     
     ///< Detect if finger is inside menu-button or del button
-    if ( menu.buttonIsPressed )
-    {
-        //volume = 0.0;
-    }
-    else if ( menu.recModeOn[ menu.whatRecSample ] && recording[ menu.whatRecSample ].delButtonIsPressed )
+    if ( menu._whatMode == kModeRec && recording[ menu._whatRecSample ].delButtonIsPressed )
     {
         volume = 0.0;
     }
     
-    if ( !menu.buttonIsPressed && !menu._tinyButtonIsPressed ) {
+    if ( !menu._isInMenu ) {
     
         // Set position of samples to 0 when finger is pressed
-        fileSample[ menu.whatSample ].setPosition( 0. );
-        recSample[ menu.whatRecSample ].setPosition( 0. );
+        fileSample[ menu._whatFileSample ].setPosition( 0. );
+        recSample[ menu._whatRecSample ].setPosition( 0. );
         
         triggerFileSamplePlay = true;
         triggerRecSamplePlay = true;
@@ -520,7 +524,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
 void ofApp::touchMoved( ofTouchEventArgs & touch )
 {
     ///< Set position of touchobject when touch is moved
-    if ( !menu.buttonIsPressed )
+    if ( !menu._isInMenu )
     {
         touchobject.Position( touch.x, touch.y );
     }
@@ -538,12 +542,9 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     // Used to decrease volume when finger is lifted
     fingerIsLifted = true;
     
-    // Used to change sound sample
-    menu.buttonIsPressed = false;
+    recording[ menu._whatRecSample ].delButtonIsPressed = false;
     
-    recording[ menu.whatRecSample ].delButtonIsPressed = false;
-    
-    recording[ menu.whatRecSample ].silenceWhenDeleting = false;
+    recording[ menu._whatRecSample ].silenceWhenDeleting = false;
 
     touchIsDown = false;
     

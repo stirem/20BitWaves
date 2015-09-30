@@ -10,67 +10,41 @@
 class menu {
 public:
     
-    menu(); // Constructor
+    menu();
     
     void            setup();
-    int             update( float touchX, bool touchIsDown );
-    void            draw( int howManySamples );
-    void            distanceToButton( float touchDownX, float touchDownY );
-    void            distanceToTinyButton( float touchDownX, float touchDownY );
+    void            update( );
+    void            draw( );
+    void            distanceToTinyButton( float touchX, float touchY );
+    void            distanceToMenuButtons( float touchX, float touchY );
     
-
-    unsigned int    whatRecSample;
-    bool            recModeOn[NUM_OF_REC_MODES];
-    bool            aboutBit20On;
-    bool            buttonIsPressed;
-    bool            fileSamplesModeOn;
-    unsigned int    whatSample;
-    bool            _tinyButtonIsPressed;
+    bool            _isInMenu;
+    unsigned int    _whatRecSample;
+    unsigned int    _whatFileSample;
+    unsigned int    _whatMode;
     
     
 private:
     
-    void            bounceButtonY( float t, float b, float c, float d );
-    
-    float           _distanceToButton;
-    float           _buttonPressArea;
-    float           buttonRadius;
-    float           buttonPressedTimer;
-    unsigned int    whatMenuNum;
-    
-    float           buttonPosX;
-    float           bounceTimeX, bounceBeginningX, bounceChangeX, bounceDurationX;
-    bool            doBounceButtonX;
-    float           menuXpositions[NUM_OF_MENU_POSITIONS];
-    
-    float           buttonPosY;
-    float           bounceTimeY, bounceBeginningY, bounceChangeY, bounceDurationY;
-    bool            doBounceButtonY;
-    float           buttonHidePosY;
-    float           buttonActivePosY;
-    
-    float           nearestButton;
-    float           pictogramsAndNumsPosY;
-    float           slideBallImageWidth;
-    float           slideBallImageHeight;
-    int             pictogramNumColor;
-    int             recMicPictogramColor[NUM_OF_REC_MODES];
-    int             bit20pictogramColor;
-    float           rectOverPictogramsOpacity;
-    
-    //ofTrueTypeFont fontLarge;
-    
-    ofImage         recMicPictogram[NUM_OF_REC_MODES];
-    ofImage         slideBallPictogram;
-    ofImage         pictogramNum[NUM_OF_HARDCODED_SOUNDS]; // + 1 because file names start on nr 1 and not 0.
-    ofImage         bit20pictogram;
-    
-    float           _distanceToTinyButton;
-    float           _tinyButtonRadius;
     float           _tinyButtonX;
     float           _tinyButtonY;
-
+    float           _tinyButtonRadius;
+    float           _distanceToTinyButton;
+    float           _distanceToMenuButtons[NUM_OF_MENU_PICTOGRAMS];
     
+    ofImage         _pictogramRecMic[NUM_OF_REC_MODES];
+    ofImage         _pictogramBit20;
+    ofImage         _pictogramNum[NUM_OF_HARDCODED_SOUNDS];
+    float           _pictogramsPosY;
+    float           _pictogramsPosX[NUM_OF_MENU_PICTOGRAMS];
+    float           _pictogramsRadius;
+    
+    float           _outOfMenuTimer;
+    bool            _startOutOfMenuTimer;
+    
+    
+    
+       
 
 };
 

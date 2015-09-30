@@ -30,8 +30,8 @@
 		80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BF01A5D8E200034AC8F /* touchObject.cpp */; };
 		808D0B671ABB08A90070ADCB /* recSpectrum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 808D0B651ABB08A90070ADCB /* recSpectrum.cpp */; };
 		809E75A61A94D02800EDBCC9 /* recording.mm in Sources */ = {isa = PBXBuildFile; fileRef = 809E75A41A94D02800EDBCC9 /* recording.mm */; };
-		80A880FE1A70010E00A7AD6D /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80A880FC1A70010E00A7AD6D /* menu.cpp */; };
 		80F46C761B7CB81800D20257 /* about.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80F46C741B7CB81800D20257 /* about.mm */; };
+		80F847961BBC1EA10011C30F /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80F847941BBC1EA10011C30F /* menu.cpp */; settings = {ASSET_TAGS = (); }; };
 		9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */; };
 		96084990AF216648B8B98E00 /* maxiFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A4EE0E35ED739A31CD0153E /* maxiFFT.cpp */; };
 		AF0580829426DC6BCA135A5C /* maxiGrains.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9D2FB19B70632A6F86622D94 /* maxiGrains.cpp */; };
@@ -98,12 +98,12 @@
 		809E75A11A94BEB900EDBCC9 /* Definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
 		809E75A41A94D02800EDBCC9 /* recording.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = recording.mm; sourceTree = "<group>"; };
 		809E75A51A94D02800EDBCC9 /* recording.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recording.h; sourceTree = "<group>"; };
-		80A880FC1A70010E00A7AD6D /* menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
-		80A880FD1A70010E00A7AD6D /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
 		80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = stb_vorbis.c; path = ../../../addons/ofxMaxim/libs/stb_vorbis.c; sourceTree = SOURCE_ROOT; };
 		80F46C741B7CB81800D20257 /* about.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = about.mm; sourceTree = "<group>"; };
 		80F46C751B7CB81800D20257 /* about.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = about.h; sourceTree = "<group>"; };
 		80F46C771B7CD9B800D20257 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		80F847941BBC1EA10011C30F /* menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
+		80F847951BBC1EA10011C30F /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
 		87D3A0051CCB2C0F0ECA139E /* maximilian.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = maximilian.cpp; path = ../../../addons/ofxMaxim/libs/maximilian.cpp; sourceTree = SOURCE_ROOT; };
 		9312F3864ED05FC3E847FF69 /* ofxMaxim.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = ofxMaxim.h; path = ../../../addons/ofxMaxim/src/ofxMaxim.h; sourceTree = SOURCE_ROOT; };
 		95C3AC11BE0AC7EC464D2A36 /* maximilian.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 30; name = maximilian.h; path = ../../../addons/ofxMaxim/libs/maximilian.h; sourceTree = SOURCE_ROOT; };
@@ -332,8 +332,8 @@
 				80845BF11A5D8E200034AC8F /* touchObject.h */,
 				809E75A41A94D02800EDBCC9 /* recording.mm */,
 				809E75A51A94D02800EDBCC9 /* recording.h */,
-				80A880FC1A70010E00A7AD6D /* menu.cpp */,
-				80A880FD1A70010E00A7AD6D /* menu.h */,
+				80F847941BBC1EA10011C30F /* menu.cpp */,
+				80F847951BBC1EA10011C30F /* menu.h */,
 				E4D8936D11527B74007E1F53 /* ofApp.mm */,
 				E4D8936C11527B74007E1F53 /* ofApp.h */,
 			);
@@ -451,7 +451,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80A880FE1A70010E00A7AD6D /* menu.cpp in Sources */,
 				E4D8936E11527B74007E1F53 /* main.mm in Sources */,
 				E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */,
 				0FCED26D40D46CF89A58E54C /* fft.cpp in Sources */,
@@ -469,6 +468,7 @@
 				22F21CE3B902225374BA1CA2 /* maximilian.cpp in Sources */,
 				9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */,
 				804E7EAE1B85D62000736D2D /* ofxXmlSettings.cpp in Sources */,
+				80F847961BBC1EA10011C30F /* menu.cpp in Sources */,
 				809E75A61A94D02800EDBCC9 /* recording.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -127,7 +127,7 @@ void Recording::isRecSampleZero( long recSampleLength ) {
     
 }
 
-void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recModeOn ) {
+void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
     
     if ( willTakeRecording ) {
         if ( recButtonRadius > _distanceToRecButton ) {
@@ -180,7 +180,8 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool recMo
     }
     
     // Do not make sound or visuals when rec button is on
-    if ( willTakeRecording && recModeOn )
+    //if ( willTakeRecording && recModeOn )
+    if ( willTakeRecording )
     {
         readyToPlay = false;
     }
@@ -243,7 +244,7 @@ void Recording::distanceToRecButton( float touchX, float touchY ) {
 }
 
 
-void Recording::distanceToDeleteButton( float touchX, float touchY, bool recModeOn ) {
+void Recording::distanceToDeleteButton( float touchX, float touchY ) {
     
     // Checked in ofApp::touchDown function.
     distanceToDelButton = sqrt(    (touchX - delButtonPosX) * (touchX - delButtonPosX) + (touchY - delButtonPosY) * (touchY - delButtonPosY)     ) ;

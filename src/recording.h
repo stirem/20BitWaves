@@ -23,12 +23,12 @@ public:
     Recording();
     
     void                    setup( int whatNrAmI, bool audioInputValue );
-    void                    Update( float touchXDown, float touchYDown, bool touchIsDown, bool recModeOn );
+    void                    Update( float touchXDown, float touchYDown, bool touchIsDown );
     void                    Draw();
     void                    Exit();
     void                    isRecSampleZero( long recSampleLength );
     void                    distanceToRecButton( float touchX, float touchY );
-    void                    distanceToDeleteButton( float touchX, float touchY, bool recModeOn );
+    void                    distanceToDeleteButton( float touchX, float touchY );
     
     string                  myRecString;
     bool                    readyToPlay;

@@ -16,3 +16,9 @@
 #define NUM_OF_REC_POSITIONS 3
 #define NUM_OF_POS_TO_THE_LEFT_FOR_FILESAMPLES 4
 #define NUM_OF_REC_MODES 3
+#define NUM_OF_MENU_PICTOGRAMS 11
+
+// Menu modes
+#define kModeAbout 1
+#define kModeRec 2
+#define kModeFileSample 3

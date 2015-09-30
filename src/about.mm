@@ -32,7 +32,7 @@ void About::setup() {
         _buttonX[i]                         = ofGetWidth() * 0.15;
     }
     _buttonY[kButtonBluetooth]              = ofGetHeight() * 0.5;
-    _buttonY[kButtonDelay]                  = ofGetHeight() * 0.2;
+    _buttonY[kButtonDelay]                  = ofGetHeight() * 0.7;
     _buttonValue[kButtonBluetooth]          = _audioInputValue;
     _buttonValue[kButtonDelay]              = _isDelayActive;
     

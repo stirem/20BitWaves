@@ -475,6 +475,9 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     // Used to check distance from finger to button. If finger is inside button: change sample.
     menu.distanceToButton( touch.x, touch.y );
     
+    // Used to check distance from finger to tiny button (main menu).
+    menu.distanceToTinyButton( touch.x, touch.y );
+    
     // Audio input value button (bluetooth)
     if ( menu.aboutBit20On ) {
         about.distanceToButton( touch.x, touch.y );
@@ -496,7 +499,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
         volume = 0.0;
     }
     
-    if ( !menu.buttonIsPressed ) {
+    if ( !menu.buttonIsPressed && !menu._tinyButtonIsPressed ) {
     
         // Set position of samples to 0 when finger is pressed
         fileSample[ menu.whatSample ].setPosition( 0. );

@@ -42,7 +42,8 @@ void menu::setup()
     buttonHidePosY              = ofGetHeight() + ( slideBallImageHeight * 0.2 );
     //buttonActivePosY            = ofGetHeight() * 0.95;
     buttonActivePosY            = ofGetHeight() - ( slideBallImageHeight * 0.5 );
-    buttonPosY                  = buttonHidePosY;
+    //buttonPosY                  = buttonHidePosY;
+    buttonPosY                  = buttonActivePosY;
     _buttonPressArea            = slideBallImageHeight;
     bounceTimeY                 = 0;
     bounceBeginningY            = buttonHidePosY;
@@ -78,11 +79,19 @@ void menu::setup()
         pictogramNum[i].loadImage( ofToDataPath( picFileNr ) );
     }
     
+    _distanceToTinyButton       = ofGetWidth();
+    _tinyButtonX                = ofGetWidth() * 0.015;
+    _tinyButtonY                = ofGetWidth() * 0.015;
+    _tinyButtonIsPressed        = false;
+    _tinyButtonRadius           = ofGetWidth() * 0.01;
+    
 }
 
 
 int menu::update( float touchX, bool touchIsDown )
 {
+    
+    ofLog() << "tiny is pressed: " << _tinyButtonIsPressed;
 
     // Get nearest button
     float buttonPos     = ofGetWidth() * ( BUTTON_INDENT + (BUTTON_WIDTH * 0.5) );
@@ -108,20 +117,20 @@ int menu::update( float touchX, bool touchIsDown )
         
         rectOverPictogramsOpacity = rectOverPictogramsOpacity - ( ofGetLastFrameTime() * 800 );
         
-        if ( buttonPressedTimer > 0.3 )
-        {
+        //if ( buttonPressedTimer > 0.3 )
+        //{
             buttonPosX = touchX;
             whatMenuNum = nearestButton;
-        }
+        //}
         
-        bounceButtonY( bounceTimeY, bounceBeginningY, bounceChangeY, bounceDurationY );
+        //bounceButtonY( bounceTimeY, bounceBeginningY, bounceChangeY, bounceDurationY );
     }
     else
     {
         buttonPosX = menuXpositions[ whatMenuNum ];
         
         doBounceButtonY = false;
-        buttonPosY = buttonHidePosY;
+        //buttonPosY = buttonHidePosY;
         bounceTimeY = 0;
         
         rectOverPictogramsOpacity = 255;
@@ -199,7 +208,7 @@ void menu::distanceToButton( float touchDownX, float touchDownY )
 {
     // Calculate if finger is inside button when touch is down. Using "buttonActive.." to make it easier to hit the button (since part of it is hidden below screen when in hide mode).
     //_distanceToButton = sqrt(    (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonActivePosY) * (touchDownY - buttonActivePosY)     ) ;
-    _distanceToButton = sqrt(    (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonHidePosY) * (touchDownY - buttonHidePosY)     ) ;
+    _distanceToButton = sqrt( (touchDownX - buttonPosX) * (touchDownX - buttonPosX) + (touchDownY - buttonHidePosY) * (touchDownY - buttonHidePosY) ) ;
     
     // If finger is inside button when touch is down, buttonIsPress to true.
     //if ( (buttonRadius + (ofGetScreenWidth() * 0.1) ) > _distanceToButton ) // Bigger area than button to make it easier to hit.
@@ -210,11 +219,34 @@ void menu::distanceToButton( float touchDownX, float touchDownY )
 
 }
 
+void menu::distanceToTinyButton( float touchDownX, float touchDownY ) {
+    
+    _distanceToTinyButton = sqrt( (touchDownX - _tinyButtonX) * (touchDownX - _tinyButtonX) + (touchDownY - _tinyButtonY) * (touchDownY - _tinyButtonY) ) ;
+    
+    if ( _tinyButtonRadius * 4 > _distanceToTinyButton ) {
+        if ( !_tinyButtonIsPressed ) {
+            _tinyButtonIsPressed = true;
+        } else {
+            _tinyButtonIsPressed = false;
+        }
+    }
+    
+}
+
 
 void menu::draw( int howManySamples )
 {
+    
+    // Tiny button
+    ofFill();
+    ofSetColor( 255, 255, 255 );
+    ofCircle( _tinyButtonX, _tinyButtonY, _tinyButtonRadius );
+    
+    
     // Bit20 pictogram
-    if ( buttonIsPressed ) {
+    //if ( buttonIsPressed ) {
+    if ( _tinyButtonIsPressed )
+    {
         if ( whatMenuNum == 0 ) {
             bit20pictogramColor = 255;
         } else {
@@ -227,9 +259,9 @@ void menu::draw( int howManySamples )
     
     
     // Rec mic pictogram
-    if ( buttonIsPressed )
+    //if ( buttonIsPressed )
+    if ( _tinyButtonIsPressed )
     {
-
         for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
             
             if ( whatMenuNum == 1 ) {
@@ -257,7 +289,8 @@ void menu::draw( int howManySamples )
     
     
     ///< What Sample number pictograms
-    if ( buttonIsPressed )
+    //if ( buttonIsPressed )
+    if ( _tinyButtonIsPressed )
     {
         for (int i = 0; i < howManySamples; i++)
         {
@@ -277,36 +310,32 @@ void menu::draw( int howManySamples )
 
     
     // Black rectangle over pictograms that fades out
-    ofSetColor( 0, 0, 0, rectOverPictogramsOpacity );
+    /*ofSetColor( 0, 0, 0, rectOverPictogramsOpacity );
     ofFill();
-    ofRect( 0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() * 0.5 );
+    ofRect( 0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() * 0.5 );*/
     
     
     
     ///< Button
-    if ( buttonIsPressed )
+    //if ( buttonIsPressed )
+    if ( _tinyButtonIsPressed )
     {
-    
         ofSetColor( 255, 255, 255, 255 );
        
-        
-        
         //ofNoFill();
         //ofCircle( buttonPosX, buttonActivePosY, buttonRadius );
         slideBallPictogram.setAnchorPercent( 0.5, 0.5 );
         slideBallPictogram.draw( buttonPosX, buttonPosY, slideBallImageWidth, slideBallImageHeight );
     }
-    else
+    /*else
     {
-      
         ofSetColor( 255, 255, 255, 60 );
 
-        
         //ofNoFill();
         //ofCircle( buttonPosX, buttonHidePosY, buttonRadius );
         slideBallPictogram.setAnchorPercent( 0.5, 0.5 );
         slideBallPictogram.draw( buttonPosX, buttonPosY, slideBallImageWidth, slideBallImageHeight );
-    }
+    }*/
     
     
     
@@ -370,28 +399,7 @@ void menu::bounceButtonY( float t, float b, float c, float d ) {
 }
 
 
-void menu::bounceButtonX( float t, float b, float c, float d ) {
-    
-    doBounceButtonX = true;
-    
-    // Elastic out
-    if ( t == 0 )
-    {
-        buttonPosX = b;
-    }
-    
-    if (( t /= d ) == 1 )
-    {
-        buttonPosX = b + c;
-    }
-    
-    float p = d * .3f;
-    float a = c;
-    float s = p / 4;
-    
-    buttonPosX = ( a * pow( 2, -10 * t) * sin( ( t * d - s) * ( 2 * PI ) / p ) + c + b );
-    
-}
+
 
 
 

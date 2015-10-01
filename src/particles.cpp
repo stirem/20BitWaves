@@ -31,6 +31,8 @@ void Particles::Update( float soundSpeed, float volume, double sample ) {
     } else {
         alpha = alpha - ( 150 * ofGetLastFrameTime() );
     }
+    
+    ofLog() << "particles alpha: " << alpha;
 }
 // --------------------------------------------------------
 

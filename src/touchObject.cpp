@@ -78,6 +78,8 @@ void Touchobject::Update( float *val, float volume )
         alpha = 255;
     }
     
+    ofLog() << "touch object alpha: " << alpha;
+    
 
 }
 // --------------------------------------------------------

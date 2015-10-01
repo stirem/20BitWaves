@@ -254,7 +254,9 @@ void ofApp::draw()
     menu.draw( );
     
     ///< Draw touchobject
-    touchobject.Draw();
+    if ( !menu._muteAudio ) {
+        touchobject.Draw();
+    }
     
     ///< Draw particles
     for( int i = 0; i < particles.size(); i++ )
@@ -458,6 +460,11 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         triggerRecSamplePlay = false;
         fingerIsLifted = false;
     }
+    
+    
+    if ( menu._muteAudio ) {
+        volume = 0.0;
+    }
 }
 
 
@@ -483,7 +490,9 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     }
     
     // Tiny button
-    menu.distanceToTinyButton( touch.x, touch.y );
+    if ( !menu._isInMenu ) {
+        menu.distanceToTinyButton( touch.x, touch.y );
+    }
     // Pictogram buttons
     if ( menu._isInMenu ) {
         menu.distanceToMenuButtons( touch.x, touch.y );

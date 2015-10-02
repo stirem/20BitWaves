@@ -107,12 +107,12 @@ private:
     ofxMaxiFFT      myFFT;
     //ofxMaxiFFTOctaveAnalyzer myFFTOctAna;
 
-    ofxMaxiFilter myFilter;
+    //ofxMaxiFilter myFilter;
     ofxMaxiDelayline myDelay;
-    maxiDistortion myDistortion;
-    maxiFlanger myFlanger;
-    maxiChorus myChorus;
-    maxiDyn myNormalize;
+    //maxiDistortion myDistortion;
+    //maxiFlanger myFlanger;
+    //maxiChorus myChorus;
+    //maxiDyn myNormalize;
     double _filterLeftRight;
 
 

@@ -14,7 +14,7 @@ public:
     Touchobject(); // Constructor
     
     void        Setup();
-    void        Update( float *val, float volume );
+    void        Update( float *val );
     void        Draw();
     float       ColorBrightness();
     float       SpectrumVolume();

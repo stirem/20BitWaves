@@ -16,18 +16,23 @@ void menu::setup()
     _whatRecSample              = 0;
     _whatFileSample             = 0;
     _whatMode                   = kModeFileSample;
-    _pictogramsPosY             = ofGetHeight() * 0.8;
+    _pictogramsOpenY            = ofGetHeight() * 0.8;
+    _pictogramsClosedY          = ofGetWidth() * 0.01;
+    _pictogramsClosedX          = ofGetWidth() * 0.01;
     _pictogramsRadius           = ofGetWidth() * 0.05;
     _outOfMenuTimer             = 0;
     _startOutOfMenuTimer        = false;
     _inToMenuTimer              = 0;
     _startInToMenuTimer         = false;
-    _tinyButtonPictogramRadius  = ofGetWidth() * 0.03;
+    _tinyButtonPictogramRadius  = _pictogramsRadius;
 
+    
+    initEaseOpenX();
+    initEaseOpenY();
 
     
     for ( int i = 0; i < NUM_OF_MENU_PICTOGRAMS; i++ ) {
-        _pictogramsPosX[i] = (ofGetWidth() * BUTTON_INDENT) * 2 + (ofGetWidth() * BUTTON_WIDTH) * i;
+        _pictogramsOpenX[i] = (ofGetWidth() * BUTTON_INDENT) * 2 + (ofGetWidth() * BUTTON_WIDTH) * i;
         _distanceToMenuButtons[i] = ofGetWidth();
     }
     
@@ -44,12 +49,54 @@ void menu::setup()
         _pictogramNum[i].loadImage( ofToDataPath( picFileNr ) );
     }
     
+    // Init image with something random
+    _tinyButtonPictogram.loadImage( "pictogram_num_0.png" );
+    
     
 }
+
+void menu::initEaseOpenX() {
+    
+    for ( int i = 0; i < NUM_OF_MENU_PICTOGRAMS; i++ ) {
+        _timeX          = 0;
+        _beginningX     = _pictogramsClosedX;
+        _changeX[i]     = _pictogramsOpenX[i] - _pictogramsClosedX;
+        _durationX      = 20;
+    }
+    
+}
+
+void menu::initEaseOpenY() {
+    
+    _timeY      = 0;
+    _beginningY = _pictogramsClosedY;
+    _changeY    = _pictogramsOpenY - _pictogramsClosedY;
+    _durationY  = 20;
+}
+
 
 
 void menu::update(  )
 {
+    if ( _isInMenu ) {
+        // Ease
+        if ( _timeX < _durationX ) _timeX++;
+        if ( _timeY < _durationY ) _timeY++;
+    }
+    
+
+    if ( _startInToMenuTimer ) {
+        _inToMenuTimer += ofGetLastFrameTime();
+        if ( _inToMenuTimer > 0.1 ) {
+            _isInMenu = true;
+            initEaseOpenX();
+            initEaseOpenY();
+            _inToMenuTimer = 0;
+            _startInToMenuTimer = false;
+        }
+    }
+    
+    
     if ( _startOutOfMenuTimer) {
         _outOfMenuTimer += ofGetLastFrameTime();
         if ( _outOfMenuTimer > 0.1 ) {
@@ -59,15 +106,7 @@ void menu::update(  )
             _startOutOfMenuTimer = false;
         }
     }
-    
-    if ( _startInToMenuTimer ) {
-        _inToMenuTimer += ofGetLastFrameTime();
-        if ( _inToMenuTimer > 0.1 ) {
-            _isInMenu = true;
-            _inToMenuTimer = 0;
-            _startInToMenuTimer = false;
-        }
-    }
+
 }
 
 void menu::distanceToTinyButton( float touchX, float touchY ) {
@@ -85,7 +124,7 @@ void menu::distanceToTinyButton( float touchX, float touchY ) {
 void menu::distanceToMenuButtons( float touchX, float touchY ) {
     
     for ( int i = 0; i < NUM_OF_MENU_PICTOGRAMS; i++ ) {
-        _distanceToMenuButtons[i] = sqrt( (touchX - _pictogramsPosX[i]) * (touchX - _pictogramsPosX[i]) + (touchY - _pictogramsPosY) * (touchY - _pictogramsPosY) ) ;
+        _distanceToMenuButtons[i] = sqrt( (touchX - _pictogramsOpenX[i]) * (touchX - _pictogramsOpenX[i]) + (touchY - _pictogramsOpenY) * (touchY - _pictogramsOpenY) ) ;
     
         if ( _pictogramsRadius > _distanceToMenuButtons[i] ) {
             if ( i == 0 ) {
@@ -104,6 +143,7 @@ void menu::distanceToMenuButtons( float touchX, float touchY ) {
             _startOutOfMenuTimer = true;
         }
     }
+
 }
 
 
@@ -112,7 +152,7 @@ void menu::draw(  )
 {
     // Tiny button
     if ( !_isInMenu ) {
-        ofSetColor( 70 );
+        ofSetColor( 30 );
         if ( _whatMode == kModeAbout ) {
             _tinyButtonPictogram.clone( _pictogramBit20 );
         } else if ( _whatMode == kModeRec ) {
@@ -132,6 +172,7 @@ void menu::draw(  )
     }
     
     
+    
     if ( _isInMenu ) {
         
         // Bit20 pictogram
@@ -140,7 +181,8 @@ void menu::draw(  )
         } else {
             ofSetColor( 70 );
         }
-        _pictogramBit20.draw( _pictogramsPosX[0], _pictogramsPosY, _pictogramsRadius, _pictogramsRadius );
+        _pictogramBit20.setAnchorPercent( 0.5, 0.5 );
+        _pictogramBit20.draw( Quad::easeOut( _timeX, _beginningX, _changeX[0], _durationX ),  Quad::easeOut( _timeY, _beginningY, _changeY, _durationY ), _pictogramsRadius, _pictogramsRadius );
         
         // Rec mic pictogram
         for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
@@ -149,7 +191,8 @@ void menu::draw(  )
             } else {
                 ofSetColor( 70 );
             }
-            _pictogramRecMic[i].draw( _pictogramsPosX[i + 1], _pictogramsPosY, _pictogramsRadius, _pictogramsRadius );
+            _pictogramRecMic[i].setAnchorPercent( 0.5, 0.5 );
+            _pictogramRecMic[i].draw( Quad::easeOut( _timeX, _beginningX, _changeX[i + 1], _durationX ),  Quad::easeOut( _timeY, _beginningY, _changeY, _durationY ), _pictogramsRadius, _pictogramsRadius );
         }
         
         // Num pictogram
@@ -159,9 +202,42 @@ void menu::draw(  )
             } else {
                 ofSetColor( 70 );
             }
-            _pictogramNum[i].draw( _pictogramsPosX[i + 4], _pictogramsPosY, _pictogramsRadius, _pictogramsRadius );
+            _pictogramNum[i].setAnchorPercent( 0.5, 0.5 );
+            _pictogramNum[i].draw( Quad::easeOut( _timeX, _beginningX, _changeX[i + 4], _durationX ),  Quad::easeOut( _timeY, _beginningY, _changeY, _durationY ), _pictogramsRadius, _pictogramsRadius );
         }
     }
+    
+    
+   /* if ( _isInMenu ) {
+        
+        // Bit20 pictogram
+        if ( _whatMode == kModeAbout ) {
+            ofSetColor( 255 );
+        } else {
+            ofSetColor( 70 );
+        }
+        _pictogramBit20.draw( _pictogramsOpenX[0], _pictogramsOpenY, _pictogramsRadius, _pictogramsRadius );
+        
+        // Rec mic pictogram
+        for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+            if ( _whatMode == kModeRec && _whatRecSample == i ) {
+                ofSetColor( 255 );
+            } else {
+                ofSetColor( 70 );
+            }
+            _pictogramRecMic[i].draw( _pictogramsOpenX[i + 1], _pictogramsOpenY, _pictogramsRadius, _pictogramsRadius );
+        }
+        
+        // Num pictogram
+        for ( int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++ ) {
+            if ( _whatMode == kModeFileSample && _whatFileSample == i ) {
+                ofSetColor( 255 );
+            } else {
+                ofSetColor( 70 );
+            }
+            _pictogramNum[i].draw( _pictogramsOpenX[i + 4], _pictogramsOpenY, _pictogramsRadius, _pictogramsRadius );
+        }
+    }*/
     
     
 }

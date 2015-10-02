@@ -30,7 +30,7 @@ void Touchobject::Setup()
 
 
 // --------------------------------------------------------
-void Touchobject::Update( float *val, float volume )
+void Touchobject::Update( float *val )
 {
     // Sound spectrum
     for (int i = 0; i<BANDS; i++)
@@ -78,9 +78,6 @@ void Touchobject::Update( float *val, float volume )
         alpha = 255;
     }
     
-    ofLog() << "touch object alpha: " << alpha;
-    
-
 }
 // --------------------------------------------------------
 
@@ -149,7 +146,6 @@ void Touchobject::Draw()
     //OF_BLENDMODE_SCREEN;
 
     color = ofColor( 255, 255, 255, alpha );
-    //color.setBrightness(mySpecVolume / 20);
     color.setBrightness( colorBrightness );
     ofSetColor( color );
     ofSetCircleResolution( 100 );

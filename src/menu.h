@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include "ofMain.h"
 #include "Definitions.h"
+#include "Quad.h"
 
 
 class menu {
@@ -28,6 +29,9 @@ public:
     
 private:
     
+    void            initEaseOpenX();
+    void            initEaseOpenY();
+    
     float           _tinyButtonX;
     float           _tinyButtonY;
     float           _tinyButtonPictogramRadius;
@@ -37,10 +41,11 @@ private:
     ofImage         _pictogramRecMic[NUM_OF_REC_MODES];
     ofImage         _pictogramBit20;
     ofImage         _pictogramNum[NUM_OF_HARDCODED_SOUNDS];
-    ofImage         _tinyButton;
     ofImage         _tinyButtonPictogram;
-    float           _pictogramsPosY;
-    float           _pictogramsPosX[NUM_OF_MENU_PICTOGRAMS];
+    float           _pictogramsClosedY;
+    float           _pictogramsOpenY;
+    float           _pictogramsClosedX;
+    float           _pictogramsOpenX[NUM_OF_MENU_PICTOGRAMS];
     float           _pictogramsRadius;
 
     
@@ -50,6 +55,9 @@ private:
     float           _inToMenuTimer;
     bool            _startInToMenuTimer;
     
+    // Ease
+    float           _timeX, _beginningX, _changeX[NUM_OF_MENU_PICTOGRAMS], _durationX;
+    float           _timeY, _beginningY, _changeY, _durationY;
     
     
        

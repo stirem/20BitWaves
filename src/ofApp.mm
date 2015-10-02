@@ -172,18 +172,16 @@ void ofApp::update()
 
     
     ///< Update spectrum analyze
-    touchobject.Update( val, volume );
+    touchobject.Update( val );
 
     
     ///< Increase radius of particles, and decrease alpha
 
     for( int i = 0; i < particles.size(); i++ ) {
-        particles[i].Update( soundSpeed, volume, sample );
+        particles[i].Update( soundSpeed, sample );
     }
 
     
-    
-    ///> Move Menu Button with finger
     menu.update( );
     
     
@@ -253,17 +251,6 @@ void ofApp::draw()
     // Draw menu-button
     menu.draw( );
     
-    ///< Draw touchobject
-    if ( !menu._muteAudio ) {
-        touchobject.Draw();
-    }
-    
-    ///< Draw particles
-    for( int i = 0; i < particles.size(); i++ )
-    {
-        particles[i].Draw();
-    }
-
     ///// R E C O R D I N G /////
     if ( !menu._isInMenu ) {
         if ( menu._whatMode == kModeRec ) {
@@ -276,6 +263,17 @@ void ofApp::draw()
     // About Bit20
     if ( menu._whatMode == kModeAbout ) {
         about.draw();
+    }
+    
+    ///< Draw touchobject
+    if ( !menu._muteAudio ) {
+        touchobject.Draw();
+    }
+    
+    ///< Draw particles
+    for( int i = 0; i < particles.size(); i++ )
+    {
+        particles[i].Draw();
     }
 
 
@@ -347,7 +345,6 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
             }
         }
         else if ( menu._whatMode == kModeFileSample )
-        //else if ( menu.fileSamplesModeOn )
         {
             if ( triggerFileSamplePlay ) {
                 sample = fileSample[ menu._whatFileSample ].playOnce( soundSpeed );
@@ -422,8 +419,8 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
     
     
     ///< Change sound panning
-    //panning = ofMap( touchPosX, 0, ofGetWidth(), 0.0, 1.0, true );
-    panning = 0.5;
+    panning = ofMap( touchPosX, 0, ofGetWidth(), 0.0, 1.0, true );
+    //panning = 0.5;
     
     if ( about._isDelayActive ) {
         _filterLeftRight = ofMap( touchPosX, 0, ofGetWidth(), 1400, 14000, true );
@@ -484,7 +481,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     // Used to decrease volume when finger is lifted
     fingerIsLifted = false;
     
-    // Audio input value button (bluetooth) and delay on/off button
+    // Audio input value button (bluetooth) AND delay on/off button
     if ( menu._whatMode == kModeAbout ) {
         about.distanceToButton( touch.x, touch.y );
     }

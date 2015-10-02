@@ -8,7 +8,7 @@ public:
     
     Particles( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness, float soundSpeed );
 
-    void        Update( float soundSpeed, float volume, double sample );
+    void        Update( float soundSpeed, double sample );
     void        Draw();
 
     float       alpha;

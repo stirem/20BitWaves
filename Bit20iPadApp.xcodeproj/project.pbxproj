@@ -30,6 +30,7 @@
 		80845BF31A5D8E200034AC8F /* touchObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80845BF01A5D8E200034AC8F /* touchObject.cpp */; };
 		808D0B671ABB08A90070ADCB /* recSpectrum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 808D0B651ABB08A90070ADCB /* recSpectrum.cpp */; };
 		809E75A61A94D02800EDBCC9 /* recording.mm in Sources */ = {isa = PBXBuildFile; fileRef = 809E75A41A94D02800EDBCC9 /* recording.mm */; };
+		80BC940E1BBE89F300157BA7 /* Quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80BC940C1BBE89F300157BA7 /* Quad.cpp */; settings = {ASSET_TAGS = (); }; };
 		80F46C761B7CB81800D20257 /* about.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80F46C741B7CB81800D20257 /* about.mm */; };
 		80F847961BBC1EA10011C30F /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80F847941BBC1EA10011C30F /* menu.cpp */; settings = {ASSET_TAGS = (); }; };
 		9514C2D90467055B1447D074 /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */; };
@@ -98,6 +99,8 @@
 		809E75A11A94BEB900EDBCC9 /* Definitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
 		809E75A41A94D02800EDBCC9 /* recording.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = recording.mm; sourceTree = "<group>"; };
 		809E75A51A94D02800EDBCC9 /* recording.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = recording.h; sourceTree = "<group>"; };
+		80BC940C1BBE89F300157BA7 /* Quad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quad.cpp; sourceTree = "<group>"; };
+		80BC940D1BBE89F300157BA7 /* Quad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quad.h; sourceTree = "<group>"; };
 		80CD68E0DDF2C60D2715CC78 /* stb_vorbis.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 30; name = stb_vorbis.c; path = ../../../addons/ofxMaxim/libs/stb_vorbis.c; sourceTree = SOURCE_ROOT; };
 		80F46C741B7CB81800D20257 /* about.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = about.mm; sourceTree = "<group>"; };
 		80F46C751B7CB81800D20257 /* about.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = about.h; sourceTree = "<group>"; };
@@ -336,6 +339,8 @@
 				80F847951BBC1EA10011C30F /* menu.h */,
 				E4D8936D11527B74007E1F53 /* ofApp.mm */,
 				E4D8936C11527B74007E1F53 /* ofApp.h */,
+				80BC940C1BBE89F300157BA7 /* Quad.cpp */,
+				80BC940D1BBE89F300157BA7 /* Quad.h */,
 			);
 			path = src;
 			sourceTree = SOURCE_ROOT;
@@ -455,6 +460,7 @@
 				E4D8936F11527B74007E1F53 /* ofApp.mm in Sources */,
 				0FCED26D40D46CF89A58E54C /* fft.cpp in Sources */,
 				5C4A4AA5D4784DF23EA43038 /* maxiAtoms.cpp in Sources */,
+				80BC940E1BBE89F300157BA7 /* Quad.cpp in Sources */,
 				80F46C761B7CB81800D20257 /* about.mm in Sources */,
 				96084990AF216648B8B98E00 /* maxiFFT.cpp in Sources */,
 				AF0580829426DC6BCA135A5C /* maxiGrains.cpp in Sources */,

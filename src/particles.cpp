@@ -21,7 +21,7 @@ Particles::Particles( float touchX, float touchY, float specVolume, float startR
 
 ///< Increase radius of soundwaves, and decrease alpha
 // --------------------------------------------------------
-void Particles::Update( float soundSpeed, float volume, double sample ) {
+void Particles::Update( float soundSpeed, double sample ) {
     
 
     radius = radius + ( 0.05 * myScreenWidth * mySoundSpeed * ofGetLastFrameTime() );
@@ -32,7 +32,6 @@ void Particles::Update( float soundSpeed, float volume, double sample ) {
         alpha = alpha - ( 150 * ofGetLastFrameTime() );
     }
     
-    ofLog() << "particles alpha: " << alpha;
 }
 // --------------------------------------------------------
 

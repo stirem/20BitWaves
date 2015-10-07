@@ -25,20 +25,31 @@ void About::setup() {
     
     _audioInputValue                        = XML.getValue( "AUDIO_INPUT_VALUE", 1 );
     _isDelayActive                          = XML.getValue( "DELAY_ACTIVE", 0 );
+    _closeAbout                             = false;
     
     for ( int i = 0; i < NUM_OF_BUTTONS; i++ ) {
         _distanceToButton[i]                = ofGetWidth();
         _buttonRadius[i]                    = ofGetWidth() * 0.01;
         _buttonX[i]                         = ofGetWidth() * 0.15;
     }
-    _buttonY[kButtonBluetooth]              = ofGetHeight() * 0.5;
-    _buttonY[kButtonDelay]                  = ofGetHeight() * 0.7;
+    _buttonY[kButtonBluetooth]              = ofGetHeight() * 0.9;
+    _buttonY[kButtonDelay]                  = ofGetHeight() * 0.96;
     _buttonValue[kButtonBluetooth]          = _audioInputValue;
     _buttonValue[kButtonDelay]              = _isDelayActive;
-    
-    _arial.loadFont( "Fonts/arial.ttf", 16 );
-    
 
+    
+    _arial.loadFont( "Fonts/arial.ttf", 12 );
+    
+    _aboutTextAndLogos.loadImage( "aboutTextAndLogos.png" );
+    _aboutTextAndLogos_width                = ofGetWidth() * 0.8;
+    _aboutTextAndLogos_height               = ofGetWidth() * 0.45;
+    _aboutTextAndLogos_X                    = ofGetWidth() * 0.5;
+    _aboutTextAndLogos_Y                    = ofGetWidth() * 0.35;
+    
+    _distanceToCloseButton                  = ofGetWidth();
+    _closeButtonX                           = _aboutTextAndLogos_X + ( _aboutTextAndLogos_width * 0.485 );
+    _closeButtonY                           = _aboutTextAndLogos_Y - ( _aboutTextAndLogos_height * 0.476 );
+    _closeButtonRadius                      = ofGetWidth() * 0.04;
     
     
 }
@@ -52,10 +63,18 @@ void About::update(  ) {
 
 void About::draw() {
 
+    // About Text and Logoes
+    ofSetColor( 255 );
+    _aboutTextAndLogos.setAnchorPercent( 0.5, 0.5 );
+    _aboutTextAndLogos.draw( _aboutTextAndLogos_X, _aboutTextAndLogos_Y, _aboutTextAndLogos_width, _aboutTextAndLogos_height );
 
-    ofSetColor( 255, 255, 255 );
     
-
+    // Close Button circle for DEBUGGING
+    /*ofNoFill();
+    ofCircle( _closeButtonX, _closeButtonY, _closeButtonRadius );*/
+    
+    
+    ofSetColor( 255 );
     /// BLUETOOTH BUTTON ///
     // Button
     // Outer circle
@@ -68,11 +87,8 @@ void About::draw() {
         ofCircle( _buttonX[kButtonBluetooth], _buttonY[kButtonBluetooth], _buttonRadius[kButtonBluetooth] * 0.8 ); // Smaller size than outer circle
     }
     // Text
-    _arial.drawString( "Enable bluetooth speaker.\n (Setting will take effect the next time you start the app.\n When bluetooth is enabled, recording through microphone will be disabled.)", _buttonX[kButtonBluetooth] + _buttonRadius[kButtonBluetooth] * 2, _buttonY[kButtonBluetooth] );
+    _arial.drawString( "Enable bluetooth speaker. (Setting will take effect the next time you start the app.\n When bluetooth is enabled, recording through microphone will be disabled.)", _buttonX[kButtonBluetooth] + _buttonRadius[kButtonBluetooth] * 2, _buttonY[kButtonBluetooth] );
 
-    
-    
-    
     // DELAY BUTTON
     // Button
     // Outer circle
@@ -139,4 +155,24 @@ void About::distanceToButton( float touchDownX, float touchDownY ) {
     
     
 }
+
+
+void About::distanceToCloseButton( float touchX, float touchY ) {
+    
+     _distanceToCloseButton = sqrt( (touchX - _closeButtonX) * (touchX - _closeButtonX) + (touchY - _closeButtonY) * (touchY - _closeButtonY) ) ;
+    
+    if ( _closeButtonRadius > _distanceToCloseButton ) {
+        _closeAbout = true;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
 

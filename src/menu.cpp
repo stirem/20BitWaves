@@ -8,8 +8,10 @@ menu::menu()
 
 void menu::setup()
 {
-    _tinyButtonX                = ofGetWidth() * 0.01;
-    _tinyButtonY                = ofGetWidth() * 0.01;
+    _tinyButtonX                = ofGetWidth() * 0.04;
+    _tinyButtonY                = ofGetWidth() * 0.04;
+    _tinyButtonOpacity          = 30;
+    _startTinyButtonFadeDown    = false;
     _distanceToTinyButton       = ofGetWidth();
     _isInMenu                   = false;
     _muteAudio                  = false;
@@ -17,14 +19,15 @@ void menu::setup()
     _whatFileSample             = 0;
     _whatMode                   = kModeFileSample;
     _pictogramsOpenY            = ofGetHeight() * 0.8;
-    _pictogramsClosedY          = ofGetWidth() * 0.01;
-    _pictogramsClosedX          = ofGetWidth() * 0.01;
+    _pictogramsClosedY          = _tinyButtonX;
+    _pictogramsClosedX          = _tinyButtonY;
     _pictogramsRadius           = ofGetWidth() * 0.05;
     _outOfMenuTimer             = 0;
     _startOutOfMenuTimer        = false;
     _inToMenuTimer              = 0;
     _startInToMenuTimer         = false;
     _tinyButtonPictogramRadius  = _pictogramsRadius;
+    _aboutIsOpen                = false;
 
     
     initEaseOpenX();
@@ -78,13 +81,13 @@ void menu::initEaseOpenY() {
 
 void menu::update(  )
 {
+    // Easing animation timer
     if ( _isInMenu ) {
-        // Ease
         if ( _timeX < _durationX ) _timeX++;
         if ( _timeY < _durationY ) _timeY++;
     }
     
-
+    // Animate menu in
     if ( _startInToMenuTimer ) {
         _inToMenuTimer += ofGetLastFrameTime();
         if ( _inToMenuTimer > 0.1 ) {
@@ -96,9 +99,11 @@ void menu::update(  )
         }
     }
     
-    
+    // Out of menu
     if ( _startOutOfMenuTimer) {
         _outOfMenuTimer += ofGetLastFrameTime();
+        _tinyButtonOpacity = 255;
+        _startTinyButtonFadeDown = true;
         if ( _outOfMenuTimer > 0.1 ) {
             _isInMenu = false;
             _muteAudio = false;
@@ -106,7 +111,24 @@ void menu::update(  )
             _startOutOfMenuTimer = false;
         }
     }
-
+    
+    // Fade down tiny button
+    if ( _startTinyButtonFadeDown ) {
+        if ( _whatMode == kModeFileSample ) {
+            if ( _tinyButtonOpacity > 30 ) {
+                _tinyButtonOpacity -= 5;
+            } else {
+                _startTinyButtonFadeDown = false;
+            }
+        } else if ( _whatMode == kModeRec ) {
+            if ( _tinyButtonOpacity > 50 ) {
+                _tinyButtonOpacity -= 5;
+            } else {
+                _startTinyButtonFadeDown = false;
+            }
+        }
+    }
+    
 }
 
 void menu::distanceToTinyButton( float touchX, float touchY ) {
@@ -128,7 +150,7 @@ void menu::distanceToMenuButtons( float touchX, float touchY ) {
     
         if ( _pictogramsRadius > _distanceToMenuButtons[i] ) {
             if ( i == 0 ) {
-                _whatMode = kModeAbout;
+                _aboutIsOpen = true;
                 _startOutOfMenuTimer = true;
             } else if ( i == 1 || i == 2 || i == 3 ) {
                 _whatMode = kModeRec;
@@ -152,23 +174,24 @@ void menu::draw(  )
 {
     // Tiny button
     if ( !_isInMenu ) {
-        ofSetColor( 30 );
-        if ( _whatMode == kModeAbout ) {
-            _tinyButtonPictogram.clone( _pictogramBit20 );
-        } else if ( _whatMode == kModeRec ) {
-            for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
-                if ( _whatRecSample == i ) {
-                    _tinyButtonPictogram.clone( _pictogramRecMic[i] );
+        if ( !_aboutIsOpen ) {
+            ofSetColor( _tinyButtonOpacity );
+            if ( _whatMode == kModeRec ) {
+                for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
+                    if ( _whatRecSample == i ) {
+                        _tinyButtonPictogram.clone( _pictogramRecMic[i] );
+                    }
+                }
+            } else if ( _whatMode == kModeFileSample ) {
+                for ( int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++ ) {
+                    if ( _whatFileSample == i ) {
+                        _tinyButtonPictogram.clone( _pictogramNum[i] );
+                    }
                 }
             }
-        } else if ( _whatMode == kModeFileSample ) {
-            for ( int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++ ) {
-                if ( _whatFileSample == i ) {
-                    _tinyButtonPictogram.clone( _pictogramNum[i] );
-                }
-            }
+            _tinyButtonPictogram.setAnchorPercent( 0.5, 0.5 );
+            _tinyButtonPictogram.draw( _tinyButtonX, _tinyButtonY, _tinyButtonPictogramRadius, _tinyButtonPictogramRadius );
         }
-        _tinyButtonPictogram.draw( _tinyButtonX, _tinyButtonY, _tinyButtonPictogramRadius, _tinyButtonPictogramRadius );
     }
     
     
@@ -176,7 +199,7 @@ void menu::draw(  )
     if ( _isInMenu ) {
         
         // Bit20 pictogram
-        if ( _whatMode == kModeAbout ) {
+        if ( _aboutIsOpen ) {
             ofSetColor( 255 );
         } else {
             ofSetColor( 70 );

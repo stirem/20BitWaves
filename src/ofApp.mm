@@ -234,13 +234,15 @@ void ofApp::update()
     
     
     // About Bit20
-    if ( menu._whatMode == kModeAbout ) {
+    if ( menu._aboutIsOpen ) {
         about.update();
+        
+        if ( about._closeAbout ) {
+            menu._aboutIsOpen = false;;
+            about._closeAbout = false;
+        }
     }
     
-    
-
-
     
 }
 
@@ -252,7 +254,7 @@ void ofApp::draw()
     menu.draw( );
     
     ///// R E C O R D I N G /////
-    if ( !menu._isInMenu ) {
+    if ( !menu._isInMenu && !menu._aboutIsOpen ) {
         if ( menu._whatMode == kModeRec ) {
         //if ( menu.recModeOn[ menu.whatRecSample ] ) {
             recording[ menu._whatRecSample ].Draw();
@@ -261,7 +263,7 @@ void ofApp::draw()
     
     
     // About Bit20
-    if ( menu._whatMode == kModeAbout ) {
+    if ( menu._aboutIsOpen ) {
         about.draw();
     }
     
@@ -482,12 +484,13 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     fingerIsLifted = false;
     
     // Audio input value button (bluetooth) AND delay on/off button
-    if ( menu._whatMode == kModeAbout ) {
+    if ( menu._aboutIsOpen ) {
         about.distanceToButton( touch.x, touch.y );
+        about.distanceToCloseButton( touch.x, touch.y );
     }
     
     // Tiny button
-    if ( !menu._isInMenu ) {
+    if ( !menu._isInMenu && !menu._aboutIsOpen ) {
         menu.distanceToTinyButton( touch.x, touch.y );
     }
     // Pictogram buttons
@@ -509,7 +512,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
         volume = 0.0;
     }
     
-    if ( !menu._isInMenu ) {
+    if ( !menu._isInMenu && !menu._aboutIsOpen ) {
     
         // Set position of samples to 0 when finger is pressed
         fileSample[ menu._whatFileSample ].setPosition( 0. );

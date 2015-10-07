@@ -24,6 +24,7 @@ public:
     unsigned int    _whatRecSample;
     unsigned int    _whatFileSample;
     unsigned int    _whatMode;
+    bool            _aboutIsOpen;
 
     
     
@@ -35,6 +36,8 @@ private:
     float           _tinyButtonX;
     float           _tinyButtonY;
     float           _tinyButtonPictogramRadius;
+    float           _tinyButtonOpacity;
+    bool            _startTinyButtonFadeDown;
     float           _distanceToTinyButton;
     float           _distanceToMenuButtons[NUM_OF_MENU_PICTOGRAMS];
     

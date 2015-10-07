@@ -22,9 +22,11 @@ public:
     void                    draw();
     
     void                    distanceToButton( float touchDownX, float touchDownY );
+    void                    distanceToCloseButton( float touchX, float touchY );
     
     bool                    _audioInputValue;
     bool                    _isDelayActive;
+    bool                    _closeAbout;
     
 private:
     
@@ -34,9 +36,20 @@ private:
     float                   _buttonX[NUM_OF_BUTTONS];
     float                   _buttonY[NUM_OF_BUTTONS];
     bool                    _buttonValue[NUM_OF_BUTTONS];
+    
+    float                   _distanceToCloseButton;
+    float                   _closeButtonX;
+    float                   _closeButtonY;
+    float                   _closeButtonRadius;
+    float                   _aboutTextAndLogos_width;
+    float                   _aboutTextAndLogos_height;
+    float                   _aboutTextAndLogos_X;
+    float                   _aboutTextAndLogos_Y;
 
     
     ofTrueTypeFont          _arial;
+    
+    ofImage                 _aboutTextAndLogos;
     
 
 

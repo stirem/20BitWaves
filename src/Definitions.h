@@ -19,6 +19,5 @@
 #define NUM_OF_MENU_PICTOGRAMS 11
 
 // Menu modes
-#define kModeAbout 1
-#define kModeRec 2
-#define kModeFileSample 3
+#define kModeRec 1
+#define kModeFileSample 2

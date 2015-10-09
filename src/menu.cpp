@@ -10,6 +10,7 @@ void menu::setup()
 {
     _tinyButtonX                = ofGetWidth() * 0.04;
     _tinyButtonY                = ofGetWidth() * 0.04;
+    ofLog() << "width in menu.setup(): " << ofGetWidth();
     _tinyButtonOpacity          = 30;
     _startTinyButtonFadeDown    = false;
     _distanceToTinyButton       = ofGetWidth();

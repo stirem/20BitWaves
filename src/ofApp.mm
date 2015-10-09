@@ -12,6 +12,11 @@ bool shouldRemove(Particles &p)
 //--------------------------------------------------------------
 void ofApp::setup()
 {
+    ofLog() << "width BEFORE setOrientation: " << ofGetWidth();
+    
+ 
+    ofLog() << "width AFTER setOrientation: " << ofGetWidth();
+    
     ///< Setup framerate, background color and show mouse
     ofSetFrameRate( 60 );
     ofBackground( 0, 0, 0 );
@@ -83,10 +88,12 @@ void ofApp::setup()
     
     
     
-
     ofSetOrientation( OF_ORIENTATION_90_LEFT ); // Set this after recording.Setup() and menu.Setup() because of issue with ofGetWidth() vs ofGetScreenWidth().
-
     
+    
+
+
+    ofLog() << "width in end of setup(): " << ofGetWidth();
     
     
     
@@ -166,6 +173,9 @@ void ofApp::loadFileSamples() {
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    
+    ofLog() << "width in update(): " << ofGetWidth();
+    
     
     ///< MAXIMILIAN
     float *val = myFFT.magnitudesDB;

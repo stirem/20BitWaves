@@ -34,6 +34,7 @@ void About::setup() {
     }
     _buttonY[kButtonBluetooth]              = ofGetHeight() * 0.9;
     _buttonY[kButtonDelay]                  = ofGetHeight() * 0.96;
+    _buttonY[kButtonBekUrl]                 = ofGetHeight() * 0.8;
     _buttonValue[kButtonBluetooth]          = _audioInputValue;
     _buttonValue[kButtonDelay]              = _isDelayActive;
 
@@ -74,6 +75,12 @@ void About::draw() {
     ofCircle( _closeButtonX, _closeButtonY, _closeButtonRadius );*/
     
     
+    // WEB LINKS
+    // Bek url
+    ofNoFill();
+    ofCircle( _buttonX[kButtonBekUrl], _buttonY[kButtonBekUrl], _buttonRadius[kButtonBekUrl] );
+    
+    
     ofSetColor( 255 );
     /// BLUETOOTH BUTTON ///
     // Button
@@ -109,9 +116,16 @@ void About::draw() {
 
 void About::distanceToButton( float touchDownX, float touchDownY ) {
     
-    // This function is run in ofApp::update()
+    // This function is run in ofApp::touchDown()
     
     
+    // Bek Url
+    _distanceToButton[kButtonBekUrl] = sqrt(    (touchDownX - _buttonX[kButtonBekUrl]) * (touchDownX - _buttonX[kButtonBekUrl]) + (touchDownY - _buttonY[kButtonBekUrl]) * (touchDownY - _buttonY[kButtonBekUrl])     ) ;
+    
+    if ( (_buttonRadius[kButtonBekUrl] + (ofGetWidth() * 0.01) ) > _distanceToButton[kButtonBekUrl] ) {
+        NSURL *urlPath = [NSURL URLWithString:@"http://www.bek.no"];
+        [[UIApplication sharedApplication] openURL:urlPath];
+    }
     
     /// BLUETOOTH BUTTON ///
     _distanceToButton[kButtonBluetooth] = sqrt(    (touchDownX - _buttonX[kButtonBluetooth]) * (touchDownX - _buttonX[kButtonBluetooth]) + (touchDownY - _buttonY[kButtonBluetooth]) * (touchDownY - _buttonY[kButtonBluetooth])     ) ;
@@ -166,6 +180,7 @@ void About::distanceToCloseButton( float touchX, float touchY ) {
     }
     
 }
+
 
 
 

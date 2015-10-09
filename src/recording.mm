@@ -5,16 +5,6 @@ Recording::Recording() {
     
 }
 
-
-/*bool shouldRemove(RecParticles &p)
-{
-    if(p.radius <= 0 )return true;
-    else return false;
-}*/
-
-
-
-
 void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     
     isRecording = false;

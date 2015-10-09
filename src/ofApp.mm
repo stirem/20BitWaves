@@ -12,10 +12,8 @@ bool shouldRemove(Particles &p)
 //--------------------------------------------------------------
 void ofApp::setup()
 {
-    ofLog() << "width BEFORE setOrientation: " << ofGetWidth();
     
- 
-    ofLog() << "width AFTER setOrientation: " << ofGetWidth();
+
     
     ///< Setup framerate, background color and show mouse
     ofSetFrameRate( 60 );
@@ -40,6 +38,7 @@ void ofApp::setup()
     touchIsDown             = false;
     addParticlesTimer       = 0;
 
+
     
     
     ///< M A X I M I L I A N
@@ -52,7 +51,6 @@ void ofApp::setup()
     
 
     ///< openFrameworks sound stream
-    //ofSoundStreamSetup( 2, 1, this, sampleRate, initialBufferSize, 4 );
     soundStream.setup( this, 2, about._audioInputValue, sampleRate, initialBufferSize, 4 );
     
     
@@ -87,15 +85,9 @@ void ofApp::setup()
     
     
     
-    
     ofSetOrientation( OF_ORIENTATION_90_LEFT ); // Set this after recording.Setup() and menu.Setup() because of issue with ofGetWidth() vs ofGetScreenWidth().
-    
-    
 
 
-    ofLog() << "width in end of setup(): " << ofGetWidth();
-    
-    
     
 }
 
@@ -173,9 +165,12 @@ void ofApp::loadFileSamples() {
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    
-    ofLog() << "width in update(): " << ofGetWidth();
-    
+    // Orientation fix
+    if(ofxiOSGetGLView().frame.origin.x != 0
+       || ofxiOSGetGLView().frame.size.width != [[UIScreen mainScreen] bounds].size.width){
+        
+        ofxiOSGetGLView().frame = CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.height);
+    }
     
     ///< MAXIMILIAN
     float *val = myFFT.magnitudesDB;
@@ -200,8 +195,7 @@ void ofApp::update()
     
     
     ///< Add particles
-    if ( !menu._isInMenu && recording[ menu._whatRecSample ].readyToPlay ) {// Do not add waves when pushing change-song-button.
-        
+    if ( (menu._whatMode == kModeRec && recording[ menu._whatRecSample ].readyToPlay && !menu._isInMenu) || !menu._isInMenu ) {
         if ( touchobject.spectrumVolume > 1200 && volume > 0.0 ) {
             
             addParticlesTimer += ofGetLastFrameTime();
@@ -259,6 +253,7 @@ void ofApp::update()
 //--------------------------------------------------------------
 void ofApp::draw()
 {
+
     
     // Draw menu-button
     menu.draw( );
@@ -288,13 +283,6 @@ void ofApp::draw()
         particles[i].Draw();
     }
 
-
-    
-    /*ofSetColor( 255, 255, 255 );
-    ofDrawBitmapString( "fps: "+ ofToString( ofGetFrameRate() ), 10, 20 );
-    ofDrawBitmapString( "what sample: "+ ofToString( menu.whatSample ), 10, 40 ) ;
-    ofDrawBitmapString( "what menu num: "+ ofToString( menu.whatMenuNum ), 10, 60 );
-    ofDrawBitmapString( "what REC sample: "+ ofToString( menu.whatRecSample ), 10, 80 );*/
 }
 
 //--------------------------------------------------------------
@@ -305,7 +293,9 @@ void ofApp::exit(){
         recording[ i ].Exit();
     }
     
+    soundStream.stop();
     soundStream.close();
+
     
 }
 
@@ -486,6 +476,7 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
 //--------------------------------------------------------------
 void ofApp::touchDown( ofTouchEventArgs & touch )
 {
+
     ///< Update position of particles when touch is pressed
     touchPosX = touch.x;
     touchPosY = touch.y;
@@ -542,6 +533,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
 //--------------------------------------------------------------
 void ofApp::touchMoved( ofTouchEventArgs & touch )
 {
+    
     ///< Set position of touchobject when touch is moved
     if ( !menu._isInMenu )
     {

@@ -47,6 +47,7 @@ private:
     void            loadFileSamples();
     
     
+    
     vector<Particles> particles;
 
     Touchobject     touchobject;
@@ -72,6 +73,7 @@ private:
 
     vector<string> vectorOfStrings;
     int             howManySamples;
+
 
     
     

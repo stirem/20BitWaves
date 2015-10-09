@@ -8,39 +8,25 @@ menu::menu()
 
 void menu::setup()
 {
-    _tinyButtonX                = ofGetWidth() * 0.04;
-    _tinyButtonY                = ofGetWidth() * 0.04;
-    ofLog() << "width in menu.setup(): " << ofGetWidth();
     _tinyButtonOpacity          = 30;
     _startTinyButtonFadeDown    = false;
-    _distanceToTinyButton       = ofGetWidth();
     _isInMenu                   = false;
     _muteAudio                  = false;
     _whatRecSample              = 0;
     _whatFileSample             = 0;
     _whatMode                   = kModeFileSample;
-    _pictogramsOpenY            = ofGetHeight() * 0.8;
-    _pictogramsClosedY          = _tinyButtonX;
-    _pictogramsClosedX          = _tinyButtonY;
-    _pictogramsRadius           = ofGetWidth() * 0.05;
     _outOfMenuTimer             = 0;
     _startOutOfMenuTimer        = false;
     _inToMenuTimer              = 0;
     _startInToMenuTimer         = false;
-    _tinyButtonPictogramRadius  = _pictogramsRadius;
     _aboutIsOpen                = false;
+    
+    initSizeValues();
+    
+    easeOpenX();
+    easeOpenY();
 
-    
-    initEaseOpenX();
-    initEaseOpenY();
 
-    
-    for ( int i = 0; i < NUM_OF_MENU_PICTOGRAMS; i++ ) {
-        _pictogramsOpenX[i] = (ofGetWidth() * BUTTON_INDENT) * 2 + (ofGetWidth() * BUTTON_WIDTH) * i;
-        _distanceToMenuButtons[i] = ofGetWidth();
-    }
-    
-    
     _pictogramBit20.loadImage( "bit20pictogram.png" );
     
     for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
@@ -59,7 +45,23 @@ void menu::setup()
     
 }
 
-void menu::initEaseOpenX() {
+void menu::initSizeValues() {
+    
+    _tinyButtonX                = ofGetWidth() * 0.04;
+    _tinyButtonY                = ofGetWidth() * 0.04;
+    _distanceToTinyButton       = ofGetWidth();
+    _pictogramsOpenY            = ofGetHeight() * 0.8;
+    _pictogramsClosedY          = _tinyButtonX;
+    _pictogramsClosedX          = _tinyButtonY;
+    _pictogramsRadius           = ofGetWidth() * 0.05;
+    _tinyButtonPictogramRadius  = _pictogramsRadius;
+    for ( int i = 0; i < NUM_OF_MENU_PICTOGRAMS; i++ ) {
+        _pictogramsOpenX[i] = (ofGetWidth() * BUTTON_INDENT) * 2 + (ofGetWidth() * BUTTON_WIDTH) * i;
+        _distanceToMenuButtons[i] = ofGetWidth();
+    }
+}
+
+void menu::easeOpenX() {
     
     for ( int i = 0; i < NUM_OF_MENU_PICTOGRAMS; i++ ) {
         _timeX          = 0;
@@ -70,7 +72,7 @@ void menu::initEaseOpenX() {
     
 }
 
-void menu::initEaseOpenY() {
+void menu::easeOpenY() {
     
     _timeY      = 0;
     _beginningY = _pictogramsClosedY;
@@ -93,8 +95,8 @@ void menu::update(  )
         _inToMenuTimer += ofGetLastFrameTime();
         if ( _inToMenuTimer > 0.1 ) {
             _isInMenu = true;
-            initEaseOpenX();
-            initEaseOpenY();
+            easeOpenX();
+            easeOpenY();
             _inToMenuTimer = 0;
             _startInToMenuTimer = false;
         }
@@ -173,6 +175,8 @@ void menu::distanceToMenuButtons( float touchX, float touchY ) {
 
 void menu::draw(  )
 {
+   initSizeValues();
+    
     // Tiny button
     if ( !_isInMenu ) {
         if ( !_aboutIsOpen ) {

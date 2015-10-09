@@ -15,7 +15,7 @@ public:
     
     void            setup();
     void            update( );
-    void            draw( );
+    void            draw();
     void            distanceToTinyButton( float touchX, float touchY );
     void            distanceToMenuButtons( float touchX, float touchY );
     
@@ -30,8 +30,10 @@ public:
     
 private:
     
-    void            initEaseOpenX();
-    void            initEaseOpenY();
+    void            easeOpenX();
+    void            easeOpenY();
+    
+    void            initSizeValues();
     
     float           _tinyButtonX;
     float           _tinyButtonY;

@@ -45,7 +45,7 @@ void About::setup() {
     _aboutTextAndLogos_width                = ofGetWidth() * 0.8;
     _aboutTextAndLogos_height               = ofGetWidth() * 0.45;
     _aboutTextAndLogos_X                    = ofGetWidth() * 0.5;
-    _aboutTextAndLogos_Y                    = ofGetWidth() * 0.35;
+    _aboutTextAndLogos_Y                    = ofGetHeight() * 0.45;
     
     _distanceToCloseButton                  = ofGetWidth();
     _closeButtonX                           = _aboutTextAndLogos_X + ( _aboutTextAndLogos_width * 0.485 );

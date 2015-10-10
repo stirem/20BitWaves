@@ -103,6 +103,7 @@ private:
     
     bool                    _bluetoothActive;
 
+    ofTrueTypeFont          _arial;
 
 };
 

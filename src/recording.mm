@@ -80,7 +80,7 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     hold.loadImage( "hold.png" );
     
     
-    
+    _arial.loadFont( "Fonts/arial.ttf", 12 );
     
     
     // Enable bluetooth mic input
@@ -205,23 +205,6 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
         }
     
     }
-
-    // Rec Circle particles
-    /*
-    if ( isRecording ) {
-        addParticlesTimer += ofGetLastFrameTime();
-        if ( addParticlesTimer >= 0.01 ) {
-            recParticles.push_back( RecParticles( meter ) );
-        }
-    }
-    
-    
-    for (int i = 0; i < recParticles.size(); i++) {
-        recParticles[i].Update( isRecording );
-    }
-    
-    ofRemove( recParticles, shouldRemove );
-     */
     
 }
 
@@ -251,11 +234,6 @@ void Recording::distanceToDeleteButton( float touchX, float touchY ) {
 
 
 void Recording::Draw() {
-    
-    // Rec circle particles
-    /*for (int i = 0; i < recParticles.size(); i++) {
-        recParticles[i].Draw();
-    }*/
     
     // Rec spectrum
     for (int i = 0; i < recSpectrum.size(); i++)
@@ -306,6 +284,12 @@ void Recording::Draw() {
 
     }
 
+    
+    // Bluetooth Text
+    if ( _bluetoothActive ) {
+        ofSetColor( 255 );
+        _arial.drawString( "Recording is disabled when Bluetooth is enabled.\n\nTurn off Bluetooth in the about section inside this app", recButtonPosX - (recButtonRadius * 0.5), recButtonPosY + (recButtonRadius * 1.2) );
+    }
     
     
     // Meter

@@ -35,6 +35,7 @@ void menu::setup()
     
     for (int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++)
     {
+        // WARNING!! The number in the image is one higher than what the filename says.
         string picFileNr = "pictogram_num_" + ofToString( i ) + ".png";
         _pictogramNum[i].loadImage( ofToDataPath( picFileNr ) );
     }
@@ -50,13 +51,13 @@ void menu::initSizeValues() {
     _tinyButtonX                = ofGetWidth() * 0.04;
     _tinyButtonY                = ofGetWidth() * 0.04;
     _distanceToTinyButton       = ofGetWidth();
-    _pictogramsOpenY            = ofGetHeight() * 0.8;
+    _pictogramsOpenY            = ofGetHeight() * 0.9;
     _pictogramsClosedY          = _tinyButtonX;
     _pictogramsClosedX          = _tinyButtonY;
     _pictogramsRadius           = ofGetWidth() * 0.05;
     _tinyButtonPictogramRadius  = _pictogramsRadius;
     for ( int i = 0; i < NUM_OF_MENU_PICTOGRAMS; i++ ) {
-        _pictogramsOpenX[i] = (ofGetWidth() * BUTTON_INDENT) * 2 + (ofGetWidth() * BUTTON_WIDTH) * i;
+        _pictogramsOpenX[i] = (ofGetWidth() * BUTTON_INDENT) * 3 + (ofGetWidth() * BUTTON_WIDTH) * i;
         _distanceToMenuButtons[i] = ofGetWidth();
     }
 }

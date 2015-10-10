@@ -52,6 +52,7 @@ private:
     ofTrueTypeFont          _arial;
     
     ofImage                 _aboutTextAndLogos;
+    ofImage                 _closeButton;
     
 
 

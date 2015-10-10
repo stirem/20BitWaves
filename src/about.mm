@@ -32,8 +32,8 @@ void About::setup() {
         _buttonRadius[i]                    = ofGetWidth() * 0.01;
         _buttonX[i]                         = ofGetWidth() * 0.15;
     }
-    _buttonY[kButtonBluetooth]              = ofGetHeight() * 0.9;
-    _buttonY[kButtonDelay]                  = ofGetHeight() * 0.96;
+    _buttonY[kButtonBluetooth]              = ofGetHeight() * 0.95;
+    _buttonY[kButtonDelay]                  = ofGetHeight() * 0.9;
     _buttonY[kButtonBekUrl]                 = ofGetHeight() * 0.8;
     _buttonValue[kButtonBluetooth]          = _audioInputValue;
     _buttonValue[kButtonDelay]              = _isDelayActive;
@@ -42,14 +42,15 @@ void About::setup() {
     _arial.loadFont( "Fonts/arial.ttf", 12 );
     
     _aboutTextAndLogos.loadImage( "aboutTextAndLogos.png" );
-    _aboutTextAndLogos_width                = ofGetWidth() * 0.8;
-    _aboutTextAndLogos_height               = ofGetWidth() * 0.45;
+    _closeButton.loadImage( "closeButton.png" );
+    _aboutTextAndLogos_width                = ofGetWidth() * 0.85;
+    _aboutTextAndLogos_height               = ofGetWidth() * 0.47;
     _aboutTextAndLogos_X                    = ofGetWidth() * 0.5;
     _aboutTextAndLogos_Y                    = ofGetHeight() * 0.45;
     
     _distanceToCloseButton                  = ofGetWidth();
-    _closeButtonX                           = _aboutTextAndLogos_X + ( _aboutTextAndLogos_width * 0.485 );
-    _closeButtonY                           = _aboutTextAndLogos_Y - ( _aboutTextAndLogos_height * 0.476 );
+    _closeButtonX                           = _aboutTextAndLogos_X + ( _aboutTextAndLogos_width * 0.495 );
+    _closeButtonY                           = _aboutTextAndLogos_Y - ( _aboutTextAndLogos_height * 0.495 );
     _closeButtonRadius                      = ofGetWidth() * 0.04;
     
     
@@ -70,6 +71,9 @@ void About::draw() {
     _aboutTextAndLogos.draw( _aboutTextAndLogos_X, _aboutTextAndLogos_Y, _aboutTextAndLogos_width, _aboutTextAndLogos_height );
 
     
+    // CLOSE BUTTON
+    _closeButton.setAnchorPercent( 0.5, 0.5 );
+    _closeButton.draw( _closeButtonX, _closeButtonY, _closeButtonRadius, _closeButtonRadius );
     // Close Button circle for DEBUGGING
     /*ofNoFill();
     ofCircle( _closeButtonX, _closeButtonY, _closeButtonRadius );*/
@@ -77,29 +81,29 @@ void About::draw() {
     
     // WEB LINKS
     // Bek url
-    ofNoFill();
-    ofCircle( _buttonX[kButtonBekUrl], _buttonY[kButtonBekUrl], _buttonRadius[kButtonBekUrl] );
+    /*ofNoFill();
+    ofCircle( _buttonX[kButtonBekUrl], _buttonY[kButtonBekUrl], _buttonRadius[kButtonBekUrl] );*/
     
     
-    ofSetColor( 255 );
+
     /// BLUETOOTH BUTTON ///
     // Button
     // Outer circle
+    ofSetColor( 255 );
     ofNoFill();
     ofCircle( _buttonX[kButtonBluetooth], _buttonY[kButtonBluetooth], _buttonRadius[kButtonBluetooth] );
-    
     // Inner filled circle
     if ( !_buttonValue[kButtonBluetooth] ) { // WARNING! Audio input value 0 means no mic input and bluetooth on. Audio input value 1 means mic input is on, and bluetooth is off. So it is the other way around. Value 0 means button is filled, and value 1 means button is not filled.
         ofFill();
         ofCircle( _buttonX[kButtonBluetooth], _buttonY[kButtonBluetooth], _buttonRadius[kButtonBluetooth] * 0.8 ); // Smaller size than outer circle
     }
     // Text
-    _arial.drawString( "Enable bluetooth speaker. (Setting will take effect the next time you start the app.\n When bluetooth is enabled, recording through microphone will be disabled.)", _buttonX[kButtonBluetooth] + _buttonRadius[kButtonBluetooth] * 2, _buttonY[kButtonBluetooth] );
+    _arial.drawString( "Enable bluetooth speaker. (Setting will take effect the next time you start the app.\nWhen bluetooth is enabled, recording through microphone will be disabled.)", _buttonX[kButtonBluetooth] + _buttonRadius[kButtonBluetooth] * 2, _buttonY[kButtonBluetooth] );
 
     // DELAY BUTTON
     // Button
     // Outer circle
-    ofNoFill();
+    /*ofNoFill();
     ofCircle( _buttonX[kButtonDelay], _buttonY[kButtonDelay], _buttonRadius[kButtonDelay] );
     
     // Inner filled circle
@@ -108,7 +112,7 @@ void About::draw() {
         ofCircle( _buttonX[kButtonDelay], _buttonY[kButtonDelay], _buttonRadius[kButtonDelay] * 0.8 ); // Smaller size than outer circle
     }
     // Text
-    _arial.drawString( "Enable delay effect", _buttonX[kButtonDelay] + _buttonRadius[kButtonDelay] * 2, _buttonY[kButtonDelay] );
+    _arial.drawString( "Enable delay effect", _buttonX[kButtonDelay] + _buttonRadius[kButtonDelay] * 2, _buttonY[kButtonDelay] );*/
 
 
 }
@@ -120,12 +124,11 @@ void About::distanceToButton( float touchDownX, float touchDownY ) {
     
     
     // Bek Url
-    _distanceToButton[kButtonBekUrl] = sqrt(    (touchDownX - _buttonX[kButtonBekUrl]) * (touchDownX - _buttonX[kButtonBekUrl]) + (touchDownY - _buttonY[kButtonBekUrl]) * (touchDownY - _buttonY[kButtonBekUrl])     ) ;
-    
+    /*_distanceToButton[kButtonBekUrl] = sqrt(    (touchDownX - _buttonX[kButtonBekUrl]) * (touchDownX - _buttonX[kButtonBekUrl]) + (touchDownY - _buttonY[kButtonBekUrl]) * (touchDownY - _buttonY[kButtonBekUrl])     ) ;
     if ( (_buttonRadius[kButtonBekUrl] + (ofGetWidth() * 0.01) ) > _distanceToButton[kButtonBekUrl] ) {
         NSURL *urlPath = [NSURL URLWithString:@"http://www.bek.no"];
         [[UIApplication sharedApplication] openURL:urlPath];
-    }
+    }*/
     
     /// BLUETOOTH BUTTON ///
     _distanceToButton[kButtonBluetooth] = sqrt(    (touchDownX - _buttonX[kButtonBluetooth]) * (touchDownX - _buttonX[kButtonBluetooth]) + (touchDownY - _buttonY[kButtonBluetooth]) * (touchDownY - _buttonY[kButtonBluetooth])     ) ;
@@ -148,7 +151,7 @@ void About::distanceToButton( float touchDownX, float touchDownY ) {
     
     
     /// DELAY BUTTON ///
-    _distanceToButton[kButtonDelay] = sqrt(    (touchDownX - _buttonX[kButtonDelay]) * (touchDownX - _buttonX[kButtonDelay]) + (touchDownY - _buttonY[kButtonDelay]) * (touchDownY - _buttonY[kButtonDelay])     ) ;
+    /*_distanceToButton[kButtonDelay] = sqrt(    (touchDownX - _buttonX[kButtonDelay]) * (touchDownX - _buttonX[kButtonDelay]) + (touchDownY - _buttonY[kButtonDelay]) * (touchDownY - _buttonY[kButtonDelay])     ) ;
     
     if ( (_buttonRadius[kButtonDelay] + (ofGetWidth() * 0.01) ) > _distanceToButton[kButtonDelay] ) // Bigger area than button to make it easier to hit.
     {
@@ -165,7 +168,7 @@ void About::distanceToButton( float touchDownX, float touchDownY ) {
             XML.saveFile( ofxiOSGetDocumentsDirectory() + "mySettings.xml" );
             ofLog() << "mySettings.xml saved to app documents dolder ";
         }
-    }
+    }*/
     
     
 }

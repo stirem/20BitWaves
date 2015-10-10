@@ -14,6 +14,8 @@
 #include "ofxMaxim.h" // Include Maximilian in project
 #include "maximilian.h" // Inclde Maximilian in project
 
+#import <CoreBluetooth/CoreBluetooth.h>
+
 
 
 
@@ -45,8 +47,7 @@ private:
     void            deviceOrientationChanged(int newOrientation);
     
     void            loadFileSamples();
-    
-    
+
     
     vector<Particles> particles;
 
@@ -73,6 +74,9 @@ private:
 
     vector<string> vectorOfStrings;
     int             howManySamples;
+    
+
+  
 
 
     

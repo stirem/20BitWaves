@@ -1,18 +1,33 @@
 #include "ofMain.h"
 #include "ofApp.h"
+#include "ofAppiOSWindow.h"
 
 int main(){
     ///< Enable Retina
     
-    ofAppiOSWindow * iOSWindow = new ofAppiOSWindow();
+    /*ofAppiOSWindow * iOSWindow = new ofAppiOSWindow();
     //iOSWindow->enableAntiAliasing(4);
     iOSWindow->enableRetina();
     iOSWindow->disableHardwareOrientation();
-     
-    ofSetupOpenGL(1024,768,OF_FULLSCREEN);			// <-------- setup the GL context
 
-	ofRunApp(new ofApp());
+     
+    ofSetupOpenGL( iOSWindow, 1024,768, OF_FULLSCREEN );			// <-------- setup the GL context
+
+	ofRunApp(new ofApp());*/
     
+    ofiOSWindowSettings settings;
+    settings.enableRetina = true;
+    settings.enableAntiAliasing = false;
+    settings.numOfAntiAliasingSamples = 0;
+    settings.enableDepth = false;
+    settings.enableHardwareOrientation = false;
+    settings.enableHardwareOrientationAnimation = false;
+    settings.glesVersion = OFXIOS_RENDERER_ES3;
+    settings.windowMode = OF_FULLSCREEN;
+    ofCreateWindow( settings );
+    
+    
+    return ofRunApp( new ofApp );
     
 }
 

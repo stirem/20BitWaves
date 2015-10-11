@@ -14,7 +14,6 @@
 #include "ofxMaxim.h" // Include Maximilian in project
 #include "maximilian.h" // Inclde Maximilian in project
 
-#import <CoreBluetooth/CoreBluetooth.h>
 
 
 

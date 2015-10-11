@@ -167,6 +167,10 @@ void ofApp::loadFileSamples() {
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    
+    ofLog() << "ofGetWidth(): " << ofGetWidth();
+    ofLog() << "ofGetHeight(): " << ofGetHeight();
+    
     // Orientation fix
     if(ofxiOSGetGLView().frame.origin.x != 0
        || ofxiOSGetGLView().frame.size.width != [[UIScreen mainScreen] bounds].size.width){

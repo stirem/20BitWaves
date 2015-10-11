@@ -50,6 +50,7 @@
 		80CB584A1BCA6694005782BC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58421BCA6694005782BC /* Icon.png */; settings = {ASSET_TAGS = (); }; };
 		80CB584B1BCA6694005782BC /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58431BCA6694005782BC /* Icon@2x.png */; settings = {ASSET_TAGS = (); }; };
 		80CB584C1BCA6694005782BC /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58441BCA6694005782BC /* iTunesArtwork@2x.png */; settings = {ASSET_TAGS = (); }; };
+		80CB58501BCA8520005782BC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 80CB584F1BCA8520005782BC /* Images.xcassets */; settings = {ASSET_TAGS = (); }; };
 		BB16EBD20F2B2A9500518274 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD10F2B2A9500518274 /* OpenGLES.framework */; };
 		BB16EBD90F2B2AB500518274 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD80F2B2AB500518274 /* QuartzCore.framework */; };
 		BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */; };
@@ -143,6 +144,7 @@
 		80CB58421BCA6694005782BC /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = bin/data/Icon.png; sourceTree = "<group>"; };
 		80CB58431BCA6694005782BC /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "bin/data/Icon@2x.png"; sourceTree = "<group>"; };
 		80CB58441BCA6694005782BC /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "iTunesArtwork@2x.png"; path = "bin/data/iTunesArtwork@2x.png"; sourceTree = "<group>"; };
+		80CB584F1BCA8520005782BC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BITWaves/Images.xcassets; sourceTree = "<group>"; };
 		BB16EBD10F2B2A9500518274 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BB16EBD80F2B2AB500518274 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		BB24DDC910DA781C00E9C588 /* ofxiOS-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ofxiOS-Info.plist"; sourceTree = "<group>"; };
@@ -193,6 +195,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				80CB584F1BCA8520005782BC /* Images.xcassets */,
 				80CB582D1BCA6689005782BC /* Default-568h@2x~iphone.png */,
 				80CB582E1BCA6689005782BC /* Default.png */,
 				80CB582F1BCA6689005782BC /* Default@2x-iphone.png */,
@@ -472,6 +475,7 @@
 				80CB58491BCA6694005782BC /* Icon-76@2x.png in Resources */,
 				80CB583A1BCA6689005782BC /* Default@2x~iphone.png in Resources */,
 				80CB58461BCA6694005782BC /* Icon-72.png in Resources */,
+				80CB58501BCA8520005782BC /* Images.xcassets in Resources */,
 				80CB58361BCA6689005782BC /* Default.png in Resources */,
 				80CB58381BCA6689005782BC /* Default@2x.png in Resources */,
 				80CB583B1BCA6689005782BC /* Default~ipad.png in Resources */,
@@ -544,12 +548,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ofxiOS_Prefix.pch;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = Bit20iPadApp;
 				PRODUCT_NAME = BITWaves;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";
@@ -559,12 +566,15 @@
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ofxiOS_Prefix.pch;
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = Bit20iPadApp;
 				PRODUCT_NAME = BITWaves;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "$(ARCHS_STANDARD)";

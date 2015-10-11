@@ -286,7 +286,7 @@ void Recording::Draw() {
 
     
     // Bluetooth Text
-    if ( _bluetoothActive ) {
+    if ( willTakeRecording && _bluetoothActive ) {
         ofSetColor( 255 );
         _arial.drawString( "Recording is disabled when Bluetooth is enabled.\n\nTurn off Bluetooth in the about section inside this app", recButtonPosX - (recButtonRadius * 0.5), recButtonPosY + (recButtonRadius * 1.2) );
     }

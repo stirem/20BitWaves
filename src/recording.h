@@ -41,6 +41,8 @@ public:
     
 private:
     
+    void                    initSizeValues();
+    
     void                    RecordPressed();
     void                    StopPressed();
     

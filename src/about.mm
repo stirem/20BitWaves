@@ -27,6 +27,22 @@ void About::setup() {
     _isDelayActive                          = XML.getValue( "DELAY_ACTIVE", 0 );
     _closeAbout                             = false;
     
+    _buttonValue[kButtonBluetooth]          = _audioInputValue;
+    _buttonValue[kButtonDelay]              = _isDelayActive;
+
+    initSizeValues();
+    
+    _arial.loadFont( "Fonts/arial.ttf", 12 );
+    
+    _aboutTextAndLogos.loadImage( "aboutTextAndLogos.png" );
+    _closeButton.loadImage( "closeButton.png" );
+    
+    
+    
+}
+
+void About::initSizeValues() {
+    
     for ( int i = 0; i < NUM_OF_BUTTONS; i++ ) {
         _distanceToButton[i]                = ofGetWidth();
         _buttonRadius[i]                    = ofGetWidth() * 0.01;
@@ -35,14 +51,6 @@ void About::setup() {
     _buttonY[kButtonBluetooth]              = ofGetHeight() * 0.95;
     _buttonY[kButtonDelay]                  = ofGetHeight() * 0.9;
     _buttonY[kButtonBekUrl]                 = ofGetHeight() * 0.8;
-    _buttonValue[kButtonBluetooth]          = _audioInputValue;
-    _buttonValue[kButtonDelay]              = _isDelayActive;
-
-    
-    _arial.loadFont( "Fonts/arial.ttf", 12 );
-    
-    _aboutTextAndLogos.loadImage( "aboutTextAndLogos.png" );
-    _closeButton.loadImage( "closeButton.png" );
     _aboutTextAndLogos_width                = ofGetWidth() * 0.85;
     _aboutTextAndLogos_height               = ofGetWidth() * 0.47;
     _aboutTextAndLogos_X                    = ofGetWidth() * 0.5;
@@ -52,7 +60,6 @@ void About::setup() {
     _closeButtonX                           = _aboutTextAndLogos_X + ( _aboutTextAndLogos_width * 0.495 );
     _closeButtonY                           = _aboutTextAndLogos_Y - ( _aboutTextAndLogos_height * 0.495 );
     _closeButtonRadius                      = ofGetWidth() * 0.04;
-    
     
 }
 
@@ -65,6 +72,8 @@ void About::update(  ) {
 
 void About::draw() {
 
+    initSizeValues();
+    
     // About Text and Logoes
     ofSetColor( 255 );
     _aboutTextAndLogos.setAnchorPercent( 0.5, 0.5 );

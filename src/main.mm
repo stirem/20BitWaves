@@ -10,7 +10,6 @@ int main(){
     iOSWindow->enableRetina();
     iOSWindow->disableHardwareOrientation();
 
-     
     ofSetupOpenGL( iOSWindow, 1024,768, OF_FULLSCREEN );			// <-------- setup the GL context
 
 	ofRunApp(new ofApp());*/
@@ -22,10 +21,10 @@ int main(){
     settings.enableDepth = false;
     settings.enableHardwareOrientation = false;
     settings.enableHardwareOrientationAnimation = false;
-    settings.glesVersion = OFXIOS_RENDERER_ES3;
+    settings.glesVersion = OFXIOS_RENDERER_ES1;
     settings.windowMode = OF_FULLSCREEN;
+    settings.setupOrientation = OF_ORIENTATION_90_LEFT;
     ofCreateWindow( settings );
-    
     
     return ofRunApp( new ofApp );
     

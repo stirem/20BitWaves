@@ -7,41 +7,17 @@ Recording::Recording() {
 
 void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     
+    initSizeValues();
+    
     isRecording = false;
     
     _whatNrAmI = whatNrAmI;
-    
 
     myRecString = ofxNSStringToString( initRecFile() ); // Init sound file
-    
-    
-    /*recButtonPosX                   = ofGetScreenWidth() * 0.5;
-    recButtonPosY                   = ofGetScreenHeight() * 0.5;
-    recButtonRadius                 = ofGetScreenWidth() * 0.15;
-    distanceToRecButton             = ofGetScreenWidth(); // Avoid rec button getting pushed on start*/
-    
-    recButtonPosX                   = ofGetWidth() * 0.5;
-    recButtonPosY                   = ofGetHeight() * 0.5;
-    recButtonRadius                 = ofGetWidth() * 0.15;
-    _distanceToRecButton             = ofGetWidth(); // Avoid rec button getting pushed on start
     
     recButtonColor                  = 100;
     muteAudioWhileRecording         = false;
     loadFileIsDone                  = false;
-
-    /*if( !isFileInDir() )
-    {
-        readyToPlay = false;
-        SetupAudioFile();
-        willTakeRecording = true;
-        showDeleteButton = false;
-    }
-    else
-    {
-        readyToPlay = true;
-        willTakeRecording = false;
-        showDeleteButton = true;
-    }*/
     
     waitForSaveFileTime             = 0;
     willWaitForSave                 = false;
@@ -51,24 +27,15 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     meter                           = 0;
     addParticlesTimer               = 0;
     spectrumPosXinc                 = 0;
-    spectrumPosXincValue            = ofGetWidth() * 0.001;
+    
     
     delButtonIsPressed              = false;
-    
-    /*delButtonPosX                   = ofGetScreenWidth() * 0.95;
-    delButtonPosY                   = ofGetScreenHeight() * 0.05;
-    delButtonRadius                 = ofGetScreenWidth() * 0.02;
-    distanceToDelButton             = ofGetScreenWidth();*/
-    
-    delButtonPosX                   = ofGetWidth() * 0.95;
-    delButtonPosY                   = ofGetHeight() * 0.05;
-    delButtonRadius                 = ofGetWidth() * 0.03;
-    distanceToDelButton             = ofGetWidth();
     
     delButtonTime                   = 0.0;
     willWaitForDelButton            = false;
     eraseRecFileTimer               = 0.0;
     eraseRectWidth                  = ofGetWidth() * 0.2;
+    
     silenceWhenDeleting             = false;
     if ( audioInputValue == 1 ) {
         _bluetoothActive = 0;
@@ -94,6 +61,23 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     
     
     
+    
+}
+
+void Recording::initSizeValues() {
+    
+    recButtonPosX                   = ofGetWidth() * 0.5;
+    recButtonPosY                   = ofGetHeight() * 0.5;
+    recButtonRadius                 = ofGetWidth() * 0.15;
+    _distanceToRecButton             = ofGetWidth(); // Avoid rec button getting pushed on start
+    spectrumPosXincValue            = ofGetWidth() * 0.001;
+    delButtonPosX                   = ofGetWidth() * 0.95;
+    delButtonPosY                   = ofGetHeight() * 0.05;
+    delButtonRadius                 = ofGetWidth() * 0.03;
+    distanceToDelButton             = ofGetWidth();
+
+
+
     
 }
 
@@ -234,6 +218,8 @@ void Recording::distanceToDeleteButton( float touchX, float touchY ) {
 
 
 void Recording::Draw() {
+    
+    initSizeValues();
     
     // Rec spectrum
     for (int i = 0; i < recSpectrum.size(); i++)

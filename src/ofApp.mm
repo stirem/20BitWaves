@@ -175,6 +175,7 @@ void ofApp::update()
         ofxiOSGetGLView().frame = CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.height);
     }
     
+    
     ///< MAXIMILIAN
     float *val = myFFT.magnitudesDB;
 
@@ -250,7 +251,15 @@ void ofApp::update()
         }
     }
     
-    
+    /*ofLog() << "ofGetWidth(): " << ofGetWidth();
+    ofLog() << "ofGetHeight(): " << ofGetHeight();
+    ofLog() << "--------";
+    ofLog() << "ofGetScreenWidth(): " << ofGetScreenWidth();
+    ofLog() << "ofGetScreenHeight(): " << ofGetScreenHeight();
+    ofLog() << "--------";
+    ofLog() << "ofGetWindowWidth(): " << ofGetWindowWidth();
+    ofLog() << "ofGetWindowHeight(): " << ofGetWindowHeight();
+    ofLog() << "--------";*/
 }
 
 //--------------------------------------------------------------
@@ -285,7 +294,13 @@ void ofApp::draw()
     {
         particles[i].Draw();
     }
-
+    
+    ofSetColor( 255 );
+    ofDrawBitmapString( "ofGetWidth(): " + ofToString( ofGetWidth() ), 10, 10 );
+    ofDrawBitmapString( "ofGetHeight(): " + ofToString( ofGetHeight() ), 10, 30 );
+    ofDrawBitmapString( "GLview width: " + ofToString( ofxiOSGetGLView().frame.size.width ), 10, 50 );
+    ofDrawBitmapString( "UIScreen: " + ofToString( [[UIScreen mainScreen] bounds].size.width ), 10, 70 );
+    
 }
 
 //--------------------------------------------------------------

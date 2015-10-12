@@ -32,6 +32,8 @@ public:
     
 private:
     
+    void                    initSizeValues();
+    
     ofxXmlSettings          XML;
     float                   _distanceToButton[NUM_OF_BUTTONS];
     float                   _buttonRadius[NUM_OF_BUTTONS];

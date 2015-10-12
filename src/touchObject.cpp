@@ -142,6 +142,25 @@ void Touchobject::Position( float touchX, float touchY )
 // --------------------------------------------------------
 void Touchobject::Draw()
 {
+    // DEBUGGING TEXT
+    ofSetColor( 255 );
+    for ( int i = 3; i < 20; i++ ) {
+        ofDrawBitmapString( "spectrum volume: " + ofToString( spectrumVolume ), 10, 90 );
+        ofDrawBitmapString( "sound brightness: " + ofToString( soundBrightness ), 10, 110 );
+        ofDrawBitmapString( "radius: " + ofToString( radius ), 10, 130 );
+        ofDrawBitmapString( "spectrum: " + ofToString( i ) + ": " + ofToString( spectrum[i] ), 10, 130 + (i * 10));
+    
+    }
+    // DEBUGGING SPECTRUM
+    ofSetColor(255);
+    ofSetRectMode(OF_RECTMODE_CORNER);
+    ofFill();
+    for (int i = 0; i < BANDS; i++) {
+        ofRect(10 + i * 2, ofGetHeight(), 1, -spectrum[i] * 10);
+    }
+    
+
+    
     //ofEnableAlphaBlending();
     //OF_BLENDMODE_SCREEN;
 

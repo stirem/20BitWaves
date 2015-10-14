@@ -97,7 +97,7 @@ void ofApp::setup()
 void ofApp::loadFileSamples() {
     
     // Are there any wav sound files in dir?
-    bool filesExist = false;
+    bool filesExistInDocDir = false;
 
     NSArray *searchPaths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
     NSString *documentsPath = [searchPaths objectAtIndex:0];
@@ -107,29 +107,29 @@ void ofApp::loadFileSamples() {
     NSEnumerator *e = [ contents objectEnumerator ];
     NSString *fileName;
     
-    int fileCounter = 0; // Prevent from loading more than 7 sounds
+    int filesInDocDirCounter = 0; // Prevent from loading more than 7 sounds
     
     while ( ( fileName = [ e nextObject ] ) ) {
         if ( [ [ fileName pathExtension ] isEqualToString: extension ] ) {
             NSLog( @"FileName: %@", fileName );
             NSString *soundFilePath = [ documentsPath stringByAppendingPathComponent: fileName ];
             string myFileString = ofxNSStringToString( soundFilePath );
-            fileCounter++;
-            if ( fileCounter <= 7 ) {
+            filesInDocDirCounter++;
+            if ( filesInDocDirCounter <= 7 ) {
                 vectorOfStrings.push_back( myFileString ); // Fill my own vector with strings
             }
 
-            filesExist = true;
+            filesExistInDocDir = true;
         }
     }
     
-    ofLog() << "fileCounter: " << fileCounter;
+    ofLog() << "filesInDocDirCounter: " << filesInDocDirCounter;
     
     
 
-    ofLog() << "filesExist: " << filesExist;
+    ofLog() << "filesExistInDocDir: " << filesExistInDocDir;
     
-    if ( filesExist ) {
+    if ( filesExistInDocDir ) {
         
         ofLog() << "vectorOfStrings.size(): " << vectorOfStrings.size();
         howManySamples = vectorOfStrings.size();
@@ -169,19 +169,19 @@ void ofApp::update()
 {
     
     // Orientation fix
-    if(ofxiOSGetGLView().frame.origin.x != 0
+    /*if(ofxiOSGetGLView().frame.origin.x != 0
        || ofxiOSGetGLView().frame.size.width != [[UIScreen mainScreen] bounds].size.width){
         
         ofxiOSGetGLView().frame = CGRectMake(0,0,[[UIScreen mainScreen] bounds].size.width,[[UIScreen mainScreen] bounds].size.height);
-    }
+    }*/
     
     
-    ///< MAXIMILIAN
+    ///< Maximilian FFT analyze
     float *val = myFFT.magnitudesDB;
 
     
     ///< Update spectrum analyze
-    touchobject.Update( val );
+    touchobject.Update( val, sample );
 
     
     ///< Increase radius of particles, and decrease alpha
@@ -200,11 +200,10 @@ void ofApp::update()
     
     ///< Add particles
     if ( (menu._whatMode == kModeRec && recording[ menu._whatRecSample ].readyToPlay && !menu._isInMenu) || !menu._isInMenu ) {
-        if ( touchobject.spectrumVolume > 1200 && volume > 0.0 ) {
-            
+        if ( sample != 0 ) {
             addParticlesTimer += ofGetLastFrameTime();
             if ( addParticlesTimer >= 0.01 ) {
-                particles.push_back( Particles(touchPosX, touchPosY, touchobject.SpectrumVolume(), touchobject.StartRadius(), touchobject.ColorBrightness(), soundSpeed ) );
+                particles.push_back( Particles(touchPosX, touchPosY, touchobject.StartRadius(), touchobject.ColorBrightness(), soundSpeed ) );
                 addParticlesTimer = 0;
             }
         }
@@ -268,7 +267,7 @@ void ofApp::draw()
 
     
     // Draw menu-button
-    menu.draw( );
+    menu.draw( howManySamples );
     
     ///// R E C O R D I N G /////
     if ( !menu._isInMenu && !menu._aboutIsOpen ) {
@@ -300,6 +299,9 @@ void ofApp::draw()
     ofDrawBitmapString( "ofGetHeight(): " + ofToString( ofGetHeight() ), 10, 30 );
     ofDrawBitmapString( "GLview width: " + ofToString( ofxiOSGetGLView().frame.size.width ), 10, 50 );
     ofDrawBitmapString( "UIScreen: " + ofToString( [[UIScreen mainScreen] bounds].size.width ), 10, 70 );
+    ofDrawBitmapString( "sample: " + ofToString( sample ), 10, 90 );
+    ofDrawBitmapString( "fps: " + ofToString( ofGetFrameRate() ), 10, 110 );
+    
     
 }
 
@@ -514,7 +516,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     }
     // Pictogram buttons
     if ( menu._isInMenu ) {
-        menu.distanceToMenuButtons( touch.x, touch.y );
+        menu.distanceToMenuButtons( touch.x, touch.y, howManySamples );
     }
     
 

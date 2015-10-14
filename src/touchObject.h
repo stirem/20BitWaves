@@ -14,7 +14,7 @@ public:
     Touchobject(); // Constructor
     
     void        Setup();
-    void        Update( float *val );
+    void        Update( float *val, double sample );
     void        Draw();
     float       ColorBrightness();
     float       SpectrumVolume();
@@ -35,7 +35,6 @@ private:
     
     float       maxRadius;
     float       soundBrightness;
-    float       startRadius;
     float       colorBrightness;
     float       alpha;
     float       radius;

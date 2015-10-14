@@ -4,7 +4,7 @@
 
 ///< Get the position, color brightness and radius of soundwaves
 // --------------------------------------------------------
-Particles::Particles( float touchX, float touchY, float specVolume, float startRadius, float colorBrightness, float soundSpeed )
+Particles::Particles( float touchX, float touchY, float startRadius, float colorBrightness, float soundSpeed )
 {
     pos.set(touchX, touchY);
     circleColorBrightness   = colorBrightness;

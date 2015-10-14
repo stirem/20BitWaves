@@ -19,7 +19,7 @@ int main(){
     settings.enableAntiAliasing = false;
     settings.numOfAntiAliasingSamples = 0;
     settings.enableDepth = false;
-    settings.enableHardwareOrientation = false;
+    settings.enableHardwareOrientation = true;
     settings.enableHardwareOrientationAnimation = false;
     settings.glesVersion = OFXIOS_RENDERER_ES1;
     settings.windowMode = OF_FULLSCREEN;

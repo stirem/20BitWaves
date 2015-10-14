@@ -15,9 +15,9 @@ public:
     
     void            setup();
     void            update( );
-    void            draw();
+    void            draw( int howManySamples );
     void            distanceToTinyButton( float touchX, float touchY );
-    void            distanceToMenuButtons( float touchX, float touchY );
+    void            distanceToMenuButtons( float touchX, float touchY, int howManySamples );
     
     bool            _isInMenu;
     bool            _muteAudio;

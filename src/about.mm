@@ -25,7 +25,9 @@ void About::setup() {
     
     _audioInputValue                        = XML.getValue( "AUDIO_INPUT_VALUE", 1 );
     _isDelayActive                          = XML.getValue( "DELAY_ACTIVE", 0 );
+    
     _closeAbout                             = false;
+
     
     _buttonValue[kButtonBluetooth]          = _audioInputValue;
     _buttonValue[kButtonDelay]              = _isDelayActive;

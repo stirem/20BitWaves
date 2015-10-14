@@ -20,7 +20,6 @@ void Touchobject::Setup()
     
     soundBrightness     = 0;
     alpha               = 255;
-    startRadius         = 0;
     spectrumVolume      = 0;
     colorBrightness     = 0;
     radius              = 0;
@@ -30,10 +29,10 @@ void Touchobject::Setup()
 
 
 // --------------------------------------------------------
-void Touchobject::Update( float *val )
+void Touchobject::Update( float *val, double sample )
 {
     // Sound spectrum
-    for (int i = 0; i<BANDS; i++)
+    for (int i = 0; i < BANDS; i++)
     {
         spectrum[i] *= 0.97; // Slow decreasing
         spectrum[i] = max( spectrum[i], val[i]);
@@ -46,15 +45,16 @@ void Touchobject::Update( float *val )
     float a = 0;
     float b = 0;
     
-    for ( int i = 0; i<BANDS; i++ )
+    for ( int i = 0; i < BANDS/2; i++ )
     {
         a += ( i + 1 ) * spectrum[i];
         b += spectrum[i];
     }
     
     // Avoid division by 0 for silence
-    if ( a == 0 )
+    if ( a == 0 ) {
         b = 1;
+    }
     
     soundBrightness = a / b;
     spectrumVolume = b;
@@ -62,7 +62,7 @@ void Touchobject::Update( float *val )
 
     
     // Fade down soundobject when not playing
-    if ( spectrumVolume < 1000 )
+    /*if ( spectrumVolume < 500 )
     {
         if ( colorBrightness > 0 )
         {
@@ -74,6 +74,14 @@ void Touchobject::Update( float *val )
             radius = radius - 1;
         }
         
+    } else {
+        alpha = 255;
+    }*/
+    
+    if ( sample == 0 ) {
+        if ( alpha > 0 ) {
+            alpha -= 15;
+        }
     } else {
         alpha = 255;
     }
@@ -101,8 +109,9 @@ float Touchobject::SoundBrightness()
 // --------------------------------------------------------
 float Touchobject::ColorBrightness()
 {
-   
-    colorBrightness = ofMap( soundBrightness, 500, 770, 255, 20 );
+    
+    
+    colorBrightness = ofMap( soundBrightness, 10, 50, 20, 255 );
     
     return colorBrightness;
     
@@ -114,16 +123,14 @@ float Touchobject::ColorBrightness()
 float Touchobject::StartRadius()
 {
     
-    ///< Start radius for soundwaves based on the size of the soundobject.
-    //startRadius = spectrumVolume / 30;
-   
+    float spectrumValue = 0;
+    float startRadius = 0;
     
-
-    //startRadius = ofMap( spectrumVolume, 1300, 1600, ofGetScreenWidth() * 0.01, ofGetScreenWidth() * 0.02 );
-    startRadius = ofMap( spectrumVolume, 1300, 1600, ofGetScreenWidth() * 0.01, ofGetScreenWidth() * 0.02 );
+    spectrumValue = ofClamp( spectrumVolume, 1, 2000 );
+    
+    startRadius = ofMap( spectrumValue, 1, 1600, 0, ofGetWidth() * 0.04 );
     
     radius = startRadius;
-    
     
     return startRadius;
     
@@ -145,10 +152,10 @@ void Touchobject::Draw()
     // DEBUGGING TEXT
     ofSetColor( 255 );
     for ( int i = 3; i < 20; i++ ) {
-        ofDrawBitmapString( "spectrum volume: " + ofToString( spectrumVolume ), 10, 90 );
-        ofDrawBitmapString( "sound brightness: " + ofToString( soundBrightness ), 10, 110 );
-        ofDrawBitmapString( "radius: " + ofToString( radius ), 10, 130 );
-        ofDrawBitmapString( "spectrum: " + ofToString( i ) + ": " + ofToString( spectrum[i] ), 10, 130 + (i * 10));
+        ofDrawBitmapString( "spectrum volume: " + ofToString( spectrumVolume ), 10, 130 );
+        ofDrawBitmapString( "sound brightness: " + ofToString( soundBrightness ), 10, 150 );
+        ofDrawBitmapString( "radius: " + ofToString( StartRadius() ), 10, 170 );
+        //ofDrawBitmapString( "spectrum: " + ofToString( i ) + ": " + ofToString( spectrum[i] ), 10, 150 + (i * 10));
     
     }
     // DEBUGGING SPECTRUM

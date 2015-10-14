@@ -147,9 +147,10 @@ void menu::distanceToTinyButton( float touchX, float touchY ) {
     }
 }
 
-void menu::distanceToMenuButtons( float touchX, float touchY ) {
+void menu::distanceToMenuButtons( float touchX, float touchY, int howManySamples ) {
     
-    for ( int i = 0; i < NUM_OF_MENU_PICTOGRAMS; i++ ) {
+
+    for ( int i = 0; i < 1 + NUM_OF_REC_MODES + howManySamples; i++ ) { // 1 = about
         _distanceToMenuButtons[i] = sqrt( (touchX - _pictogramsOpenX[i]) * (touchX - _pictogramsOpenX[i]) + (touchY - _pictogramsOpenY) * (touchY - _pictogramsOpenY) ) ;
     
         if ( _pictogramsRadius > _distanceToMenuButtons[i] ) {
@@ -174,7 +175,7 @@ void menu::distanceToMenuButtons( float touchX, float touchY ) {
 
 
 
-void menu::draw(  )
+void menu::draw( int howManySamples )
 {
    initSizeValues();
     
@@ -225,7 +226,7 @@ void menu::draw(  )
         }
         
         // Num pictogram
-        for ( int i = 0; i < NUM_OF_HARDCODED_SOUNDS; i++ ) {
+        for ( int i = 0; i < howManySamples; i++ ) {
             if ( _whatMode == kModeFileSample && _whatFileSample == i ) {
                 ofSetColor( 255 );
             } else {

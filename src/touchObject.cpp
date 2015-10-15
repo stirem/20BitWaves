@@ -111,7 +111,7 @@ float Touchobject::ColorBrightness()
 {
     
     
-    colorBrightness = ofMap( soundBrightness, 10, 50, 20, 255 );
+    colorBrightness = ofMap( soundBrightness, 10, 50, 30, 255 );
     
     return colorBrightness;
     

@@ -14,11 +14,7 @@
 #include "ofxMaxim.h" // Include Maximilian in project
 #include "maximilian.h" // Inclde Maximilian in project
 
-
-
-
-
-
+#include <CoreBluetooth/CoreBluetooth.h>
 
 class ofApp : public ofxiOSApp {
 	
@@ -46,6 +42,7 @@ private:
     void            deviceOrientationChanged(int newOrientation);
     
     void            loadFileSamples();
+
 
     
     vector<Particles> particles;

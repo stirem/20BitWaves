@@ -33,7 +33,7 @@ int main(){
 
 
 ///< Dirty hack to fix linker issue with ios simulator (Xcode 6 and ios SDK 8.0)
-extern "C"{
+/*extern "C"{
     size_t fwrite$UNIX2003( const void *a, size_t b, size_t c, FILE *d )
     {
         return fwrite(a, b, c, d);
@@ -49,4 +49,4 @@ extern "C"{
     double strtod$UNIX2003(const char * a, char ** b) {
         return strtod(a, b);
     }
-}
+}*/

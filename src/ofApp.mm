@@ -51,8 +51,28 @@ void ofApp::setup()
     
 
     ///< openFrameworks sound stream
-    soundStream.setup( this, 2, about._audioInputValue, sampleRate, initialBufferSize, 4 );
+
+   /*
+    CBCentralManager *bluetoothManager;
     
+    bluetoothManager = [ CBCentralManager alloc ];
+                        
+
+    int audioInputValue;
+    if ( [bluetoothManager.state] == CBCentralManagerStatePoweredOn ) {
+        // Bluetooth is on, then input is turn OFF
+        audioInputValue = 0;
+    } else {
+        // Bluetooth is off, then input is turned ON
+        audioInputValue = 1;
+    }
+    
+    ofLog() << "audioInputValue: " << audioInputValue;
+    soundStream.setup( this, 2, audioInputValue, sampleRate, initialBufferSize, 4 );
+    */
+    
+    
+    soundStream.setup( this, 2, about._audioInputValue, sampleRate, initialBufferSize, 4 );
     
     
     // Setup FFT
@@ -66,6 +86,7 @@ void ofApp::setup()
     // Order here is important to check if rec file has content. If no content, rec button will be shown.
     for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
         recording[i].setup( i, about._audioInputValue );
+        //recording[i].setup( i, audioInputValue );
         recSample[i].load( recording[i].myRecString );
         recording[i].isRecSampleZero( recSample[i].length );
     }
@@ -90,6 +111,8 @@ void ofApp::setup()
 
     
 }
+
+
 
 
 
@@ -124,9 +147,6 @@ void ofApp::loadFileSamples() {
     }
     
     ofLog() << "filesInDocDirCounter: " << filesInDocDirCounter;
-    
-    
-
     ofLog() << "filesExistInDocDir: " << filesExistInDocDir;
     
     if ( filesExistInDocDir ) {
@@ -167,7 +187,7 @@ void ofApp::loadFileSamples() {
 //--------------------------------------------------------------
 void ofApp::update()
 {
-    
+
     // Orientation fix
     /*if(ofxiOSGetGLView().frame.origin.x != 0
        || ofxiOSGetGLView().frame.size.width != [[UIScreen mainScreen] bounds].size.width){
@@ -185,7 +205,6 @@ void ofApp::update()
 
     
     ///< Increase radius of particles, and decrease alpha
-
     for( int i = 0; i < particles.size(); i++ ) {
         particles[i].Update( soundSpeed, sample );
     }

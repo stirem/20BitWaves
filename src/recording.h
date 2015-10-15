@@ -8,7 +8,7 @@
 
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
-//#include "ofxGui.h"
+
 #import <AudioToolbox/AudioToolbox.h>
 #import <AVFoundation/AVFoundation.h>
 //#import <AVFoundation/AVAudioSession.h>

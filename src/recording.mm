@@ -18,16 +18,12 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     recButtonColor                  = 100;
     muteAudioWhileRecording         = false;
     loadFileIsDone                  = false;
-    
-    waitForSaveFileTime             = 0;
-    willWaitForSave                 = false;
 
     mAveragePower                   = 0;
     mPeakPower                      = 0;
     meter                           = 0;
     addParticlesTimer               = 0;
     spectrumPosXinc                 = 0;
-    
     
     delButtonIsPressed              = false;
     
@@ -69,7 +65,7 @@ void Recording::initSizeValues() {
     recButtonPosX                   = ofGetWidth() * 0.5;
     recButtonPosY                   = ofGetHeight() * 0.5;
     recButtonRadius                 = ofGetWidth() * 0.15;
-    _distanceToRecButton             = ofGetWidth(); // Avoid rec button getting pushed on start
+    _distanceToRecButton            = ofGetWidth(); // Avoid rec button getting pushed on start
     spectrumPosXincValue            = ofGetWidth() * 0.001;
     delButtonPosX                   = ofGetWidth() * 0.95;
     delButtonPosY                   = ofGetHeight() * 0.05;
@@ -126,14 +122,6 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
             RecordPressed();
         }
     }
-    
-    /*if ( willWaitForSave ) {
-        if ( myTimer > waitForSaveFileTime + 1.0 ) {
-            saveFileIsDone = 1;
-            readyToPlay = 1;
-            willWaitForSave = 0;
-        }
-    }*/
 
     
     //// DELETE BUTTON ////
@@ -154,7 +142,6 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
     }
     
     // Do not make sound or visuals when rec button is on
-    //if ( willTakeRecording && recModeOn )
     if ( willTakeRecording )
     {
         readyToPlay = false;
@@ -246,14 +233,8 @@ void Recording::Draw() {
     if ( showDeleteButton )
     {
         ofSetColor( 255, 255, 255, 50 );
-        //ofNoFill();
-        //ofCircle( delButtonPosX, delButtonPosY, delButtonRadius );
         trashcan.setAnchorPercent( 0.5, 0.5 );
         trashcan.draw( delButtonPosX, delButtonPosY, ofGetWidth() * 0.03, ofGetWidth() * 0.035 );
-        //ofSetColor( 255, 255, 255, 20 );
-        //hold.setAnchorPercent( 0.5, 0.5 );
-        //hold.draw( delButtonPosX, delButtonPosY + ( trashcan.getHeight() * 0.1 ), ofGetWidth() * 0.02, ofGetHeight() * 0.008 );
-
     }
 
     // Visual timer for delete file
@@ -261,13 +242,10 @@ void Recording::Draw() {
     {
         ofSetColor( 255, 255, 255 );
         ofFill();
-        //ofRect( ofGetWidth() * 0.42, ofGetHeight() * 0.25, eraseRecFileTimer * ( ofGetWidth() * 0.2 ), ofGetHeight() * 0.1 );
         ofRect( ofGetWidth() * 0.4, ofGetHeight() * 0.25, eraseRectWidth, ofGetHeight() * 0.1 );
         ofNoFill();
         ofRect( ofGetWidth() * 0.4, ofGetHeight() * 0.25, ofGetWidth() * 0.2, ofGetHeight() * 0.1 );
         hold.setAnchorPercent( 0.5, 0.5 );
-        //hold.draw( ofGetWidth() * 0.5, ofGetHeight() * 0.15, ofGetWidth() * 0.075, ofGetHeight() * 0.023 );
-
     }
 
     
@@ -279,7 +257,7 @@ void Recording::Draw() {
     
     
     // Meter
-    /*if ( recButtonIsPressed ) {
+    /*if ( willTakeRecording ) {
         ofSetColor( 255, 0, 0 );
         ofRect( ofGetScreenWidth() * 0.25 , (ofGetScreenHeight() * 0.1), 10, -meter );
     }*/
@@ -305,8 +283,6 @@ void Recording::RecordPressed() {
     
     recButtonColor = 255;
     
-    //StopPressed();
-    
     isRecording = true;
     
     [audioRecorder record];
@@ -321,13 +297,7 @@ void Recording::StopPressed() {
         
         [audioRecorder stop];
         
-        //muteAudioWhileRecording = false;
-        
         readyToPlay = true;
-        
-        //waitForSaveFileTime = myTimer;
-        
-        //willWaitForSave = 1;
         
         recButtonColor = 100;
         
@@ -391,11 +361,6 @@ void Recording::setupRecFile() {
         }
     }
     
-    //NSArray *dirPaths;
-    //NSString *docsDir;
-    
-    //dirPaths = NSSearchPathForDirectoriesInDomains( NSDocumentDirectory, NSUserDomainMask, YES );
-    //docsDir = dirPaths[0];
     NSString *soundFilePath;
 
     soundFilePath = [ NSString stringWithFormat:@"%@/micRecording%d.wav", micRecPath, _whatNrAmI ];

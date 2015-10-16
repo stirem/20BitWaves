@@ -110,8 +110,11 @@ float Touchobject::SoundBrightness()
 float Touchobject::ColorBrightness()
 {
     
+    float clampedSoundBrightness;
     
-    colorBrightness = ofMap( soundBrightness, 10, 50, 30, 255 );
+    clampedSoundBrightness = ofClamp( soundBrightness, 10, 70 );
+    
+    colorBrightness = ofMap( clampedSoundBrightness, 10, 70, 70, 255 );
     
     return colorBrightness;
     
@@ -123,12 +126,12 @@ float Touchobject::ColorBrightness()
 float Touchobject::StartRadius()
 {
     
-    float spectrumValue = 0;
+    float clampedSpectrum = 0;
     float startRadius = 0;
     
-    spectrumValue = ofClamp( spectrumVolume, 1, 2000 );
+    clampedSpectrum = ofClamp( spectrumVolume, 1, 2000 );
     
-    startRadius = ofMap( spectrumValue, 1, 1600, 0, ofGetWidth() * 0.04 );
+    startRadius = ofMap( clampedSpectrum, 1, 1600, 0, ofGetWidth() * 0.04 );
     
     radius = startRadius;
     
@@ -150,21 +153,22 @@ void Touchobject::Position( float touchX, float touchY )
 void Touchobject::Draw()
 {
     // DEBUGGING TEXT
-    ofSetColor( 255 );
-    for ( int i = 3; i < 20; i++ ) {
-        ofDrawBitmapString( "spectrum volume: " + ofToString( spectrumVolume ), 10, 130 );
-        ofDrawBitmapString( "sound brightness: " + ofToString( soundBrightness ), 10, 150 );
-        ofDrawBitmapString( "radius: " + ofToString( StartRadius() ), 10, 170 );
-        //ofDrawBitmapString( "spectrum: " + ofToString( i ) + ": " + ofToString( spectrum[i] ), 10, 150 + (i * 10));
+    /*ofSetColor( 255 );
+    ofDrawBitmapString( "spectrum volume: " + ofToString( spectrumVolume ), 10, 130 );
+    ofDrawBitmapString( "sound brightness: " + ofToString( soundBrightness ), 10, 150 );
+    ofDrawBitmapString( "colour brightness: " + ofToString( ColorBrightness() ), 10, 170 );
+    ofDrawBitmapString( "radius: " + ofToString( StartRadius() ), 10, 190 );*/
+    /*for ( int i = 3; i < 20; i++ ) {
+        ofDrawBitmapString( "spectrum: " + ofToString( i ) + ": " + ofToString( spectrum[i] ), 10, 190 + (i * 10));
+    }*/
     
-    }
     // DEBUGGING SPECTRUM
-    ofSetColor(255);
+    /*ofSetColor(255);
     ofSetRectMode(OF_RECTMODE_CORNER);
     ofFill();
     for (int i = 0; i < BANDS; i++) {
         ofRect(10 + i * 2, ofGetHeight(), 1, -spectrum[i] * 10);
-    }
+    }*/
     
 
     

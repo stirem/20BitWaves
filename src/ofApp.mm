@@ -218,7 +218,7 @@ void ofApp::update()
     
     
     ///< Add particles
-    if ( (menu._whatMode == kModeRec && recording[ menu._whatRecSample ].readyToPlay && !menu._isInMenu) || !menu._isInMenu ) {
+    if ( (menu._whatMode == kModeRec && recording[ menu._whatRecSample ].readyToPlay && !menu._isInMenu) || (menu._whatMode == kModeFileSample && !menu._isInMenu) ) {
         if ( sample != 0 ) {
             addParticlesTimer += ofGetLastFrameTime();
             if ( addParticlesTimer >= 0.01 ) {
@@ -227,7 +227,6 @@ void ofApp::update()
             }
         }
     }
-
 
 
     ///// R E C O R D I N G /////
@@ -250,14 +249,6 @@ void ofApp::update()
     if ( recording[ menu._whatRecSample ].loadFileIsDone && touchIsDown ) {
         recording[ menu._whatRecSample ].muteAudioWhileRecording = false;
     }
-    
-    // Set ready to play if not in rec mode
-    /*if ( !menu.recModeOn[ menu.whatRecSample ] )
-    {
-        recording[ menu._whatRecSample ].readyToPlay = true;
-    }*/
-
-    
     
     // About Bit20
     if ( menu._aboutIsOpen ) {
@@ -296,7 +287,6 @@ void ofApp::draw()
         }
     }
     
-    
     // About Bit20
     if ( menu._aboutIsOpen ) {
         about.draw();
@@ -313,13 +303,13 @@ void ofApp::draw()
         particles[i].Draw();
     }
     
-    ofSetColor( 255 );
+    /*ofSetColor( 255 );
     ofDrawBitmapString( "ofGetWidth(): " + ofToString( ofGetWidth() ), 10, 10 );
     ofDrawBitmapString( "ofGetHeight(): " + ofToString( ofGetHeight() ), 10, 30 );
     ofDrawBitmapString( "GLview width: " + ofToString( ofxiOSGetGLView().frame.size.width ), 10, 50 );
     ofDrawBitmapString( "UIScreen: " + ofToString( [[UIScreen mainScreen] bounds].size.width ), 10, 70 );
     ofDrawBitmapString( "sample: " + ofToString( sample ), 10, 90 );
-    ofDrawBitmapString( "fps: " + ofToString( ofGetFrameRate() ), 10, 110 );
+    ofDrawBitmapString( "fps: " + ofToString( ofGetFrameRate() ), 10, 110 );*/
     
     
 }

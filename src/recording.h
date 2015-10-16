@@ -68,8 +68,6 @@ private:
     bool                    recButtonIsPressed;
     int                     recButtonColor;
     bool                    willTakeRecording;
-    float                   waitForSaveFileTime;
-    bool                    willWaitForSave;
 
     ofImage                 hold;
     

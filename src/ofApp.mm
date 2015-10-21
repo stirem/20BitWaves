@@ -218,7 +218,7 @@ void ofApp::update()
     
     
     ///< Add particles
-    if ( (menu._whatMode == kModeRec && recording[ menu._whatRecSample ].readyToPlay && !menu._isInMenu) || (menu._whatMode == kModeFileSample && !menu._isInMenu) ) {
+    if ( (menu._whatMode == kModeRec && recording[ menu._whatRecSample ].readyToPlay && !menu._isInMenu && !recording[ menu._whatRecSample ]._delButtonHasBeenPressed ) || (menu._whatMode == kModeFileSample && !menu._isInMenu) ) {
         if ( sample != 0 ) {
             addParticlesTimer += ofGetLastFrameTime();
             if ( addParticlesTimer >= 0.01 ) {
@@ -260,6 +260,14 @@ void ofApp::update()
         }
     }
     
+    
+    
+    ///< Detect if finger is inside menu-button or del button
+    if ( menu._whatMode == kModeRec && recording[ menu._whatRecSample ]._delButtonHasBeenPressed )
+    {
+        volume = 0.0;
+    }
+    
     /*ofLog() << "ofGetWidth(): " << ofGetWidth();
     ofLog() << "ofGetHeight(): " << ofGetHeight();
     ofLog() << "--------";
@@ -293,7 +301,7 @@ void ofApp::draw()
     }
     
     ///< Draw touchobject
-    if ( !menu._muteAudio ) {
+    if ( !menu._muteAudio && !recording[ menu._whatRecSample ]._delButtonHasBeenPressed ) {
         touchobject.Draw();
     }
     
@@ -365,7 +373,8 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         {
             if ( recording[ menu._whatRecSample ].readyToPlay ) {
                 if ( recording[ menu._whatRecSample ].loadFileIsDone ) {
-                    if ( !recording[ menu._whatRecSample ].silenceWhenDeleting && !recording[ menu._whatRecSample ].muteAudioWhileRecording ) {
+                    //if ( !recording[ menu._whatRecSample ].silenceWhenDeleting && !recording[ menu._whatRecSample ].muteAudioWhileRecording ) {
+                    if ( !recording[ menu._whatRecSample ].muteAudioWhileRecording ) {
                         if ( triggerRecSamplePlay ) {
                             sample = recSample[ menu._whatRecSample ].playOnce( soundSpeed );
                         } else {
@@ -529,18 +538,18 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
     }
     
 
+    // Rec mode
     if ( !menu._isInMenu ) {
-        // Check if delete button is pressed
+        // Del button
         recording[ menu._whatRecSample ].distanceToDeleteButton( touch.x, touch.y );
         // Rec button
         recording[ menu._whatRecSample ].distanceToRecButton( touch.x, touch.y );
+        // Del YES Button
+        if ( recording[ menu._whatRecSample]._delButtonHasBeenPressed ) {
+            recording[ menu._whatRecSample ].distanceToDelYesButton( touch.x, touch.y );
+        }
     }
-    
-    ///< Detect if finger is inside menu-button or del button
-    if ( menu._whatMode == kModeRec && recording[ menu._whatRecSample ].delButtonIsPressed )
-    {
-        volume = 0.0;
-    }
+
     
     if ( !menu._isInMenu && !menu._aboutIsOpen ) {
     
@@ -582,9 +591,9 @@ void ofApp::touchUp( ofTouchEventArgs & touch )
     // Used to decrease volume when finger is lifted
     fingerIsLifted = true;
     
-    recording[ menu._whatRecSample ].delButtonIsPressed = false;
+    //recording[ menu._whatRecSample ]._delButtonHasBeenPressed = false;
     
-    recording[ menu._whatRecSample ].silenceWhenDeleting = false;
+    //recording[ menu._whatRecSample ].silenceWhenDeleting = false;
 
     touchIsDown = false;
     

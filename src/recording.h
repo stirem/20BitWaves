@@ -29,14 +29,15 @@ public:
     void                    isRecSampleZero( long recSampleLength );
     void                    distanceToRecButton( float touchX, float touchY );
     void                    distanceToDeleteButton( float touchX, float touchY );
+    void                    distanceToDelYesButton( float touchX, float touchY );
     
     string                  myRecString;
     bool                    readyToPlay;
     bool                    saveFileIsDone;
     bool                    loadFileIsDone; // is set in ofApp
     bool                    muteAudioWhileRecording;
-    bool                    silenceWhenDeleting;
-    bool                    delButtonIsPressed;
+    //bool                    silenceWhenDeleting;
+    bool                    _delButtonHasBeenPressed;
     
     
 private:
@@ -89,15 +90,17 @@ private:
     float                   delButtonPosX;
     float                   delButtonPosY;
     float                   delButtonRadius;
-    float                   delButtonTime;
-    bool                    willWaitForDelButton;
     ofImage                 trashcan;
-    float                   eraseRecFileTimer;
-    float                   eraseRectWidth;
+    //float                   eraseRecFileTimer;
+    //float                   eraseRectWidth;
+    float                   _distanceToDelYesButton;
+    float                   _delYesPosX;
+    float                   _delYesPosY;
+    float                   _delYesRadius;
+    ofImage                 _yesNo;
+    float                   _yesNoImageWidth;
+    float                   _yesNoImageHeight;
     
-    
-    float                   touchX;
-    float                   touchY;
     
     int                     _whatNrAmI;
     

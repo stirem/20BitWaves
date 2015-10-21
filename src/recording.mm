@@ -25,14 +25,13 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     addParticlesTimer               = 0;
     spectrumPosXinc                 = 0;
     
-    delButtonIsPressed              = false;
+    _delButtonHasBeenPressed              = false;
     
-    delButtonTime                   = 0.0;
-    willWaitForDelButton            = false;
-    eraseRecFileTimer               = 0.0;
-    eraseRectWidth                  = ofGetWidth() * 0.2;
+    //eraseRecFileTimer               = 0.0;
+    //eraseRectWidth                  = ofGetWidth() * 0.2;
     
-    silenceWhenDeleting             = false;
+    //silenceWhenDeleting             = false;
+    
     if ( audioInputValue == 1 ) {
         _bluetoothActive = 0;
     } else {
@@ -41,7 +40,7 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     
     trashcan.loadImage( "trashcan.png" );
     hold.loadImage( "hold.png" );
-    
+    _yesNo.loadImage( "yesNo.png" );
     
     _arial.loadFont( "Fonts/arial.ttf", 12 );
     
@@ -71,10 +70,13 @@ void Recording::initSizeValues() {
     delButtonPosY                   = ofGetHeight() * 0.05;
     delButtonRadius                 = ofGetWidth() * 0.03;
     distanceToDelButton             = ofGetWidth();
+    _distanceToDelYesButton         = ofGetWidth();
+    _yesNoImageWidth                = ofGetWidth() * 0.2;
+    _yesNoImageHeight               = ofGetWidth() * 0.055;
+    _delYesPosX                     = ofGetWidth() * 0.5 - (_yesNoImageWidth * 0.4);
+    _delYesPosY                     = ofGetHeight() * 0.2;
+    _delYesRadius                   = ofGetWidth() * 0.04;
 
-
-
-    
 }
 
 
@@ -125,7 +127,7 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
 
     
     //// DELETE BUTTON ////
-    if ( delButtonIsPressed )
+    /*if ( _delButtonHasBeenPressed )
     {
         eraseRecFileTimer += ofGetLastFrameTime();
         eraseRectWidth = ofMap( eraseRecFileTimer, 0.0, 0.5, ofGetWidth() * 0.2, 0.0 );
@@ -137,9 +139,12 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
             setupRecFile();
             willTakeRecording = true;
             showDeleteButton = false;
-            delButtonIsPressed = false;
+            _delButtonHasBeenPressed = false;
         }
-    }
+    }*/
+    
+    ofLog() << "_delButtonHasBeenPressed: " << _delButtonHasBeenPressed;
+    
     
     // Do not make sound or visuals when rec button is on
     if ( willTakeRecording )
@@ -194,13 +199,31 @@ void Recording::distanceToDeleteButton( float touchX, float touchY ) {
     distanceToDelButton = sqrt(    (touchX - delButtonPosX) * (touchX - delButtonPosX) + (touchY - delButtonPosY) * (touchY - delButtonPosY)     ) ;
     
     if ( showDeleteButton ) {
-        if ( delButtonRadius > distanceToDelButton )
-        {
-            delButtonIsPressed = true; // Is flagged false in ofApp::touchUp
-            eraseRecFileTimer = 0;
+        if ( delButtonRadius > distanceToDelButton ) {
+            _delButtonHasBeenPressed = true;
+            showDeleteButton = false;
+            //eraseRecFileTimer = 0;
         }
     }
     
+
+}
+
+void Recording::distanceToDelYesButton( float touchX, float touchY ) {
+    
+    // Checked in ofApp::touchDown function.
+    _distanceToDelYesButton = sqrt(    (touchX - _delYesPosX) * (touchX - _delYesPosX) + (touchY - _delYesPosY) * (touchY - _delYesPosY)     ) ;
+    
+    if ( _delYesRadius > _distanceToDelYesButton ) {
+        readyToPlay = false;
+        setupRecFile();
+        willTakeRecording = true;
+        showDeleteButton = false;
+        _delButtonHasBeenPressed = false;
+    } else if ( delButtonRadius < distanceToDelButton ) {
+        _delButtonHasBeenPressed = false;
+        showDeleteButton = true;
+    }
 }
 
 
@@ -238,7 +261,7 @@ void Recording::Draw() {
     }
 
     // Visual timer for delete file
-    if ( delButtonIsPressed )
+    /*if ( _delButtonHasBeenPressed )
     {
         ofSetColor( 255, 255, 255 );
         ofFill();
@@ -246,6 +269,15 @@ void Recording::Draw() {
         ofNoFill();
         ofRect( ofGetWidth() * 0.4, ofGetHeight() * 0.25, ofGetWidth() * 0.2, ofGetHeight() * 0.1 );
         hold.setAnchorPercent( 0.5, 0.5 );
+    }*/
+    
+    // Del Yes Button
+    if ( _delButtonHasBeenPressed ) {
+        ofSetColor( 255 );
+        //ofNoFill();
+        //ofCircle( _delYesPosX, _delYesPosY, _delYesRadius );
+        _yesNo.setAnchorPercent( 0.5, 0.5 );
+        _yesNo.draw( ofGetWidth() * 0.5, ofGetHeight() * 0.2, _yesNoImageWidth, _yesNoImageHeight );
     }
 
     

@@ -73,8 +73,10 @@ private:
     
 
   
-
-
+    CBCentralManager *bluetoothManager;
+    bool            _hasCheckedBluetoothState;
+    int             _checkBluetoothCounter;
+    int             _audioInputValue;
     
     
     ///< MAXIMILIAN

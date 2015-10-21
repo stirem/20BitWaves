@@ -52,27 +52,18 @@ void ofApp::setup()
 
     ///< openFrameworks sound stream
 
-   /*
-    CBCentralManager *bluetoothManager;
+   
+    bluetoothManager = [[ CBCentralManager alloc ] init ];
     
-    bluetoothManager = [ CBCentralManager alloc ];
-                        
+    _hasCheckedBluetoothState = false;
+    _checkBluetoothCounter = 0;
+    _audioInputValue = 1;
 
-    int audioInputValue;
-    if ( [bluetoothManager.state] == CBCentralManagerStatePoweredOn ) {
-        // Bluetooth is on, then input is turn OFF
-        audioInputValue = 0;
-    } else {
-        // Bluetooth is off, then input is turned ON
-        audioInputValue = 1;
-    }
-    
-    ofLog() << "audioInputValue: " << audioInputValue;
-    soundStream.setup( this, 2, audioInputValue, sampleRate, initialBufferSize, 4 );
-    */
     
     
-    soundStream.setup( this, 2, about._audioInputValue, sampleRate, initialBufferSize, 4 );
+    
+    
+    //soundStream.setup( this, 2, about._audioInputValue, sampleRate, initialBufferSize, 4 );
     
     
     // Setup FFT
@@ -187,7 +178,9 @@ void ofApp::loadFileSamples() {
 //--------------------------------------------------------------
 void ofApp::update()
 {
+    
 
+    
     // Orientation fix
     /*if(ofxiOSGetGLView().frame.origin.x != 0
        || ofxiOSGetGLView().frame.size.width != [[UIScreen mainScreen] bounds].size.width){
@@ -234,7 +227,7 @@ void ofApp::update()
     if ( menu._whatMode == kModeRec )
     //if ( menu.recModeOn[ menu.whatRecSample ] )
     {
-        recording[ menu._whatRecSample ].Update( touchPosX, touchPosY, touchIsDown );
+        recording[ menu._whatRecSample ].Update( touchPosX, touchPosY, touchIsDown, _audioInputValue );
     }
     
     // Load rec sample after recording (loadFileIsDone flag to prevent rec sample from being played before it is loaded)
@@ -267,6 +260,34 @@ void ofApp::update()
     {
         volume = 0.0;
     }
+    
+    
+    
+    // Bluetooth check
+    if ( _checkBluetoothCounter < 3 ) {
+        _checkBluetoothCounter++;
+    }
+    
+    if ( (_checkBluetoothCounter <= 3) && (_checkBluetoothCounter > 2) && !_hasCheckedBluetoothState ) {
+        
+        if ( [bluetoothManager state] == CBCentralManagerStatePoweredOn ) {
+            // Bluetooth is on, then input is turn OFF
+            _audioInputValue = 0;
+        } else {
+            // Bluetooth is off, then input is turned ON
+            _audioInputValue = 1;
+        }
+        
+        ofLog() << "audioInputValue: " << _audioInputValue;
+        soundStream.setup( this, 2, _audioInputValue, sampleRate, initialBufferSize, 4 );
+        
+        ofLog() << "bluetooth state: " << [bluetoothManager state];
+        
+        _hasCheckedBluetoothState = true;
+    }
+    
+    
+    
     
     /*ofLog() << "ofGetWidth(): " << ofGetWidth();
     ofLog() << "ofGetHeight(): " << ofGetHeight();
@@ -311,13 +332,14 @@ void ofApp::draw()
         particles[i].Draw();
     }
     
-    /*ofSetColor( 255 );
+    ofSetColor( 255 );
     ofDrawBitmapString( "ofGetWidth(): " + ofToString( ofGetWidth() ), 10, 10 );
     ofDrawBitmapString( "ofGetHeight(): " + ofToString( ofGetHeight() ), 10, 30 );
     ofDrawBitmapString( "GLview width: " + ofToString( ofxiOSGetGLView().frame.size.width ), 10, 50 );
     ofDrawBitmapString( "UIScreen: " + ofToString( [[UIScreen mainScreen] bounds].size.width ), 10, 70 );
     ofDrawBitmapString( "sample: " + ofToString( sample ), 10, 90 );
-    ofDrawBitmapString( "fps: " + ofToString( ofGetFrameRate() ), 10, 110 );*/
+    ofDrawBitmapString( "fps: " + ofToString( ofGetFrameRate() ), 10, 110 );
+    ofDrawBitmapString( "bluetooth state: " + ofToString( [bluetoothManager state] ), 10, 130 );
     
     
 }

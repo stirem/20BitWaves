@@ -23,7 +23,7 @@ public:
     Recording();
     
     void                    setup( int whatNrAmI, bool audioInputValue );
-    void                    Update( float touchXDown, float touchYDown, bool touchIsDown );
+    void                    Update( float touchXDown, float touchYDown, bool touchIsDown, bool audioInputValue );
     void                    Draw();
     void                    Exit();
     void                    isRecSampleZero( long recSampleLength );
@@ -105,6 +105,7 @@ private:
     int                     _whatNrAmI;
     
     bool                    _bluetoothActive;
+    bool                    _hasCheckedInputValue;
 
     ofTrueTypeFont          _arial;
 

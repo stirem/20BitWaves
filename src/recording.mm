@@ -37,6 +37,7 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     } else {
         _bluetoothActive = 1;
     }
+    _hasCheckedInputValue = false;
     
     trashcan.loadImage( "trashcan.png" );
     hold.loadImage( "hold.png" );
@@ -99,7 +100,7 @@ void Recording::isRecSampleZero( long recSampleLength ) {
     
 }
 
-void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
+void Recording::Update( float touchX, float touchY, bool touchIsDown, bool audioInputValue ) {
     
     if ( willTakeRecording ) {
         if ( recButtonRadius > _distanceToRecButton ) {
@@ -143,8 +144,6 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
         }
     }*/
     
-    ofLog() << "_delButtonHasBeenPressed: " << _delButtonHasBeenPressed;
-    
     
     // Do not make sound or visuals when rec button is on
     if ( willTakeRecording )
@@ -180,6 +179,17 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
             recSpectrum.erase( recSpectrum.begin() + i );
         }
     
+    }
+    
+    
+    // Bluetooth Input Value check
+    if ( !_hasCheckedInputValue ) {
+        if ( audioInputValue == 1 ) {
+            _bluetoothActive = 0;
+        } else {
+            _bluetoothActive = 1;
+        }
+        _hasCheckedInputValue = true;
     }
     
 }

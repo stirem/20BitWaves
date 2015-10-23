@@ -50,20 +50,35 @@ void ofApp::setup()
     _filterLeftRight        = 0.0;
     
 
-    ///< openFrameworks sound stream
 
    
-    bluetoothManager = [[ CBCentralManager alloc ] init ];
+    // Bluetooth check
+    /*bluetoothManager = [[ CBCentralManager alloc ] init ];
     
     _hasCheckedBluetoothState = false;
     _checkBluetoothCounter = 0;
-    _audioInputValue = 1;
+    _audioInputValue = 1;*/
 
     
+    // iOS settings app. Setting bluetooth on/off for this app. Uses Settings.bundle in xcode.
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSDictionary *appDefaults = [NSDictionary dictionaryWithObject:@"NO"
+                                                            forKey:@"enableBluetooth"];
+    [defaults registerDefaults:appDefaults];
+    [defaults synchronize];
+    BOOL bluetoothIsEnabled = [defaults boolForKey:@"enableBluetooth"];
     
+    bool audioInputValue;
+    if ( bluetoothIsEnabled ) {
+        audioInputValue = 0;
+    } else {
+        audioInputValue = 1;
+    }
     
-    
+    ///< openFrameworks sound stream
+    soundStream.setup( this, 2, audioInputValue, sampleRate, initialBufferSize, 4 );
     //soundStream.setup( this, 2, about._audioInputValue, sampleRate, initialBufferSize, 4 );
+
     
     
     // Setup FFT
@@ -76,8 +91,8 @@ void ofApp::setup()
     ///// R E C O R D I N G /////
     // Order here is important to check if rec file has content. If no content, rec button will be shown.
     for ( int i = 0; i < NUM_OF_REC_MODES; i++ ) {
-        recording[i].setup( i, about._audioInputValue );
-        //recording[i].setup( i, audioInputValue );
+        //recording[i].setup( i, about._audioInputValue );
+        recording[i].setup( i, audioInputValue );
         recSample[i].load( recording[i].myRecString );
         recording[i].isRecSampleZero( recSample[i].length );
     }
@@ -211,7 +226,7 @@ void ofApp::update()
     
     
     ///< Add particles
-    if ( (menu._whatMode == kModeRec && recording[ menu._whatRecSample ].readyToPlay && !menu._isInMenu && !recording[ menu._whatRecSample ]._delButtonHasBeenPressed ) || (menu._whatMode == kModeFileSample && !menu._isInMenu) ) {
+    if ( (menu._whatMode == kModeRec && recording[ menu._whatRecSample ].readyToPlay && !menu._isInMenu && !recording[ menu._whatRecSample ]._delButtonHasBeenPressed && !menu._muteAudio ) || (menu._whatMode == kModeFileSample && !menu._isInMenu && !menu._muteAudio) ) {
         if ( sample != 0 ) {
             addParticlesTimer += ofGetLastFrameTime();
             if ( addParticlesTimer >= 0.01 ) {
@@ -227,7 +242,7 @@ void ofApp::update()
     if ( menu._whatMode == kModeRec )
     //if ( menu.recModeOn[ menu.whatRecSample ] )
     {
-        recording[ menu._whatRecSample ].Update( touchPosX, touchPosY, touchIsDown, _audioInputValue );
+        recording[ menu._whatRecSample ].Update( touchPosX, touchPosY, touchIsDown );
     }
     
     // Load rec sample after recording (loadFileIsDone flag to prevent rec sample from being played before it is loaded)
@@ -264,7 +279,7 @@ void ofApp::update()
     
     
     // Bluetooth check
-    if ( _checkBluetoothCounter < 3 ) {
+    /*if ( _checkBluetoothCounter < 3 ) {
         _checkBluetoothCounter++;
     }
     
@@ -284,7 +299,7 @@ void ofApp::update()
         ofLog() << "bluetooth state: " << [bluetoothManager state];
         
         _hasCheckedBluetoothState = true;
-    }
+    }*/
     
     
     
@@ -332,14 +347,14 @@ void ofApp::draw()
         particles[i].Draw();
     }
     
-    ofSetColor( 255 );
+    /*ofSetColor( 255 );
     ofDrawBitmapString( "ofGetWidth(): " + ofToString( ofGetWidth() ), 10, 10 );
     ofDrawBitmapString( "ofGetHeight(): " + ofToString( ofGetHeight() ), 10, 30 );
     ofDrawBitmapString( "GLview width: " + ofToString( ofxiOSGetGLView().frame.size.width ), 10, 50 );
     ofDrawBitmapString( "UIScreen: " + ofToString( [[UIScreen mainScreen] bounds].size.width ), 10, 70 );
     ofDrawBitmapString( "sample: " + ofToString( sample ), 10, 90 );
-    ofDrawBitmapString( "fps: " + ofToString( ofGetFrameRate() ), 10, 110 );
-    ofDrawBitmapString( "bluetooth state: " + ofToString( [bluetoothManager state] ), 10, 130 );
+    ofDrawBitmapString( "fps: " + ofToString( ofGetFrameRate() ), 10, 110 );*/
+    //ofDrawBitmapString( "bluetooth state: " + ofToString( [bluetoothManager state] ), 10, 130 );
     
     
 }

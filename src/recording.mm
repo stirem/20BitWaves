@@ -44,6 +44,7 @@ void Recording::setup( int whatNrAmI, bool audioInputValue ) {
     _yesNo.loadImage( "yesNo.png" );
     
     _arial.loadFont( "Fonts/arial.ttf", 12 );
+    _recordingIsDisabled.loadImage( "recordingIsDisabled.png" );
     
     
     // Enable bluetooth mic input
@@ -77,6 +78,8 @@ void Recording::initSizeValues() {
     _delYesPosX                     = ofGetWidth() * 0.5 - (_yesNoImageWidth * 0.4);
     _delYesPosY                     = ofGetHeight() * 0.2;
     _delYesRadius                   = ofGetWidth() * 0.04;
+    _recordingIsDisabled_width      = ofGetWidth() * 0.5;
+    _recordingIsDisabled_height     = ofGetWidth() * 0.045;
 
 }
 
@@ -100,7 +103,7 @@ void Recording::isRecSampleZero( long recSampleLength ) {
     
 }
 
-void Recording::Update( float touchX, float touchY, bool touchIsDown, bool audioInputValue ) {
+void Recording::Update( float touchX, float touchY, bool touchIsDown ) {
     
     if ( willTakeRecording ) {
         if ( recButtonRadius > _distanceToRecButton ) {
@@ -183,14 +186,14 @@ void Recording::Update( float touchX, float touchY, bool touchIsDown, bool audio
     
     
     // Bluetooth Input Value check
-    if ( !_hasCheckedInputValue ) {
+    /*if ( !_hasCheckedInputValue ) {
         if ( audioInputValue == 1 ) {
             _bluetoothActive = 0;
         } else {
             _bluetoothActive = 1;
         }
         _hasCheckedInputValue = true;
-    }
+    }*/
     
 }
 
@@ -294,7 +297,9 @@ void Recording::Draw() {
     // Bluetooth Text
     if ( willTakeRecording && _bluetoothActive ) {
         ofSetColor( 255 );
-        _arial.drawString( "Recording is disabled when Bluetooth is enabled.\n\nTurn off Bluetooth in the about section inside this app", recButtonPosX - (recButtonRadius * 0.5), recButtonPosY + (recButtonRadius * 1.2) );
+        //_arial.drawString( "Recording is disabled when Bluetooth is enabled for this app.\n\nTurn off Bluetooth for this app in iOS settings under 'BITWaves'", recButtonPosX - (recButtonRadius * 0.5), recButtonPosY + (recButtonRadius * 1.2) );
+        _recordingIsDisabled.setAnchorPercent( 0.5, 0.5 );
+        _recordingIsDisabled.draw( ofGetWidth() * 0.5, recButtonPosY + (recButtonRadius * 1.3), _recordingIsDisabled_width, _recordingIsDisabled_height );
     }
     
     

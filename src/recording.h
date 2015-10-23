@@ -23,7 +23,7 @@ public:
     Recording();
     
     void                    setup( int whatNrAmI, bool audioInputValue );
-    void                    Update( float touchXDown, float touchYDown, bool touchIsDown, bool audioInputValue );
+    void                    Update( float touchXDown, float touchYDown, bool touchIsDown );
     void                    Draw();
     void                    Exit();
     void                    isRecSampleZero( long recSampleLength );
@@ -108,6 +108,9 @@ private:
     bool                    _hasCheckedInputValue;
 
     ofTrueTypeFont          _arial;
+    ofImage                 _recordingIsDisabled;
+    float                   _recordingIsDisabled_width;
+    float                   _recordingIsDisabled_height;
 
 };
 

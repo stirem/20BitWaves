@@ -14,7 +14,7 @@
 #include "ofxMaxim.h" // Include Maximilian in project
 #include "maximilian.h" // Inclde Maximilian in project
 
-#include <CoreBluetooth/CoreBluetooth.h>
+//#include <CoreBluetooth/CoreBluetooth.h>
 
 class ofApp : public ofxiOSApp {
 	
@@ -73,10 +73,9 @@ private:
     
 
   
-    CBCentralManager *bluetoothManager;
+    /*CBCentralManager *bluetoothManager;
     bool            _hasCheckedBluetoothState;
-    int             _checkBluetoothCounter;
-    int             _audioInputValue;
+    int             _checkBluetoothCounter;*/
     
     
     ///< MAXIMILIAN

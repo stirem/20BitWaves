@@ -6,10 +6,12 @@
 #include "ofxiOSExtras.h"
 #include "ofxiOS.h"
 
-#define NUM_OF_BUTTONS 3
+#define NUM_OF_BUTTONS 5
 #define kButtonBluetooth 0
 #define kButtonDelay 1
-#define kButtonBekUrl 2
+#define kButtonUrlBek 2
+#define kButtonUrlStian 3
+#define kButtonUrlBit20 4
 
 
 

@@ -78,7 +78,7 @@ void Recording::initSizeValues() {
     _delYesPosX                     = ofGetWidth() * 0.5 - (_yesNoImageWidth * 0.4);
     _delYesPosY                     = ofGetHeight() * 0.2;
     _delYesRadius                   = ofGetWidth() * 0.04;
-    _recordingIsDisabled_width      = ofGetWidth() * 0.5;
+    _recordingIsDisabled_width      = ofGetWidth() * 0.65;
     _recordingIsDisabled_height     = ofGetWidth() * 0.045;
 
 }

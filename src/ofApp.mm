@@ -235,6 +235,7 @@ void ofApp::update()
             }
         }
     }
+    
 
 
     ///// R E C O R D I N G /////
@@ -431,10 +432,7 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         }
         
         
-        
-        
-        
-        
+
         if ( about._isDelayActive ) {
             //myOutput = myDelay.dl( sample, _filterLeftRight, 0.8 );
        
@@ -499,9 +497,9 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
     panning = ofMap( touchPosX, 0, ofGetWidth(), 0.0, 1.0, true );
     //panning = 0.5;
     
-    if ( about._isDelayActive ) {
+   /* if ( about._isDelayActive ) {
         _filterLeftRight = ofMap( touchPosX, 0, ofGetWidth(), 1400, 14000, true );
-    }
+    }*/
     
     
     
@@ -512,20 +510,13 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         {
             volume = volume - 0.005;
         }
-    } else if ( menu._isInMenu ) {
-        if ( volume >= 0.0 )
-        {
-            volume = volume - 0.005;
-        }
     }
     
-    if ( menu._isInMenu ) {
-        if ( volume >= 0.0 )
-        {
-            volume = volume - 0.05;
-        }
-    }
     
+    if ( menu._muteAudio ) {
+        volume = 0.0;
+    }
+
     
     ///< Stop playback when volume is 0 or less.
     if ( volume <= 0.0 )
@@ -535,10 +526,7 @@ void ofApp::audioOut(float * output, int bufferSize, int nChannels)
         fingerIsLifted = false;
     }
     
-    
-    if ( menu._muteAudio ) {
-        volume = 0.0;
-    }
+
 }
 
 
@@ -587,6 +575,7 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
         }
     }
 
+
     
     if ( !menu._isInMenu && !menu._aboutIsOpen ) {
     
@@ -600,6 +589,8 @@ void ofApp::touchDown( ofTouchEventArgs & touch )
         // Set position of touchobject when touch is moved
         touchobject.Position( touch.x, touch.y );
     }
+        
+    
 
     
     touchIsDown = true;

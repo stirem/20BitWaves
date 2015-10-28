@@ -14,36 +14,40 @@
 		53F323EB10A20EDB00E0DAE4 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53F323EA10A20EDB00E0DAE4 /* OpenAL.framework */; };
 		67DFA53619F92A69003B3434 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 67DFA53419F92A5E003B3434 /* Accelerate.framework */; };
 		801AE04F1BCFCE39002938C2 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 801AE04E1BCFCE39002938C2 /* CoreBluetooth.framework */; };
-		80CB57FD1BCA65C2005782BC /* install.xml in Resources */ = {isa = PBXBuildFile; fileRef = 80CB57EA1BCA65C2005782BC /* install.xml */; settings = {ASSET_TAGS = (); }; };
-		80CB57FE1BCA65C2005782BC /* fft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57EC1BCA65C2005782BC /* fft.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB57FF1BCA65C2005782BC /* maxiAtoms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57EE1BCA65C2005782BC /* maxiAtoms.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58001BCA65C2005782BC /* maxiFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F01BCA65C2005782BC /* maxiFFT.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58011BCA65C2005782BC /* maxiGrains.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F21BCA65C2005782BC /* maxiGrains.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58021BCA65C2005782BC /* maxiMFCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F41BCA65C2005782BC /* maxiMFCC.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58031BCA65C2005782BC /* maximilian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F61BCA65C2005782BC /* maximilian.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58041BCA65C2005782BC /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F91BCA65C2005782BC /* stb_vorbis.c */; settings = {ASSET_TAGS = (); }; };
-		80CB580E1BCA65C7005782BC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58071BCA65C7005782BC /* tinyxml.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB580F1BCA65C7005782BC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58091BCA65C7005782BC /* tinyxmlerror.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58101BCA65C7005782BC /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB580A1BCA65C7005782BC /* tinyxmlparser.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58111BCA65C7005782BC /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB580C1BCA65C7005782BC /* ofxXmlSettings.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58241BCA666A005782BC /* about.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58131BCA666A005782BC /* about.mm */; settings = {ASSET_TAGS = (); }; };
-		80CB58251BCA666A005782BC /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58151BCA666A005782BC /* main.mm */; settings = {ASSET_TAGS = (); }; };
-		80CB58261BCA666A005782BC /* menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58161BCA666A005782BC /* menu.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58271BCA666A005782BC /* ofApp.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58191BCA666A005782BC /* ofApp.mm */; settings = {ASSET_TAGS = (); }; };
-		80CB58281BCA666A005782BC /* particles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB581A1BCA666A005782BC /* particles.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58291BCA666A005782BC /* Quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB581C1BCA666A005782BC /* Quad.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB582A1BCA666A005782BC /* recording.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB581F1BCA666A005782BC /* recording.mm */; settings = {ASSET_TAGS = (); }; };
-		80CB582B1BCA666A005782BC /* recSpectrum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58201BCA666A005782BC /* recSpectrum.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB582C1BCA666A005782BC /* touchObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58221BCA666A005782BC /* touchObject.cpp */; settings = {ASSET_TAGS = (); }; };
-		80CB58451BCA6694005782BC /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB583D1BCA6694005782BC /* Icon-60@2x.png */; settings = {ASSET_TAGS = (); }; };
-		80CB58461BCA6694005782BC /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB583E1BCA6694005782BC /* Icon-72.png */; settings = {ASSET_TAGS = (); }; };
-		80CB58471BCA6694005782BC /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB583F1BCA6694005782BC /* Icon-72@2x.png */; settings = {ASSET_TAGS = (); }; };
-		80CB58481BCA6694005782BC /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58401BCA6694005782BC /* Icon-76.png */; settings = {ASSET_TAGS = (); }; };
-		80CB58491BCA6694005782BC /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58411BCA6694005782BC /* Icon-76@2x.png */; settings = {ASSET_TAGS = (); }; };
-		80CB584A1BCA6694005782BC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58421BCA6694005782BC /* Icon.png */; settings = {ASSET_TAGS = (); }; };
-		80CB584B1BCA6694005782BC /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58431BCA6694005782BC /* Icon@2x.png */; settings = {ASSET_TAGS = (); }; };
-		80CB584C1BCA6694005782BC /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58441BCA6694005782BC /* iTunesArtwork@2x.png */; settings = {ASSET_TAGS = (); }; };
-		80F10D5C1BDA454200CB9CCF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 80F10D5B1BDA454200CB9CCF /* Settings.bundle */; settings = {ASSET_TAGS = (); }; };
+		804CC27C1BE1103100CFACD7 /* Default-568h@~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 804CC27A1BE1103100CFACD7 /* Default-568h@~iphone.png */; };
+		804CC27D1BE1103100CFACD7 /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = 804CC27B1BE1103100CFACD7 /* Default-568h@2x~iphone.png */; };
+		80BE48BB1BE0E14B00DD0046 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 80BE48B91BE0E14B00DD0046 /* Default.png */; };
+		80BE48BC1BE0E14B00DD0046 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80BE48BA1BE0E14B00DD0046 /* Default@2x.png */; };
+		80CB57FD1BCA65C2005782BC /* install.xml in Resources */ = {isa = PBXBuildFile; fileRef = 80CB57EA1BCA65C2005782BC /* install.xml */; };
+		80CB57FE1BCA65C2005782BC /* fft.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57EC1BCA65C2005782BC /* fft.cpp */; };
+		80CB57FF1BCA65C2005782BC /* maxiAtoms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57EE1BCA65C2005782BC /* maxiAtoms.cpp */; };
+		80CB58001BCA65C2005782BC /* maxiFFT.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F01BCA65C2005782BC /* maxiFFT.cpp */; };
+		80CB58011BCA65C2005782BC /* maxiGrains.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F21BCA65C2005782BC /* maxiGrains.cpp */; };
+		80CB58021BCA65C2005782BC /* maxiMFCC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F41BCA65C2005782BC /* maxiMFCC.cpp */; };
+		80CB58031BCA65C2005782BC /* maximilian.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F61BCA65C2005782BC /* maximilian.cpp */; };
+		80CB58041BCA65C2005782BC /* stb_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 80CB57F91BCA65C2005782BC /* stb_vorbis.c */; };
+		80CB580E1BCA65C7005782BC /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58071BCA65C7005782BC /* tinyxml.cpp */; };
+		80CB580F1BCA65C7005782BC /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58091BCA65C7005782BC /* tinyxmlerror.cpp */; };
+		80CB58101BCA65C7005782BC /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB580A1BCA65C7005782BC /* tinyxmlparser.cpp */; };
+		80CB58111BCA65C7005782BC /* ofxXmlSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB580C1BCA65C7005782BC /* ofxXmlSettings.cpp */; };
+		80CB58241BCA666A005782BC /* about.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58131BCA666A005782BC /* about.mm */; };
+		80CB58251BCA666A005782BC /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58151BCA666A005782BC /* main.mm */; };
+		80CB58261BCA666A005782BC /* menu.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58161BCA666A005782BC /* menu.mm */; };
+		80CB58271BCA666A005782BC /* ofApp.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58191BCA666A005782BC /* ofApp.mm */; };
+		80CB58281BCA666A005782BC /* particles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB581A1BCA666A005782BC /* particles.cpp */; };
+		80CB58291BCA666A005782BC /* Quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB581C1BCA666A005782BC /* Quad.cpp */; };
+		80CB582A1BCA666A005782BC /* recording.mm in Sources */ = {isa = PBXBuildFile; fileRef = 80CB581F1BCA666A005782BC /* recording.mm */; };
+		80CB582B1BCA666A005782BC /* recSpectrum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58201BCA666A005782BC /* recSpectrum.cpp */; };
+		80CB582C1BCA666A005782BC /* touchObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80CB58221BCA666A005782BC /* touchObject.cpp */; };
+		80CB58451BCA6694005782BC /* Icon-60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB583D1BCA6694005782BC /* Icon-60@2x.png */; };
+		80CB58461BCA6694005782BC /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB583E1BCA6694005782BC /* Icon-72.png */; };
+		80CB58471BCA6694005782BC /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB583F1BCA6694005782BC /* Icon-72@2x.png */; };
+		80CB58481BCA6694005782BC /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58401BCA6694005782BC /* Icon-76.png */; };
+		80CB58491BCA6694005782BC /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58411BCA6694005782BC /* Icon-76@2x.png */; };
+		80CB584A1BCA6694005782BC /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58421BCA6694005782BC /* Icon.png */; };
+		80CB584B1BCA6694005782BC /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58431BCA6694005782BC /* Icon@2x.png */; };
+		80CB584C1BCA6694005782BC /* iTunesArtwork@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 80CB58441BCA6694005782BC /* iTunesArtwork@2x.png */; };
+		80F10D5C1BDA454200CB9CCF /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 80F10D5B1BDA454200CB9CCF /* Settings.bundle */; };
 		BB16EBD20F2B2A9500518274 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD10F2B2A9500518274 /* OpenGLES.framework */; };
 		BB16EBD90F2B2AB500518274 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB16EBD80F2B2AB500518274 /* QuartzCore.framework */; };
 		BBE5EAB80F49AD8400F28951 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBE5EAB70F49AD8400F28951 /* AudioToolbox.framework */; };
@@ -80,6 +84,10 @@
 		53F323EA10A20EDB00E0DAE4 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		67DFA53419F92A5E003B3434 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		801AE04E1BCFCE39002938C2 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		804CC27A1BE1103100CFACD7 /* Default-568h@~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@~iphone.png"; path = "bin/data/Default-568h@~iphone.png"; sourceTree = "<group>"; };
+		804CC27B1BE1103100CFACD7 /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x~iphone.png"; path = "bin/data/Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
+		80BE48B91BE0E14B00DD0046 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = bin/data/Default.png; sourceTree = "<group>"; };
+		80BE48BA1BE0E14B00DD0046 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "bin/data/Default@2x.png"; sourceTree = "<group>"; };
 		80CB57EA1BCA65C2005782BC /* install.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = install.xml; sourceTree = "<group>"; };
 		80CB57EC1BCA65C2005782BC /* fft.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fft.cpp; sourceTree = "<group>"; };
 		80CB57ED1BCA65C2005782BC /* fft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fft.h; sourceTree = "<group>"; };
@@ -107,7 +115,7 @@
 		80CB58131BCA666A005782BC /* about.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = about.mm; sourceTree = "<group>"; };
 		80CB58141BCA666A005782BC /* Definitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Definitions.h; sourceTree = "<group>"; };
 		80CB58151BCA666A005782BC /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
-		80CB58161BCA666A005782BC /* menu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = menu.cpp; sourceTree = "<group>"; };
+		80CB58161BCA666A005782BC /* menu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = menu.mm; sourceTree = "<group>"; };
 		80CB58171BCA666A005782BC /* menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu.h; sourceTree = "<group>"; };
 		80CB58181BCA666A005782BC /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ofApp.h; sourceTree = "<group>"; };
 		80CB58191BCA666A005782BC /* ofApp.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ofApp.mm; sourceTree = "<group>"; };
@@ -190,6 +198,10 @@
 				80CB58421BCA6694005782BC /* Icon.png */,
 				80CB58431BCA6694005782BC /* Icon@2x.png */,
 				80CB58441BCA6694005782BC /* iTunesArtwork@2x.png */,
+				80BE48B91BE0E14B00DD0046 /* Default.png */,
+				80BE48BA1BE0E14B00DD0046 /* Default@2x.png */,
+				804CC27A1BE1103100CFACD7 /* Default-568h@~iphone.png */,
+				804CC27B1BE1103100CFACD7 /* Default-568h@2x~iphone.png */,
 				E4D8936A11527B74007E1F53 /* src */,
 				BB24E1F710DAA51900E9C588 /* openFrameworks */,
 				BB16F26B0F2B646B00518274 /* addons */,
@@ -351,7 +363,7 @@
 				80CB58131BCA666A005782BC /* about.mm */,
 				80CB58141BCA666A005782BC /* Definitions.h */,
 				80CB58151BCA666A005782BC /* main.mm */,
-				80CB58161BCA666A005782BC /* menu.cpp */,
+				80CB58161BCA666A005782BC /* menu.mm */,
 				80CB58171BCA666A005782BC /* menu.h */,
 				80CB58181BCA666A005782BC /* ofApp.h */,
 				80CB58191BCA666A005782BC /* ofApp.mm */,
@@ -452,6 +464,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80BE48BC1BE0E14B00DD0046 /* Default@2x.png in Resources */,
 				80CB57FD1BCA65C2005782BC /* install.xml in Resources */,
 				80CB584B1BCA6694005782BC /* Icon@2x.png in Resources */,
 				80F10D5C1BDA454200CB9CCF /* Settings.bundle in Resources */,
@@ -462,6 +475,9 @@
 				80CB58491BCA6694005782BC /* Icon-76@2x.png in Resources */,
 				80CB58461BCA6694005782BC /* Icon-72.png in Resources */,
 				80CB584A1BCA6694005782BC /* Icon.png in Resources */,
+				804CC27D1BE1103100CFACD7 /* Default-568h@2x~iphone.png in Resources */,
+				80BE48BB1BE0E14B00DD0046 /* Default.png in Resources */,
+				804CC27C1BE1103100CFACD7 /* Default-568h@~iphone.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -488,7 +504,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				80CB58261BCA666A005782BC /* menu.cpp in Sources */,
+				80CB58261BCA666A005782BC /* menu.mm in Sources */,
 				80CB58041BCA65C2005782BC /* stb_vorbis.c in Sources */,
 				80CB582C1BCA666A005782BC /* touchObject.cpp in Sources */,
 				80CB580E1BCA65C7005782BC /* tinyxml.cpp in Sources */,
@@ -534,7 +550,7 @@
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = BITWaves;
+				PRODUCT_BUNDLE_IDENTIFIER = Bit20iPadApp;
 				PRODUCT_NAME = BITWaves;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -553,7 +569,7 @@
 				"GCC_WARN_64_TO_32_BIT_CONVERSION[arch=*64]" = NO;
 				INFOPLIST_FILE = "ofxiOS-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = BITWaves;
+				PRODUCT_BUNDLE_IDENTIFIER = Bit20iPadApp;
 				PRODUCT_NAME = BITWaves;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

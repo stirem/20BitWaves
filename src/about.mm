@@ -24,7 +24,7 @@ void About::setup() {
     }
     _audioInputValue                        = XML.getValue( "AUDIO_INPUT_VALUE", 1 );*/
     
-    _isDelayActive                          = XML.getValue( "DELAY_ACTIVE", 0 );
+    //_isDelayActive                          = XML.getValue( "DELAY_ACTIVE", 0 );
     
     _closeAbout                             = false;
 

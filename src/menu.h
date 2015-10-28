@@ -6,6 +6,10 @@
 #include "ofMain.h"
 #include "Definitions.h"
 #include "Quad.h"
+#include "ofxXmlSettings.h"
+#include "ofxiOSExtras.h"
+#include "ofxiOS.h"
+
 
 
 class menu {
@@ -64,7 +68,7 @@ private:
     float           _timeX, _beginningX, _changeX[NUM_OF_MENU_PICTOGRAMS], _durationX;
     float           _timeY, _beginningY, _changeY, _durationY;
     
-    
+    ofxXmlSettings  _XML;
        
 
 };

@@ -8,13 +8,23 @@ menu::menu()
 
 void menu::setup()
 {
+    if ( _XML.loadFile(ofxiOSGetDocumentsDirectory() + "mySettings.xml" ) ){
+        ofLog() << "mySettings.xml loaded from documents folder!";
+    } else if ( _XML.loadFile( "mySettings.xml" ) ){
+        ofLog() << "mySettings.xml loaded from data folder!";
+    } else {
+        ofLog() << "unable to load mySettings.xml check data/ folder";
+    }
+    _whatMode                   = _XML.getValue( "WHAT_MODE", 2 );
+    _whatRecSample              = _XML.getValue( "WHAT_REC_SAMPLE", 0 );
+    _whatFileSample             = _XML.getValue( "WHAT_FILE_SAMPLE", 0 );
+    
+
+    
     _tinyButtonOpacity          = 30;
     _startTinyButtonFadeDown    = false;
     _isInMenu                   = false;
     _muteAudio                  = false;
-    _whatRecSample              = 0;
-    _whatFileSample             = 0;
-    _whatMode                   = kModeFileSample;
     _outOfMenuTimer             = 0;
     _startOutOfMenuTimer        = false;
     _inToMenuTimer              = 0;
@@ -159,11 +169,19 @@ void menu::distanceToMenuButtons( float touchX, float touchY, int howManySamples
                 _startOutOfMenuTimer = true;
             } else if ( i == 1 || i == 2 || i == 3 ) {
                 _whatMode = kModeRec;
+                _XML.setValue( "WHAT_MODE", kModeRec );
                 _whatRecSample = i - 1;
+                _XML.setValue( "WHAT_REC_SAMPLE", i - 1 );
+                _XML.saveFile( ofxiOSGetDocumentsDirectory() + "mySettings.xml" );
+                ofLog() << "mySettings.xml saved to app documents dolder ";
                 _startOutOfMenuTimer = true;
             } else {
                 _whatMode = kModeFileSample;
+                _XML.setValue( "WHAT_MODE", kModeFileSample );
                 _whatFileSample = i - 4;
+                _XML.setValue( "WHAT_FILE_SAMPLE", i - 4 );
+                _XML.saveFile( ofxiOSGetDocumentsDirectory() + "mySettings.xml" );
+                ofLog() << "mySettings.xml saved to app documents dolder ";
                 _startOutOfMenuTimer = true;
             }
         } else if ( _isInMenu ) {

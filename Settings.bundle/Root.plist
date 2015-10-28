@@ -18,7 +18,7 @@
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
 			<key>Title</key>
-			<string>Enable Bluetooth for this app</string>
+			<string>Enable Airplay (Bluetooth) for this app</string>
 			<key>Key</key>
 			<string>enableBluetooth</string>
 			<key>DefaultValue</key>

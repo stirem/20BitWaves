@@ -3,8 +3,8 @@
 #include "ofMain.h"
 
 #include "ofxXmlSettings.h"
-#include "ofxiOSExtras.h"
-#include "ofxiOS.h"
+//#include "ofxiOSExtras.h"
+//#include "ofxiOS.h"
 
 #define NUM_OF_BUTTONS 5
 #define kButtonBluetooth 0
